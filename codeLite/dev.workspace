@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="dev" Database="" Version="10.0.0">
+  <Project Name="stackvsHeap" Path="stackvsHeap/stackvsHeap.project" Active="No"/>
+  <Project Name="functions" Path="functions/functions.project" Active="No"/>
+  <Project Name="headerFiles" Path="headerFiles/headerFiles.project" Active="No"/>
+  <Project Name="helloWorld" Path="helloWorld/helloWorld.project" Active="No"/>
+  <Project Name="variables" Path="variables/variables.project" Active="No"/>
+  <Project Name="pointers" Path="pointers/pointers.project" Active="No"/>
+  <Project Name="references" Path="references/references.project" Active="No"/>
+  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="helloWorld" ConfigName="Debug"/>
+      <Project Name="variables" ConfigName="Debug"/>
+      <Project Name="functions" ConfigName="Debug"/>
+      <Project Name="headerFiles" ConfigName="Debug"/>
+      <Project Name="stackvsHeap" ConfigName="Debug"/>
+      <Project Name="functions" ConfigName="Debug"/>
+      <Project Name="headerFiles" ConfigName="Debug"/>
+      <Project Name="helloWorld" ConfigName="Debug"/>
+      <Project Name="variables" ConfigName="Debug"/>
+      <Project Name="pointers" ConfigName="Debug"/>
+      <Project Name="references" ConfigName="Debug"/>
+      <Project Name="ternaryOperator" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
+      <Project Name="helloWorld" ConfigName="Release"/>
+      <Project Name="variables" ConfigName="Release"/>
+      <Project Name="functions" ConfigName="Release"/>
+      <Project Name="headerFiles" ConfigName="Release"/>
+      <Project Name="stackvsHeap" ConfigName="Release"/>
+      <Project Name="functions" ConfigName="Release"/>
+      <Project Name="headerFiles" ConfigName="Release"/>
+      <Project Name="helloWorld" ConfigName="Release"/>
+      <Project Name="variables" ConfigName="Release"/>
+      <Project Name="pointers" ConfigName="Release"/>
+      <Project Name="references" ConfigName="Release"/>
+      <Project Name="ternaryOperator" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>
