@@ -1,8 +1,9 @@
 #include <iostream>
 
-/*struct is just a class in which members are public by default whereas in cpp
+/* struct is just a class in which members are public by default whereas in cpp
 class members are private by default
-struct are there to maintain compatibility with c*/
+struct are there to maintain compatibility with c
+struct are used mainly for plain data, like for example definition of a 2dVector */
 struct Player {
 	int x, y;
 	int speed;

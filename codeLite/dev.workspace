@@ -7,7 +7,12 @@
   <Project Name="variables" Path="variables/variables.project" Active="No"/>
   <Project Name="pointers" Path="pointers/pointers.project" Active="No"/>
   <Project Name="references" Path="references/references.project" Active="No"/>
-  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="Yes"/>
+  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="No"/>
+  <Project Name="classes" Path="classes/classes.project" Active="No"/>
+  <Project Name="static" Path="static/static.project" Active="No"/>
+  <Project Name="struct" Path="struct/struct.project" Active="No"/>
+  <Project Name="staticInClass" Path="staticInClass/staticInClass.project" Active="No"/>
+  <Project Name="enum" Path="enum/enum.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -23,6 +28,11 @@
       <Project Name="pointers" ConfigName="Debug"/>
       <Project Name="references" ConfigName="Debug"/>
       <Project Name="ternaryOperator" ConfigName="Debug"/>
+      <Project Name="classes" ConfigName="Debug"/>
+      <Project Name="static" ConfigName="Debug"/>
+      <Project Name="struct" ConfigName="Debug"/>
+      <Project Name="staticInClass" ConfigName="Debug"/>
+      <Project Name="enum" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -38,6 +48,11 @@
       <Project Name="pointers" ConfigName="Release"/>
       <Project Name="references" ConfigName="Release"/>
       <Project Name="ternaryOperator" ConfigName="Release"/>
+      <Project Name="classes" ConfigName="Release"/>
+      <Project Name="static" ConfigName="Release"/>
+      <Project Name="struct" ConfigName="Release"/>
+      <Project Name="staticInClass" ConfigName="Release"/>
+      <Project Name="enum" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
