@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27EAF20724FBA9F10027629A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27EAF20624FBA9F10027629A /* main.cpp */; };
+		27621B052752EF64009E67F7 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27621B042752EF64009E67F7 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		27621B042752EF64009E67F7 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		27EAF20324FBA9F10027629A /* HelloWorld */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HelloWorld; sourceTree = BUILT_PRODUCTS_DIR; };
-		27EAF20624FBA9F10027629A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,10 +38,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27621AFF2752EED5009E67F7 /* HelloWorld */ = {
+			isa = PBXGroup;
+			children = (
+				27621B042752EF64009E67F7 /* main.cpp */,
+			);
+			path = HelloWorld;
+			sourceTree = "<group>";
+		};
 		27EAF1FA24FBA9F10027629A = {
 			isa = PBXGroup;
 			children = (
-				27EAF20524FBA9F10027629A /* HelloWorld */,
+				27621AFF2752EED5009E67F7 /* HelloWorld */,
 				27EAF20424FBA9F10027629A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,14 +60,6 @@
 				27EAF20324FBA9F10027629A /* HelloWorld */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		27EAF20524FBA9F10027629A /* HelloWorld */ = {
-			isa = PBXGroup;
-			children = (
-				27EAF20624FBA9F10027629A /* main.cpp */,
-			);
-			path = HelloWorld;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -88,7 +88,7 @@
 		27EAF1FB24FBA9F10027629A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Mike;
 				TargetAttributes = {
 					27EAF20224FBA9F10027629A = {
@@ -119,7 +119,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27EAF20724FBA9F10027629A /* main.cpp in Sources */,
+				27621B052752EF64009E67F7 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +152,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -210,6 +211,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -238,6 +240,7 @@
 		27EAF20B24FBA9F10027629A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -246,6 +249,7 @@
 		27EAF20C24FBA9F10027629A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
