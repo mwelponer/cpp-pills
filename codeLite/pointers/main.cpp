@@ -2,10 +2,11 @@
 
 int main(){
 	
-	/*pointer is JUST an integer that holds (is) a memory address
-	a pointer points to a location in memory*/
+	/* A pointer is JUST an integer that "holds" (is) the memory address
+	the pointer points to, i.e. the location in memory */
 	
 	int var = 6;
+    // we declare a pointer using the * right after the type
 	int* ptr = 0; // 0 or nullptr or NULL
 	ptr = &var; // &var means give me the address of variable var
 	

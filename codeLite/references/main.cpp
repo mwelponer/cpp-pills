@@ -1,5 +1,8 @@
 #include <iostream>
 
+void noIncrement(int value) {
+    value++;
+}
 
 void incrementUsingPointer(int* value) {
 	(*value)++; // dereference first then increment
@@ -12,17 +15,24 @@ void incrementUsingReference(int& value) {
 
 int main(int argc, char **argv) {
 	
-	/* references are just pointers to an exsisting variable
-	they have to reference an already exsisting varible, so they are just 
+	/* references are just "reference" to an exsisting variable.
+	References do not occupy memory, they don't have a storage.
+    References have to reference an already exsisting varible, so they are just
 	like an alias */
 	
 	int a = 5;
 	std::cout << a << std::endl;
 	
-	int& ref = a;
-	ref = 2;
+    // we declare a reference using the & right after the type
+	int& ref = a; // we need to assign reference immediately
+	ref = 2; // now if we assign another value to reference, we change the variable the reference references to, so a variable
 	std::cout << a << std::endl;
 	
+    // now if we want to increment variable a, if we pass the variable, it will be incremented just inside the function but not outside
+    noIncrement(a);
+    std::cout << a << std::endl;
+    
+    // but if we pass the memory address of the variable, the variable will be incremented
 	incrementUsingPointer(&a);
 	std::cout << a << std::endl;
 
