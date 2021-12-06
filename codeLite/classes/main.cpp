@@ -14,7 +14,7 @@ public:
 		std::cout << "entity created" << std::endl;
 	}
 	
-	std::string getName(){
+	const std::string& getName() const {
 		return m_name;
 	}
 	

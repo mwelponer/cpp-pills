@@ -37,14 +37,15 @@ int main(int argc, char **argv)
 	// let's try to use static variables too
 	e.z = 0;
 	e.t = 0;
-	
 	e1.z = 1;
 	e1.t = 1;
+	e.printzt();
+	
 	/* we can also refer them to in this way, cause being static, they are not 
 	 * really part of the class/struct but simply inside a namespace called Entity */
 	Entity::z = 1;
 	Entity::t = 1;
-	// this also apples to methods so instead of writing
+	// this also applies to methods so instead of writing
 	e.printzt();
 	e1.printzt(); 
 	// we better write
