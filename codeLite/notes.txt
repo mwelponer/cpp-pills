@@ -1,0 +1,25 @@
+# Pointers
+
+std::cout << "myVariable memory address is " << &myVariable // get the memory address 
+// retrieve the memory address corresponding to the start of myVariable
+
+int* myPointer = &myVariable; // declare & set a pointer 
+// now myPointer points to myVariable holds the memory address of myVariable
+
+anotherVariable = *myPointer // dereference the pointer (reading)
+// assign/writes 3 (the value pointed by myPointer) to anotherVariable
+
+*myPointer = 3; // dereference the pointer (writing)
+// assign/writes 3 to the variable pointed by myPointer
+
+(*myPointer)++; // dereference and then increment
+// increment the value held by the variable pointed by myPointer
+
+
+# References
+
+int& myReference = myVariable; // declare & set a reference
+// myReference now is an alias of myVariable
+
+myReference = 3
+// assign/writes 3 to the variable referenced by myPointer
