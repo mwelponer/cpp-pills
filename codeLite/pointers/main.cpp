@@ -7,7 +7,7 @@ int main(){
 	starting location of a memory space (whose lenght is defined by the type) */
 	
 	int var = 6;
-	// let's start to define a void type pointer
+	// we declare a pointer using the * right after the type
 	void* ptr = 0; // 0 or nullptr or NULL
 	ptr = (int*)&var; // &var means give me the address of variable var
 	// now the pointer ptr points to the beginning of the variable var
