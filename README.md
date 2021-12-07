@@ -28,7 +28,7 @@ this will assign/writes 3 to the variable pointed by *myPointer*.
 Increment the value held by the variable pointed by *myPointer*
 ```c
 (*myPointer)++;
- ```
+```
 first dereference using the *, then increment
 
 
