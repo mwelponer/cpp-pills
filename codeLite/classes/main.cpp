@@ -1,15 +1,18 @@
 #include <iostream>
 #include "Something.h"
+#include "Sstring.h"
 #include <string>
 
 class Entity {
 
 private:
 	std::string m_name;
+    int m_age;
 	
 public:
-	Entity() :
-		m_name("Unknown")
+    /* the constructor */
+	Entity() : 
+        m_name("Unknown"), m_age(0)
 	{
 		std::cout << "entity created" << std::endl;
 	}
@@ -43,13 +46,12 @@ public:
 	
 	~Player() {
 		/* nothing to be deallocated here
-		cause we just have m_speed that is a allocated in-place (without a class) */
+		cause we just have m_speed that is allocated in-place (without a class) */
 		std::cout << "Player destroyed!" << std::endl;
 	}
 
 	void move(int x, int y){
-		// this->m_x is like to write
-        //(*this).m_x;
+		// this->m_x is like to write (*this).m_x;
 		this->m_x += x * this->m_speed;
 		this->m_y += y * this->m_speed;
 	}
@@ -85,8 +87,4 @@ int main(int argc, char **argv)
 	std::cout << s.s_value << std::endl;
 	Something::s_function();
 	std::cout << s.s_value << std::endl;
-
-
-	std::cin.get();
-	//return 0;
 }

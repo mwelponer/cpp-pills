@@ -5,22 +5,22 @@
 ## Debug
 ProjectName            :=enum
 ConfigurationName      :=Debug
-WorkspacePath          :=/home/mike/dev/codeLite
-ProjectPath            :=/home/mike/dev/codeLite/enum
+WorkspacePath          :=/Users/mike/Dev/cpp/codeLite
+ProjectPath            :=/Users/mike/Dev/cpp/codeLite/enum
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=mike
-Date                   :=18/09/20
-CodeLitePath           :=/home/mike/.codelite
-LinkerName             :=g++
-SharedObjectLinkerName :=g++ -shared -fPIC
+User                   :=Mike
+Date                   :=07/12/2021
+CodeLitePath           :="/Users/mike/Library/Application Support/CodeLite"
+LinkerName             :=/Applications/Xcode.app/Contents/Developer/usr/bin/g++
+SharedObjectLinkerName :=/Applications/Xcode.app/Contents/Developer/usr/bin/g++ -dynamiclib -fPIC
 ObjectSuffix           :=.o
-DependSuffix           :=.o.d
-PreprocessSuffix       :=.o.i
-DebugSwitch            :=-gstab
+DependSuffix           :=
+PreprocessSuffix       :=.i
+DebugSwitch            :=-g 
 IncludeSwitch          :=-I
 LibrarySwitch          :=-l
 OutputSwitch           :=-o 
@@ -31,7 +31,7 @@ OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
 Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
-PreprocessOnlySwitch   :=-E 
+PreprocessOnlySwitch   :=-E
 ObjectsFileList        :="enum.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
@@ -47,19 +47,19 @@ LibPath                := $(LibraryPathSwitch).
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := ar rcus
-CXX      := g++
-CC       := gcc
+AR       := /usr/bin/ar rcu
+CXX      := /Applications/Xcode.app/Contents/Developer/usr/bin/g++
+CC       := /Applications/Xcode.app/Contents/Developer/usr/bin/gcc
 CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
 CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
-AS       := as
+AS       := /usr/bin/as
 
 
 ##
 ## User defined environment variables
 ##
-CodeLiteDir:=/usr/share/codelite
+CodeLiteDir:=/private/var/folders/fl/sj7bj11s6rg8tpcr739d05mw0000gn/T/AppTranslocation/D76482E0-6CFF-40E3-AFFA-0C4649D9CE45/d/codelite.app/Contents/SharedSupport/
 Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) 
 
 
@@ -91,16 +91,11 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp $(IntermediateDirectory)/main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/mike/dev/codeLite/enum/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM main.cpp
-
+$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/mike/Dev/cpp/codeLite/enum/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
 
-
--include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##

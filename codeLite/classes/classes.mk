@@ -5,22 +5,22 @@
 ## Debug
 ProjectName            :=classes
 ConfigurationName      :=Debug
-WorkspacePath          :=/home/mike/dev/codeLite
-ProjectPath            :=/home/mike/dev/codeLite/classes
+WorkspacePath          :=/Users/mike/Dev/cpp/codeLite
+ProjectPath            :=/Users/mike/Dev/cpp/codeLite/classes
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=mike
-Date                   :=04/09/20
-CodeLitePath           :=/home/mike/.codelite
-LinkerName             :=g++
-SharedObjectLinkerName :=g++ -shared -fPIC
+User                   :=Mike
+Date                   :=07/12/2021
+CodeLitePath           :="/Users/mike/Library/Application Support/CodeLite"
+LinkerName             :=/Applications/Xcode.app/Contents/Developer/usr/bin/g++
+SharedObjectLinkerName :=/Applications/Xcode.app/Contents/Developer/usr/bin/g++ -dynamiclib -fPIC
 ObjectSuffix           :=.o
-DependSuffix           :=.o.d
-PreprocessSuffix       :=.o.i
-DebugSwitch            :=-gstab
+DependSuffix           :=
+PreprocessSuffix       :=.i
+DebugSwitch            :=-g 
 IncludeSwitch          :=-I
 LibrarySwitch          :=-l
 OutputSwitch           :=-o 
@@ -31,7 +31,7 @@ OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
 Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
-PreprocessOnlySwitch   :=-E 
+PreprocessOnlySwitch   :=-E
 ObjectsFileList        :="classes.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
@@ -47,20 +47,20 @@ LibPath                := $(LibraryPathSwitch).
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := ar rcus
-CXX      := g++
-CC       := gcc
+AR       := /usr/bin/ar rcu
+CXX      := /Applications/Xcode.app/Contents/Developer/usr/bin/g++
+CC       := /Applications/Xcode.app/Contents/Developer/usr/bin/gcc
 CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
 CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
-AS       := as
+AS       := /usr/bin/as
 
 
 ##
 ## User defined environment variables
 ##
-CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/Something.cpp$(ObjectSuffix) 
+CodeLiteDir:=/private/var/folders/fl/sj7bj11s6rg8tpcr739d05mw0000gn/T/AppTranslocation/D76482E0-6CFF-40E3-AFFA-0C4649D9CE45/d/codelite.app/Contents/SharedSupport/
+Objects0=$(IntermediateDirectory)/Sstring.cpp$(ObjectSuffix) $(IntermediateDirectory)/Something.cpp$(ObjectSuffix) $(IntermediateDirectory)/main.cpp$(ObjectSuffix) 
 
 
 
@@ -91,24 +91,21 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp $(IntermediateDirectory)/main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/mike/dev/codeLite/classes/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM main.cpp
+$(IntermediateDirectory)/Sstring.cpp$(ObjectSuffix): Sstring.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/mike/Dev/cpp/codeLite/classes/Sstring.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/Sstring.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/Sstring.cpp$(PreprocessSuffix): Sstring.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/Sstring.cpp$(PreprocessSuffix) Sstring.cpp
 
-$(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
-
-$(IntermediateDirectory)/Something.cpp$(ObjectSuffix): Something.cpp $(IntermediateDirectory)/Something.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/mike/dev/codeLite/classes/Something.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/Something.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/Something.cpp$(DependSuffix): Something.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/Something.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/Something.cpp$(DependSuffix) -MM Something.cpp
-
+$(IntermediateDirectory)/Something.cpp$(ObjectSuffix): Something.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/mike/Dev/cpp/codeLite/classes/Something.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/Something.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/Something.cpp$(PreprocessSuffix): Something.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/Something.cpp$(PreprocessSuffix) Something.cpp
 
+$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/mike/Dev/cpp/codeLite/classes/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
 
--include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##

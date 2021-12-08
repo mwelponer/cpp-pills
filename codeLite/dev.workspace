@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="dev" Database="" Version="10.0.0">
-  <Project Name="stackvsHeap" Path="stackvsHeap/stackvsHeap.project" Active="No"/>
   <Project Name="functions" Path="functions/functions.project" Active="No"/>
   <Project Name="headerFiles" Path="headerFiles/headerFiles.project" Active="No"/>
   <Project Name="helloWorld" Path="helloWorld/helloWorld.project" Active="No"/>
   <Project Name="variables" Path="variables/variables.project" Active="No"/>
   <Project Name="pointers" Path="pointers/pointers.project" Active="No"/>
   <Project Name="references" Path="references/references.project" Active="No"/>
-  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="No"/>
   <Project Name="classes" Path="classes/classes.project" Active="No"/>
   <Project Name="static" Path="static/static.project" Active="No"/>
   <Project Name="struct" Path="struct/struct.project" Active="No"/>
   <Project Name="staticInClass" Path="staticInClass/staticInClass.project" Active="No"/>
-  <Project Name="enum" Path="enum/enum.project" Active="Yes"/>
+  <Project Name="enum" Path="enum/enum.project" Active="No"/>
+  <Project Name="virtualFunctions" Path="VirtualFunctions/VirtualFunctions.project" Active="No"/>
+  <Project Name="interfaces" Path="interfaces/interfaces.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -33,6 +33,8 @@
       <Project Name="struct" ConfigName="Debug"/>
       <Project Name="staticInClass" ConfigName="Debug"/>
       <Project Name="enum" ConfigName="Debug"/>
+      <Project Name="virtualFunctions" ConfigName="Debug"/>
+      <Project Name="interfaces" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -53,6 +55,8 @@
       <Project Name="struct" ConfigName="Release"/>
       <Project Name="staticInClass" ConfigName="Release"/>
       <Project Name="enum" ConfigName="Release"/>
+      <Project Name="virtualFunctions" ConfigName="Release"/>
+      <Project Name="interfaces" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
