@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Something.h"
-#include "Sstring.h"
 #include <string>
 
 class Entity {
