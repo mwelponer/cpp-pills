@@ -3,6 +3,22 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+
+# CodeLite c++ IDE 
+*.mk
+*.project
+*.workspace
+compile_commands.json
+Makefile
+# generated directories
+.codelite/
+*.session
+*.tags
+*.txt
+Debug
+codeLite/.codelite/*.tags
+codeLite/Makefile
+
 # Node artifact files
 node_modules/
 dist/
