@@ -6,14 +6,14 @@
   <Project Name="variables" Path="variables/variables.project" Active="No"/>
   <Project Name="pointers" Path="pointers/pointers.project" Active="No"/>
   <Project Name="references" Path="references/references.project" Active="No"/>
-  <Project Name="classes" Path="classes/classes.project" Active="Yes"/>
+  <Project Name="classes" Path="classes/classes.project" Active="No"/>
   <Project Name="static" Path="static/static.project" Active="No"/>
   <Project Name="struct" Path="struct/struct.project" Active="No"/>
   <Project Name="staticInClass" Path="staticInClass/staticInClass.project" Active="No"/>
   <Project Name="enum" Path="enum/enum.project" Active="No"/>
   <Project Name="virtualFunctions" Path="VirtualFunctions/VirtualFunctions.project" Active="No"/>
   <Project Name="interfaces" Path="interfaces/interfaces.project" Active="No"/>
-  <Project Name="arrays" Path="arrays/arrays.project" Active="No"/>
+  <Project Name="arrays" Path="arrays/arrays.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
