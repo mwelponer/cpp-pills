@@ -1,4 +1,5 @@
-# README #
+C++ for dummies
+===
 
 ## Pointers
 
@@ -58,7 +59,7 @@ static int myVariable = 5;
 
 ### inside a scope
 
-Inside a function for exmaple, but could be inside a for loop or whatever other type of scope
+Inside a function for example, but could be inside a for loop or whatever other type of scope
 ```c
 void myFunction() {
 	static int i = 0;
@@ -82,3 +83,188 @@ struct Entity {
 *x* will be unique and shared among all the *Entity* instances. 
 Non-static methods can access static and non-static variables.
 Static methods cannot access non-static variables. 
+
+## Objects and Classes
+
+Example of a **simple class**
+```cpp
+class Entity {
+private:
+	std::string m_name;
+    int m_age;
+public:
+	Entity(){} 
+	const std::string& getName() const { return m_name;}
+	void setName(const std::string& name) {
+		this->m_name = name;
+	}
+};
+```
+*this->* equals to *(*this).* i.e. dereference pointer and use method/field
+
+### constructor and destructor ~
+
+the *Entity* object will be instantiated and *m_name* and *m_age* fields will be immediately initialized to *Unknown* and *0* in the constructor.
+
+```cpp
+Entity {
+public:
+	/* the constructor */
+	Entity() : m_name("Unknown"), m_age(0) {
+		std::cout << "Entity created" << std::endl;
+	}
+	/* the destructor */
+	~Entity() {
+		/* deallocate here everything created on the 
+		heap in the constructor */
+		std::cout << "Entity destroyed!" << std::endl;
+	}
+};
+```
+the destructor *~Entity* will be called when deleting the *Entity* object. Inside the destructor deallocate with *delete* or *delete[]* everything that was created on the heap memory during the construction
+
+### class inheritance
+
+```cpp
+class Player : public Entity {
+private:
+	int points;
+public:
+};
+```
+the sub class Player extends the base class Entity, so Player class contains everything (methods and fields) that Entity class contains. Player just provides more functionalities to the Entity base class. And it can override any Entity class method. 
+
+### virtual functions i.e. methods overriding
+
+```cpp
+class Entity {
+public:
+	virtual std::string getName(){return "Entity";}
+};
+
+class Player : public Entity {
+private:
+	std::string m_Name;
+public:
+	Player(const std::string& name)
+		: m_Name(name){}
+	std::string getName() override {return m_Name;}
+};
+
+int main() {
+	Player* p = new Player("Mike");
+	Entity* entity = p;
+	entity->getName(); /* if Entity::getName() 
+	is not virtual, this will output "Entity" */
+}
+```
+If any sub class overwrites a method, it's good to make that method ***virtual*** in the base class. And to mark with ***override***  the method in the derived class. 
+
+### interfaces
+you are using an interface class when you want to guarantee that the subclasses extending that interface have specific methods
+```cpp
+class Printable {
+public:
+    virtual std::string getClassName() = 0;
+};
+```
+``= 0`` makes it a pure virtual function! so the method needs to be implemented in the subclasses. *Printable* being an interface, cannot be instantiated.
+
+
+### visibility
+
+```cpp
+class Entity {
+private:
+	int x, y;
+protected:
+	std::string name;
+public: 
+	getCoordinates(){};
+};
+```
+
+in general all that goes under **public** can be seen from outside and inside the class, all that goes under **private** can only be seen within the class itself. All that goes under **protected** can be seen from within the class itself and the subclasses.
+
+```cpp
+class Entity {
+//private:
+	int x, y; /* private by default */
+};
+```
+in classes if I don't specify the visibility, it will be private by default, so like to write *private:* before the declaration of the methods/fileds
+
+```c
+struct Entity {
+//public:
+	int x, y; /* public by default */
+};
+```
+
+in structs if I don't specify the visibility, it will be public by default, so like to write *public:* before the declaration of the methods/fileds. 
+
+**FUN FACT**: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
+
+## Arrays 
+
+### arrays on the stack memory
+```c
+int stackArr[10];
+stackArr[3] = 666;
+```
+an array is just a pointer to the first element of the array so we can write
+```c
+int* ptr = stackArr;
+*(ptr+3) = 666; /* this equals to 
+stackArr[3] = 666; */
+```
+``*(ptr+3)`` means first increment by 3 the pointer, then dereference it 
+
+**FUN FACT**: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
+**FUN FACT**: the row arrays do not have any *.size* or *.lenght* operators so: 
+1. if you declare the array in the stack use this trick:
+```c
+lenght = sizeof(stackArr) / sizeof(int);
+```
+2. if you declare the array in the heap just do:
+```c
+static const int numOfElements = 10;
+int* heapArr = new[numOfElements];
+```
+
+### arrays on the heap memory
+
+```c
+int* heapArr = new int[10];
+delete[] heapArr;
+```
+
+Why should you declare an array on the heap? The difference is lifetime: creating something in the stack will be destroyed as soon as out of the scope. In the heap it will persist until deleted. 
+**E.g.** if you have a function returning an array for example, you have to use the new keyword!
+
+In general it is better - whenever possible - to declare the arrays in the stack to avoid all the pointer jumping to get to the actual data. Example:
+
+```cpp
+Entity {
+public:
+	int stackArr[10];
+	/* if instead here I use an array on the heap 
+	int heapArr = new[10]; my Entity will contain 
+	a pointer to the array so to get the data it 
+	will need to jump to another space in memory */
+	Entity {
+		for (int i=0; i<10; i++)
+			stackArr[i] = 0;
+	}
+};
+```
+
+### array from the c++ standard library v11
+ 
+```c
+#include <array>
+std::array<int, 10> stdArr;
+std::cout << stdArr.size() << std::endl;
+```
+it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
+
