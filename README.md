@@ -268,3 +268,38 @@ std::cout << stdArr.size() << std::endl;
 ```
 it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
 
+## Strings
+
+### manual declaration
+A string is just an array of characters. If we want to declare it completely *manually* we need to add the string termination char (``0`` or ``'\0'``) that tells the pointer that the string is terminated.
+
+```c++
+char mystring[5] = {'M', 'i', 'k', 'e', 0};
+std::cout << mystring << std::endl;
+```
+
+### declaration via char pointer
+Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``
+
+```c++
+const char* name = "Mike";
+std::cout << name << ", " << strlen(name) << std::endl;
+
+char* str1 = "Ciao";
+char str2[40];
+strcpy(str2, str1); // copy str1 into str2 
+```
+
+### string from the c++ standard library
+Finally if we want to use the *standard string* implementation. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout 
+
+```c++
+std::string myString = "ciao";
+myString += "!";
+std::cout << myString << std::endl;
+	
+/* useful string methods */
+myString.size();
+myString.find("ao");
+bool contains = myString.find("c") != std::string::npos;
+```
