@@ -362,3 +362,19 @@ public:
 };
 ```
 if an Entity is used as parameter in some function, passed by *const reference* (not to copy all the class object) the normal *getX()* will not work. We need to create another method *getX() const* that will work (promising that the field inside the method will not be modified).
+
+***FUN FACT***: if I declare the the class field as ***MUTABLE*** i can still modify it's value inside the const method! :P
+
+```c++
+class Entity {
+private:
+	int m_X;
+	mutable int m_debugCount = 0;
+
+	int getX() const {
+		m_debugCount++; // allowed because the filed is mutable!
+		m_X = 3; // not allowed because the method is const!
+		return m_X;
+	}
+}
+```

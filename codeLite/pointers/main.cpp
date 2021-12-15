@@ -38,15 +38,17 @@ int main(){
 	// each char size is 1byte so with this we have created a pointer to the beginning of 
 	// an array of 8bytes (8 characters)
 	
-	memset(buffer, 0, 8); // fill the array with 0 values
+	//memset(buffer, 0, 8); // fill the array with 0 values
 	
 	// being that we created the array on the heap, once we have used it 
 	// we need to manually delete it!
 	delete[] buffer;
 	
 	
-	
 	// pointer to a pointer
 	char** pp = &buffer;
 	// so now pp contains the memory address that the pointer buffer points to
+	
+	// declaration of two pointers on one line
+	int* x, *y;
 }

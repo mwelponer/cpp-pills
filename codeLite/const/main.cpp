@@ -4,7 +4,8 @@ class Entity
 {
 private: 
 	int m_X, m_Y;
-	int* age;
+	int* m_age;
+	mutable int m_lenght;
 public:
 	/* this will be used by a non-const Entity or Entity reference/pointer */
 	int getX()
@@ -22,6 +23,14 @@ public:
 		std::cout << "into getX() const" << std::endl;
 		//m_X = 2; // this is not allowed
 		return m_X;
+	}	
+
+	/* here I can modify the variable m_lenght because it is declared
+	 * mutable! */ 
+	int getLenght() const 
+	{
+		m_lenght = 3; // allowed because the variable is declared as mutable!
+		return m_lenght;
 	}	
 
 	/* we return 
@@ -77,4 +86,5 @@ int main()
 	 * because the Entity ref is declared const 
 	 * so the normal getX() cannot be used */
 	std::cout << "en2:" << ref.getX() << std::endl;
+	std::cout << "en2:" << ref.getLenght() << std::endl;
 }
