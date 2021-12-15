@@ -303,3 +303,62 @@ myString.size();
 myString.find("ao");
 bool contains = myString.find("c") != std::string::npos;
 ```
+
+
+## Const
+
+### normal use
+
+```c
+const int MAX_AGE = 90;
+```
+normal use of const: the 'variable' MAX_AGE becomes basically a constant, it is not supposed to be modified.
+
+### with pointers
+
+const BEFORE the asterix: what the pointer points at can't be modfied
+
+```c++
+const int* a = new int; // i.e.: int const* a
+// *a = 5; // I cannot modify what the pointer points at!
+```
+
+const AFTER the asterix: the pointer address can't be modified
+
+```c
+int* const b = new int;
+*b = 5; // I still can modify what the pointer points at
+//b = &MAX_AGE; // but I cannot modify the pointer address
+```
+
+and of ourse: const BEFORE & AFTER the asterix: the pointer address and what it points at cannot be modified
+
+```c
+const int* const c = new int;
+//*b = 5; // I cannot modify what the pointer points at
+//b = &MAX_AGE; // I cannot modify the pointer address
+```
+
+### with classes
+
+```c++
+class Entity {
+private:
+	int m_X, m_Y;
+	int* age;
+public:
+	/* used by a non-const Entity or Entity reference/pointer */
+	int getX() {
+		m_X = 2; // this is allowed
+		return m_X;
+	}
+
+	/* This method will be used by a const Entity reference */
+	/* const here means I cannot modify the field inside the method */
+	int getX() const {
+		//m_X = 2; // this is not allowed
+		return m_X;
+	}
+};
+```
+if an Entity is used as parameter in some function, passed by *const reference* (not to copy all the class object) the normal *getX()* will not work. We need to create another method *getX() const* that will work (promising that the field inside the method will not be modified).
