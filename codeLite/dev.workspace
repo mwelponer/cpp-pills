@@ -11,9 +11,14 @@
   <Project Name="struct" Path="struct/struct.project" Active="No"/>
   <Project Name="staticInClass" Path="staticInClass/staticInClass.project" Active="No"/>
   <Project Name="enum" Path="enum/enum.project" Active="No"/>
-  <Project Name="virtualFunctions" Path="VirtualFunctions/VirtualFunctions.project" Active="No"/>
   <Project Name="interfaces" Path="interfaces/interfaces.project" Active="No"/>
-  <Project Name="arrays" Path="arrays/arrays.project" Active="Yes"/>
+  <Project Name="arrays" Path="arrays/arrays.project" Active="No"/>
+  <Project Name="strings" Path="strings/strings.project" Active="No"/>
+  <Project Name="const" Path="const/const.project" Active="No"/>
+  <Project Name="InstantiateObjects" Path="InstantiateObjects/InstantiateObjects.project" Active="No"/>
+  <Project Name="newKeyword" Path="newKeyword/newKeyword.project" Active="No"/>
+  <Project Name="implicitConversion" Path="inplicitConversion/inplicitConversion.project" Active="No"/>
+  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -37,6 +42,13 @@
       <Project Name="virtualFunctions" ConfigName="Debug"/>
       <Project Name="interfaces" ConfigName="Debug"/>
       <Project Name="arrays" ConfigName="Debug"/>
+      <Project Name="arrays" ConfigName="Debug"/>
+      <Project Name="strings" ConfigName="Debug"/>
+      <Project Name="const" ConfigName="Debug"/>
+      <Project Name="InstantiateObjects" ConfigName="Debug"/>
+      <Project Name="newKeyword" ConfigName="Debug"/>
+      <Project Name="implicitConversion" ConfigName="Debug"/>
+      <Project Name="ternaryOperator" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -60,6 +72,13 @@
       <Project Name="virtualFunctions" ConfigName="Release"/>
       <Project Name="interfaces" ConfigName="Release"/>
       <Project Name="arrays" ConfigName="Release"/>
+      <Project Name="arrays" ConfigName="Release"/>
+      <Project Name="strings" ConfigName="Release"/>
+      <Project Name="const" ConfigName="Release"/>
+      <Project Name="InstantiateObjects" ConfigName="Release"/>
+      <Project Name="newKeyword" ConfigName="Release"/>
+      <Project Name="implicitConversion" ConfigName="Release"/>
+      <Project Name="ternaryOperator" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

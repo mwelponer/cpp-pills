@@ -10,9 +10,13 @@ private:
 	
 public:
     /* the constructor */
-	Entity() : 
-        m_name("Unknown"), m_age(0)
+	Entity() 
+		: m_name("Unknown"), m_age(0) // initializer list are more efficient way 
+		// of initializing class members! Always use this style
 	{
+		//m_name = "Unknown"; // standard way to initialize class members (less efficient!)
+		//m_age = 0;
+		
 		std::cout << "entity created" << std::endl;
 	}
 	

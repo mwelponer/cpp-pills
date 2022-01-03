@@ -5,13 +5,15 @@ class Entity
 private: 
 	int m_X, m_Y;
 	int* m_age;
-	mutable int m_lenght;
+	mutable int m_debugCount = 0; // mutable in in the context of const: 
+	// something that is kind of const but actually can change
+	
 public:
-	/* this will be used by a non-const Entity or Entity reference/pointer */
+	/* this will be used by a non-const Entity or by a non-const Entity reference/pointer */
 	int getX()
 	{
-		std::cout << "into getX()" << std::endl;
-		m_X = 2; // this is allowed now because the method is not marked as const
+		std::cout << "\n  into getX()" << std::endl;
+		m_X = 2;
 		return m_X;
 	}
 	
@@ -20,17 +22,11 @@ public:
 	 * I cannot modify the filed inside the method */ 
 	int getX() const 
 	{
-		std::cout << "into getX() const" << std::endl;
-		//m_X = 2; // this is not allowed
+		std::cout << "\n  into getX() const" << std::endl;
+		//m_X = 2; // this is not allowed because the method is const!
+		m_debugCount++; // allowed because the variable is declared as mutable!
+		std::cout << "  m_debugCount: " << m_debugCount << std::endl;
 		return m_X;
-	}	
-
-	/* here I can modify the variable m_lenght because it is declared
-	 * mutable! */ 
-	int getLenght() const 
-	{
-		m_lenght = 3; // allowed because the variable is declared as mutable!
-		return m_lenght;
 	}	
 
 	/* we return 
@@ -52,39 +48,39 @@ int main()
 	
 	/* another use of const: const BEFORE the asterix
 	 * what the pointer points at remains constant */
-	const int* a = new int; // this can be written also as int const* a
-	// *a = 5; // cannot do this because of const
-	std::cout << *a << std::endl;
-	delete a;
+	const int* entity_a = new int; // this can be written also as int const* a
+	//*a = 5; // cannot do this because of const
+	//std::cout << *entity_a << std::endl;
+	delete entity_a;
 	
 	/* another use of const: const AFTER the asterix
 	 * the pointer address remains constant */	
-	int* const b = new int;
-	*b = 5; // I still can modify what the pointer points at
+	int* const entity_b = new int;
+	*entity_b = 5; // I still can modify what the pointer points at
 	//b = &MAX_AGE; // but I cannot modify the pointer address
-	std::cout << *b << std::endl;
-	delete b;
+	//std::cout << *entity_b << std::endl;
+	delete entity_b;
 	
 	/* and of course: const BEFORE & AFTER the asterix
 	 * the pointer address and what it points at remain constant */	
-	const int* const c = new int;
+	const int* const entity_c = new int;
 	//*b = 5; // I cannot modify what the pointer points at
-	//b = &MAX_AGE; // but I cannot modify the pointer address
-	std::cout << *c << std::endl;
-	delete c;	
+	//b = &MAX_AGE; // I cannot modify the pointer address
+	//std::cout << *entity_c << std::endl;
+	delete entity_c;	
 
 	
 	
-	Entity en1, en2;
+	Entity ent;
 	
 	/* Let's use the direct Entity. This will use the normal getX() */
-	std::cout << "en1:" << en1.getX() << std::endl;
+	std::cout << "\nent.getX:" << ent.getX() << std::endl;
 	
 	/* let's create a const Entity reference */
-	const Entity& ref = en2;
+	const Entity& ref = ent;
 	/* this will use the getX() const 
 	 * because the Entity ref is declared const 
 	 * so the normal getX() cannot be used */
-	std::cout << "en2:" << ref.getX() << std::endl;
-	std::cout << "en2:" << ref.getLenght() << std::endl;
+	std::cout << "\nref.getX:" << ref.getX() << std::endl;
+	std::cout << "\nref.getX:" << ref.getX() << std::endl;
 }
