@@ -22,13 +22,12 @@ struct Vector2
 	// here is how we overload the + operator
 	Vector2 operator+(const Vector2& other) const
 	{
-		// and we just call the already defined add function
+		// and we just return the already defined add function
 		return add(other);
 	}
 	
 	Vector2 operator*(const Vector2& other) const
 	{
-		// and we just call the already defined add function
 		return multiply(other);
 	}
 };

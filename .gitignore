@@ -6,7 +6,7 @@
 
 # CodeLite c++ IDE 
 *.mk
-*.project
+#*.project
 *.workspace
 compile_commands.json
 Makefile

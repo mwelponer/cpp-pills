@@ -555,3 +555,29 @@ std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
 	return stream;
 }
 ```
+
+
+
+## The this keyword
+
+it is just the pointer to the current object instance that the method belongs to.
+
+```c++
+// some kinda cool printing function forward definition
+void printEntity(Entity* e);
+
+class Entity {
+private:
+	int x, y;
+public:	
+	Entity(int x, int y) {
+		// this is a pointer so using -> we first dereference 
+		// then we use the Entity object
+		this->x = x; 
+		this->y = y;
+		// here we pass the pointer to the current object instance
+		// as parameter of the printing function
+		printEntity(this);
+	}
+};
+```

@@ -18,9 +18,11 @@
   <Project Name="InstantiateObjects" Path="InstantiateObjects/InstantiateObjects.project" Active="No"/>
   <Project Name="newKeyword" Path="newKeyword/newKeyword.project" Active="No"/>
   <Project Name="implicitConversion" Path="inplicitConversion/inplicitConversion.project" Active="No"/>
-  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="Yes"/>
+  <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="No"/>
   <Project Name="VirtualFunctions" Path="virtualFunctions/VirtualFunctions.project" Active="No"/>
   <Project Name="singleton" Path="singleton/singleton.project" Active="No"/>
+  <Project Name="operatorOverloading" Path="operatorOverloading/operatorOverloading.project" Active="No"/>
+  <Project Name="thisOperator" Path="thisOperator/thisOperator.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -53,6 +55,8 @@
       <Project Name="ternaryOperator" ConfigName="Debug"/>
       <Project Name="virtualFunctions" ConfigName="Debug"/>
       <Project Name="singleton" ConfigName="Debug"/>
+      <Project Name="operatorOverloading" ConfigName="Debug"/>
+      <Project Name="thisOperator" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -85,6 +89,8 @@
       <Project Name="ternaryOperator" ConfigName="Release"/>
       <Project Name="virtualFunctions" ConfigName="Release"/>
       <Project Name="singleton" ConfigName="Release"/>
+      <Project Name="operatorOverloading" ConfigName="Release"/>
+      <Project Name="thisOperator" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
