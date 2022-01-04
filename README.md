@@ -494,3 +494,64 @@ int main(){
 	delete[] aArr, eArr;
 }
 ```
+
+
+
+
+
+
+
+## Implicit conversion
+
+is the automatic conversion that c++ doeas from one type to another, see the following examples
+
+```c++
+// some cool printing function
+void PrintEntity(const Entity& entity) { // cool printing }
+
+int main()
+{
+	Entity a("Mike"); // equivalent to a = std::string("Mike")
+	Entity b(43); // equivalent to b = 43
+	
+	// implicit conversion
+	PrintEntity(22); 
+	// 22 was implicitly converted into an Entity with age 22
+	
+	// implicit conversion: "Cherno" is firstly casted from 
+	// const char array to a std::string then implicitly converted 
+	// into an Entity with name Cherno
+	PrintEntity(std::string("Cherno"));
+	// it can be casted also to Entity
+	PrintEntity(Entity("Cherno"));
+}
+
+```
+
+
+
+## Operator overloading
+
+``+``  ``-``  ``*``  ``/``  ``%``  ``^``  ``&``  ``|``  ``~``  ``!``  ``=``  ``<``  ``>``  ``+=``  ``-=``  ``*=`` ``/=``  ``%=``  ``^=``  ``&=``  ``|=``  ``<<``  ``>>``  ``>>=``  ``<<=``  ``==``  ``!=``  ``<=``  ``>=``  ``<=>``  ``&&``  ``||``  ``++``  ``--``  ``,``  ``->*``  ``->``  ``( )``  ``[ ]``
+
+Operators are just functions! All these c++ operators can be overloaded, i.e. definer/change the behaviour of the operator in the program.
+To overload an operator @ we just write the word operator followed by the operator @, then we define the function normally with its parameters.
+
+```c++
+struct Vector2 {
+	float x, y;
+	
+	Vector2(float x, float y) : x(x), y(y) {}
+
+	// here is how we overload the + operator
+	Vector2 operator+(const Vector2& other) const {
+		return Vector2(x + other.x, y + other.y);
+	}
+};
+
+// another example: overloading of the << operator
+std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
+	stream << vector.x << ", " << vector.y;
+	return stream;
+}
+```
