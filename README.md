@@ -1,6 +1,8 @@
 C++ for dummies
 ===
 
+
+
 ## Pointers
 
 Retrieve the **memory address** corresponding to the start of *myVariable*
@@ -33,6 +35,9 @@ Increment the value held by the variable pointed by *myPointer*
 first dereference using the *, then increment
 
 
+
+
+
 ## References
 
 Declare & set a **reference**
@@ -45,6 +50,9 @@ int& myReference = myVariable;
 myReference = 3;
 ```
 assigns/writes 3 to the variable referenced by *myPointer*
+
+
+
 
 
 ## Static keyword
@@ -83,6 +91,9 @@ struct Entity {
 *x* will be unique and shared among all the *Entity* instances. 
 Non-static methods can access static and non-static variables.
 Static methods cannot access non-static variables. 
+
+
+
 
 ## Objects and Classes
 
@@ -205,6 +216,9 @@ in structs if I don't specify the visibility, it will be public by default, so l
 
 **FUN FACT**: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
 
+
+
+
 ## Arrays 
 
 ### arrays on the stack memory
@@ -268,6 +282,10 @@ std::cout << stdArr.size() << std::endl;
 ```
 it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
 
+
+
+
+
 ## Strings
 
 ### manual declaration
@@ -303,6 +321,8 @@ myString.size();
 myString.find("ao");
 bool contains = myString.find("c") != std::string::npos;
 ```
+
+
 
 
 ## Const
@@ -376,5 +396,101 @@ private:
 		m_X = 3; // not allowed because the method is const!
 		return m_X;
 	}
+}
+```
+
+
+
+
+## The ternary operator
+
+.. just a syntactic sugar for if else
+
+```c
+static int s_level = 1;
+static int s_speed = 2;
+
+void printSpeed() {
+	s_speed = s_level > 3 ? 10 : 5; // speed becomes 10 if lev>3 else 5
+	std::cout << "s_speen: " << s_speed << std::endl;
+}
+
+int main() {		
+	printSpeed();
+	s_level = 7;
+	printSpeed();
+}
+```
+
+
+
+
+## Instantiate classes/objects
+
+our Entity class 
+```c++
+#include <iostream>
+#include <string>
+
+class Entity 
+{
+private:
+	std::string m_name;
+public:
+	Entity() 
+		: m_name("unknown") {}
+	Entity(const std::string& name) 
+		: m_name(name) {}
+		
+	const std::string& getName(){ return m_name; }
+};
+```
+
+### allocate on the stack (static allocation)
+as soon as that variable gets out of scope the memory is freed. When that scope ends, the stack pops and anything was inside gets lost.
+
+```c++
+int main() {
+	Entity entity("Mike"); // equal to Entity entity = Entity("Mike");
+	std::cout << entity.getName() << std::endl;
+}
+```
+
+### allocate on the heap (dinamic allocation)
+when allocadet an object inside the heap, it's gonna sit there untill you decide I no longer need it, I will free it.
+
+```c++
+int main() {
+	Entity* entity = new Entity()
+	std::cout << entity->getName() << std::endl;
+}
+```
+
+Now when to instantiate on the *stack* and when to instantiate on the *heap*? In terms of performance allocating on the heap takes longer, moreover you need to manually free the memory. So the rule of thumb is **whenever possible instantiate on the *stack* otherwise on the *heap***. 
+It can be impossible when for example 1. the object is inside a scope and needs to remain alive also outside of that scope, or when 2. the object is too big to stay on the stack (stack is usually 1-2MB) or there are too many objects that need to be allocated.
+
+### the new keyword
+
+The main purpose of ***new*** is to allocate memory on the **heap** specifically.
+When we write "new dataType" we require the compiler to find and allocate a dataType long free and contiguous space in heap memory and return a pointer to that memory address -- basically it finds a block of memory that is big enough to accomodate our needs and then gives us a pointer to that block of memory --
+The last thing that new does is also call the *constructor* on the new allocated entity.
+
+
+```c++
+int main(){
+	int* a = new int;
+	int* aArr = new int[50]; // an array of 50 contiguous int on the heap
+	
+	Entity* e = new Entity();
+	
+	// this is the equivalent c version
+	Entity* another_e = (Entity*)malloc(sizeof(Entity));
+	// it will just allocate the memory and not call the constructor!
+	
+	Entity* eArr = new Entity[50];
+
+	// remember to free the memory when you are done with it!
+	delete a, e, another_e;
+	delete[] aArr, eArr;
 }
 ```

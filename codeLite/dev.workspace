@@ -19,6 +19,8 @@
   <Project Name="newKeyword" Path="newKeyword/newKeyword.project" Active="No"/>
   <Project Name="implicitConversion" Path="inplicitConversion/inplicitConversion.project" Active="No"/>
   <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="Yes"/>
+  <Project Name="VirtualFunctions" Path="virtualFunctions/VirtualFunctions.project" Active="No"/>
+  <Project Name="singleton" Path="singleton/singleton.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -49,6 +51,8 @@
       <Project Name="newKeyword" ConfigName="Debug"/>
       <Project Name="implicitConversion" ConfigName="Debug"/>
       <Project Name="ternaryOperator" ConfigName="Debug"/>
+      <Project Name="virtualFunctions" ConfigName="Debug"/>
+      <Project Name="singleton" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -79,6 +83,8 @@
       <Project Name="newKeyword" ConfigName="Release"/>
       <Project Name="implicitConversion" ConfigName="Release"/>
       <Project Name="ternaryOperator" ConfigName="Release"/>
+      <Project Name="virtualFunctions" ConfigName="Release"/>
+      <Project Name="singleton" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
