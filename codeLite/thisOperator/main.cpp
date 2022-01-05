@@ -1,7 +1,8 @@
 #include <iostream>
 
+// forward declaration of Entity
 class Entity;
-// the declaration of our fancy printing function
+// forward declaration of our fancy printing function
 void printEntity(Entity* e);
 
 class Entity 
@@ -10,7 +11,7 @@ private:
 	int x, y;
 	
 public:	
-	Entity(int x, int y)
+	Entity(int x, int y)  
 		/*: x(x), y(y) */
 	{
 		// this is a pointer so using -> we first dereference 

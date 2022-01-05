@@ -15,14 +15,14 @@
   <Project Name="arrays" Path="arrays/arrays.project" Active="No"/>
   <Project Name="strings" Path="strings/strings.project" Active="No"/>
   <Project Name="const" Path="const/const.project" Active="No"/>
-  <Project Name="InstantiateObjects" Path="InstantiateObjects/InstantiateObjects.project" Active="No"/>
+  <Project Name="InstantiateObjects" Path="InstantiateObjects/InstantiateObjects.project" Active="Yes"/>
   <Project Name="newKeyword" Path="newKeyword/newKeyword.project" Active="No"/>
   <Project Name="implicitConversion" Path="inplicitConversion/inplicitConversion.project" Active="No"/>
   <Project Name="ternaryOperator" Path="ternaryOperator/ternaryOperator.project" Active="No"/>
   <Project Name="VirtualFunctions" Path="virtualFunctions/VirtualFunctions.project" Active="No"/>
   <Project Name="singleton" Path="singleton/singleton.project" Active="No"/>
   <Project Name="operatorOverloading" Path="operatorOverloading/operatorOverloading.project" Active="No"/>
-  <Project Name="thisOperator" Path="thisOperator/thisOperator.project" Active="Yes"/>
+  <Project Name="thisOperator" Path="thisOperator/thisOperator.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
