@@ -42,6 +42,7 @@ public:
 
 int main() 
 {
+	////////////////////////////
 	// ALLOCATING ON THE STACK
 	// everything that is created on the STACK stops to 
 	// exist when it goes out of scope. Any kind of scope 
@@ -55,6 +56,7 @@ int main()
 	//std::cout << entity1->getName() << std::endl;
 	
 	
+	////////////////////////////
 	// ALLOCATING ON THE HEAP
 	// everything that is created on the HEAP (using the word new
 	// and a pointer) exist untill I manually destroy it, or program ends
@@ -62,14 +64,15 @@ int main()
 	{
 		std::cout << "\n..entered scope" << std::endl;
 		entity2 = new Entity();
-		std::cout << "exiting scope" << std::endl;
+		std::cout << "..exiting scope" << std::endl;
 	}
 	
 	std::cout << "entity name: " << entity2->getName() << std::endl;
 	delete entity2; // manually
 	
 	
-	// USE OF THE UNIQUE POINTER
+	////////////////////////////
+	// USE OF OUR CUSTOM SCOPED POINTER
 	{
 		std::cout << "\n..entered scope" << std::endl;
 		
@@ -82,7 +85,7 @@ int main()
 		// to a ScopedPtr object (ptr on the stack) that holds 
 		// the new Entity
 		
-		std::cout << "exiting scope" << std::endl;		
+		std::cout << "..exiting scope" << std::endl;		
 	}
 	
 	std::cin.get();

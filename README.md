@@ -581,3 +581,41 @@ public:
 	}
 };
 ```
+
+
+## Smartpointers
+
+are **scoped pointers** (created on the stack) that will create and point to objects created on the heap. Once out of the scope the pointer and the pointed objects get automatically deleted. 
+
+### 1. unique pointers
+simple type of smarpointer whose created object cannot have more than one pointer reference.
+```c++
+std::unique_ptr<Entity> entity = std::make_unique<Entity>();
+```  
+**make_unique** will create a new Entity that can have just one pointer reference.
+
+### 2. shared pointers
+smartpointer that maintain a reference count. Will free Entity only when last pointer reference is deleted.
+```c++
+{
+	std::shared_ptr<Entity> anotherPtr;
+	{
+		std::shared_ptr<Entity> sharedEntityPtr = std::make_shared<Entity>();
+		anotherPtr = sharedEntityPtr; // ref count = 2
+		// at scope exit ref count become 1
+	}
+	// at scope exit ref count gets 0, Entity object gets freed
+}
+```  
+### 3. weak pointers
+doesn't increment the reference count
+```c++
+{
+	std::weak_ptr<Entity> anotherPtr;
+	{
+		std::shared_ptr<Entity> sharedEntityPtr = std::make_shared<Entity>();
+		anotherPtr = sharedEntityPtr; // ref count remains 1
+		// at scope exit ref count gets 0,  Entity object gets freed
+	}
+}
+``` 
