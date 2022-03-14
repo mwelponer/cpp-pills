@@ -23,9 +23,11 @@
   <Project Name="singleton" Path="singleton/singleton.project" Active="No"/>
   <Project Name="operatorOverloading" Path="operatorOverloading/operatorOverloading.project" Active="No"/>
   <Project Name="thisOperator" Path="thisOperator/thisOperator.project" Active="No"/>
-  <Project Name="smartpointers" Path="smartpointers/smartpointers.project" Active="Yes"/>
+  <Project Name="smartpointers" Path="smartpointers/smartpointers.project" Active="No"/>
+  <Project Name="testing" Path="testing/testing.project" Active="No"/>
+  <Project Name="copyConstructor" Path="copyConstructor/copyConstructor.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug">
       <Environment/>
       <Project Name="helloWorld" ConfigName="Debug"/>
       <Project Name="variables" ConfigName="Debug"/>
@@ -59,8 +61,10 @@
       <Project Name="operatorOverloading" ConfigName="Debug"/>
       <Project Name="thisOperator" ConfigName="Debug"/>
       <Project Name="smartpointers" ConfigName="Debug"/>
+      <Project Name="testing" ConfigName="Debug"/>
+      <Project Name="copyConstructor" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release">
       <Environment/>
       <Project Name="helloWorld" ConfigName="Release"/>
       <Project Name="variables" ConfigName="Release"/>
@@ -94,6 +98,8 @@
       <Project Name="operatorOverloading" ConfigName="Release"/>
       <Project Name="thisOperator" ConfigName="Release"/>
       <Project Name="smartpointers" ConfigName="Release"/>
+      <Project Name="testing" ConfigName="Release"/>
+      <Project Name="copyConstructor" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
