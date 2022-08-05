@@ -1,2 +1,0 @@
-C:\Users\Mike\dev\cpp\vstudio\Pointers\Debug\Pointers.exe.lastcodeanalysissucceeded
-C:\Users\Mike\dev\cpp\vstudio\Pointers\Pointers\Debug\NativeCodeAnalysis.read.1.tlog
