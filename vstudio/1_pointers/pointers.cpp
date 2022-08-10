@@ -9,7 +9,8 @@ int main()
 	int var = 6;
 	// we declare a pointer using the * right after the type
 	void* ptr = 0; // 0 or nullptr or NULL
-	ptr = (int*)&var; // &var means give me the address of variable var
+	ptr = (int*)&var; // &var means give me the address of variable var (dereference 
+	// variable var)
 	// now the pointer ptr points to the beginning of the variable var
 	
 	std::cout << "ptr holds address " << ptr 
@@ -37,7 +38,12 @@ int main()
 	char* buffer = new char[8];
 	// each char size is 1byte so with this we have created a pointer to the beginning of 
 	// an array of 8bytes (8 characters)
-	
+
+	buffer[0] = 'a';
+	buffer[1] = 'b';
+	std::cout << "first element of the array is " << buffer[0] << std::endl;
+	std::cout << "second element of the array is " << buffer[1] << std::endl;
+
 	//memset(buffer, 0, 8); // fill the array with 0 values
 	
 	// being that we created the array on the heap, once we have used it 
