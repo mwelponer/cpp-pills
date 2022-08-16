@@ -56,5 +56,6 @@ int main()
 	// so now pp contains the memory address that the pointer buffer points to
 	
 	// declaration of two pointers on one line
+	// if we write int* x, y then we are declaring x as an int pointer and y as a normal int variable
 	int* x, *y;
 }
