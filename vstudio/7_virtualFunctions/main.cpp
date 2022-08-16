@@ -4,7 +4,7 @@
 class Entity 
 {
 public:
-    std::string getName(){ return "Entity"; }
+    virtual std::string getName(){ return "Entity"; }
 };
 
 class Player : public Entity 
@@ -13,7 +13,7 @@ private:
     std::string m_name;
 public:
     Player(const std::string& name) : m_name(name) {}
-    std::string getName() { return m_name; }
+    std::string getName() override { return m_name; }
 };
 
 int main() 
@@ -21,5 +21,6 @@ int main()
     Entity* entity = new Player("Mike"); // polimorphism
     std::cout << entity->getName() << std::endl;
     /* if getName() in base class Entity is not declared virtual
+     and the getName in Player is not declared to override
      then the printout will be "Entity" */
 }
