@@ -16,10 +16,14 @@ void printString(const std::string& string)
 
 int main(int argc, char **argv)
 {
-	/* desclaration of a string using a char pointer 
+	"Mike"; // this is a string literal and it has type const char[5] 
+	// because of the \0 at the end
+
+	std::cout << "######### string using char*" << std::endl;
+	/* declaration of a string using a char pointer 
 	 * in c++ it is immutable in the sense that you cannot 
-	 * change the lenght of the string, so usually it is 
-	 * declared const */
+	 * change the lenght of the string, or the value of any of 
+	 * its characters so usually it is declared const */
 	const char* name = "Mike";
 	std::cout << name << std::endl;
 	std::cout << strlen(name) << std::endl;
@@ -29,14 +33,16 @@ int main(int argc, char **argv)
 	strcpy(str2, str1); // copy str1 into str2 
 	std::cout << str2 << std::endl;
 	
-	
-	
+	std::cout << "######### string manually initialized" << std::endl;
 	/* if we want to declare it completely manually 
 	 * we need to add the string termination char (0 or '\0') that 
 	 * tells the pointer that the string is terminated. */
 	char another[5] = {'M', 'i', 'k', 'e', 0};
 	std::cout << another << std::endl;
 	
+
+
+	std::cout << "######### std::string" << std::endl;
 	/* finally if we want to use the standard string implementation.
 	 * The string include is used just to overload the << operator in 
 	 * the cout */
@@ -45,6 +51,7 @@ int main(int argc, char **argv)
 	
 	/* useful string methods */
 	std::cout << "size: " << myString.size() << std::endl;
+	std::cout << "char at index 3: " << myString[2] << std::endl;
 	std::cout << "find: " << myString.find("ao") << std::endl;
 	bool contains = myString.find("c") != std::string::npos;
 	std::cout << "contains: " << contains << std::endl;
