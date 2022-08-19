@@ -63,11 +63,13 @@ int main(int argc, char **argv)
 
 	std::cout << "########## passing by ref or by ptr" << std::endl;
 
-    // now if we want to increment variable a, if we pass the variable, it will be incremented just inside the function but not outside
+    // now if we want to increment variable a, if we pass the variable (by value)
+	// it will be incremented just inside the function but not outside
     noIncrement(a);
     std::cout << "outside the function: " << a << std::endl;
     
-    // but if we pass the memory address of the variable, the variable will be incremented
+    // but if we pass the memory address of the variable (by reference)
+	// the variable will be incremented
 	incrementUsingPointer(&a);
 	std::cout << a << std::endl;
 
