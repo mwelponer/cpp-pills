@@ -1,32 +1,107 @@
-C++ for dummies
-===
+Easy C++ 
+======
 
+- [Pointers](#pointers)
+  * [dereference a variable](#dereference-a-variable)
+  * [declare a pointer](#declare-a-pointer)
+  * [set a pointer](#set-a-pointer)
+  * [dereference a pointer](#dereference-a-pointer)
+  * [pointer arithmetic](#pointer-arithmetic)
+- [References](#references)
+  * [Passing by reference](#passing-by-reference)
+  * [reasuming](#reasuming)
+- [Static keyword](#static-keyword)
+  * [general use](#general-use)
+  * [inside a scope](#inside-a-scope)
+  * [use in object oriented](#use-in-object-oriented)
+  * [another good example of static inside a scope](#another-good-example-of-static-inside-a-scope)
+- [Objects and Classes](#objects-and-classes)
+  * [constructor and destructor](#constructor-and-destructor)
+  * [class inheritance](#class-inheritance)
+  * [virtual functions i.e. methods overriding](#virtual-functions-for-methods-overriding)
+  * [interfaces](#interfaces)
+  * [visibility](#visibility)
+- [Arrays](#arrays)
+  * [arrays on the stack memory](#arrays-on-the-stack-memory)
+  * [arrays on the heap memory](#arrays-on-the-heap-memory)
+  * [array c++ standard library](#array-standard-library)
+  * [reasuming](#reasuming-1)
+- [Strings](#strings)
+  * [manual declaration](#manual-declaration)
+  * [declaration via char pointer](#declaration-via-char-pointer)
+  * [string c++ standard library](#string-standard-library)
+- [Const](#const)
+  * [normal use](#normal-use)
+  * [with pointers](#with-pointers)
+  * [with classes](#with-classes)
+- [The ternary operator](#the-ternary-operator)
+- [Instantiate classes and objects](#instantiate-classes-and-objects)
+  * [allocate on the stack (static allocation)](#allocate-on-the-stack--static-allocation-)
+  * [allocate on the heap (dinamic allocation)](#allocate-on-the-heap--dinamic-allocation-)
+  * [the new keyword](#the-new-keyword)
+- [Implicit conversion](#implicit-conversion)
+- [Operator overloading](#operator-overloading)
+- [The this keyword](#the-this-keyword)
+- [Smartpointers](#smartpointers)
+  * [1. unique pointers](#1-unique-pointers)
+  * [2. shared pointers](#2-shared-pointers)
+  * [3. weak pointers](#3-weak-pointers)
+- [The copy constructor](#the-copy-constructor)
+- [The arrow operator](#the-arrow-operator)
+- [Dynamic arrays](#dynamic-arrays)
+  * [Optimizations](#optimizations)
+- [Static and Dynamic libraries](#static-and-dynamic-libraries)
+  * [static linking](#static-linking)
+  * [dynamic libraries](#dynamic-libraries)
+ - [Templates](#templates)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
 ## Pointers
 
-Retrieve the **memory address** corresponding to the start of *myVariable*
+Pointers hold an integer that is a memory address! We say then a pointer points to a location in memory: that location is the starting location of a memory space (whose lenght is defined by the type).
+How to retrieve the memory address of a variable?
+Retrieve the **memory address** corresponding to the start of *myVariable* dereferencing that variable using & in front of the variable name.
+
+### dereference a variable
+
+dereferencing a variable gives you the **memory address** at which that variable is stored. It is done by putting a **&** in front of the variable
+
 ```c
 std::cout << "myVariable mem address: " << &myVariable; 
 ``` 
 
-Declare & set a **pointer** 
+### declare a pointer
+
+Declare a **pointer** using * right after its type:
 ```c
-int* myPointer = &myVariable;
+int* myPointer;
 ```
-now *myPointer* points to *myVariable* holds the memory address of *myVariable*
+
+### set a pointer
+
+```c
+int a = 3;
+myPointer = &a;
+```
+now *myPointer* points to *a* and holds the memory address of *a*
+
+### dereference a pointer
+
+dereferencing a pointer gives you the value contained at the memory address pointed by the pointer. It is done by putting a * in front of the pointer
 
 **Dereference** the pointer (***reading***)
 ```c
-anotherVariable = *myPointer;
+b = *myPointer;
 ```
-this will assign/writes 3 (the value pointed by *myPointer*) to *anotherVariable*
+this will assign/writes 3 (the value pointed by *myPointer*) to *b*
 
 **Dereference** the pointer (***writing***)
 ```c
-*myPointer = 3;
+*myPointer = 6;
 ```
-this will assign/writes 3 to the variable pointed by *myPointer*.
+this will assign/writes 6 to the variable pointed by *myPointer* i.e. *a*.
 
 Increment the value held by the variable pointed by *myPointer*
 ```c
@@ -35,25 +110,101 @@ Increment the value held by the variable pointed by *myPointer*
 first dereference using the *, then increment
 
 
+### pointer arithmetic
 
+code|meaning
+-|-
+++*p|take data and increment data
+*++p|move pointer to next and read data
+*p++|read data, then move p to next
+(*p)++|increment data 
 
 
 ## References
 
-Declare & set a **reference**
+References are like Pointers but less powerful. Reference are just syntax sugar, whatever you can do with references you can also do it using pointers.
+Declare and set a **reference**. & is part of the type
 ```c
-int& myReference = myVariable;
+int& myReference1 = myVariable;
+int& myReference2 = *myPointer;
 ```
 *myReference* now is an alias of *myVariable*.
 
 ```c
 myReference = 3;
 ```
-assigns/writes 3 to the variable referenced by *myPointer*
+assigns/writes 3 to the variable referenced by *myReferencePointer*.
 
 
+### Passing by reference
+
+If we want to write a function that increments a variable, we can pass that variable inside the function using a pointer, or more concisely using a reference (i.e. **by reference**)
+
+```c++
+// using a pointer: int* value means create a new pointer named
+// value which points to the memory address we pass as argument
+// so if we want to increment the variable we need to first 
+// de-reference the pointer to get the variable and then increment
+void  incrementUsingPointer(int* value) {
+	(*value)++; // dereference first then increment
+    std::cout << "value:" << *value << std::endl;
+}
+
+// more simply, by reference: int& value means create a
+// reference (alias) named value and make it point exactly 
+// to the same variable we pass
+void  incrementUsingReference(int& value){
+	value++;
+	std::cout << "value:" << value << std::endl;
+}
+
+int main(){
+	int a = 5;
+	incrementUsingPointer(&a);
+	incrementUsingReference(a);
+
+	// and with classes
+	Entity e1; // instance on the stack
+	incrementUsingPointer(&e1);
+	incrementUsingReference(e1);
+	
+	Entity* e2 = new Entity(); // instance on the heap
+	incrementUsingPointer(e2);
+	incrementUsingReference(*e2);
+}
+```
+
+***NB***: if we don't pass the variable by reference or by pointer to the function and we simply use ``increment(int value)`` a new ``int value`` variable will be created, initialized and incremented inside the function, but the external variable (the one we pass to the function won't be modified!)
+
+### reasuming
+
+code | meaning
+-|-
+T* p | declare pointer p of type T
+T& r | declare reference r of type T
+*p | dereference pointer p i.e. get the data/variable/object pointed by p
+&v | dereference variable v i.e. get the memory address of v
 
 
+Examples:
+```c
+int a = 3; // declare a variable
+int* ptr = nullptr; // declare a pointer
+ptr = &a; // dereference the variable to get the address and set the pointer point to the variable
+std::cout << *ptr << std::endl; // dereference the pointer to get the data, 3
+
+int& ref = *ptr; // create a reference i.e. alias of what the pointer points, i.e. variable a
+std::cout << ref << std::endl; // prints 3
+
+ref++; // increment using the reference
+std::cout << a << *ptr << ref << std::endl; // 444
+
+a++; // inrement the variable a
+std::cout << a << *ptr << ref << std::endl; // 555
+
+(*ptr)++; // dereference first to get the data, then increment it 
+std::cout << a << *ptr << ref << std::endl; // 666
+```
 
 ## Static keyword
 
@@ -74,7 +225,7 @@ void myFunction() {
 	i++;
 }
 ```
-First time we call *myFunction* *i* si declared and set. All other times, just incremented. It's like declaring *i* outside of the scope, but here we also obtain that i can be modified (incremented) only inside *myFunction*.
+First time we call *myFunction* `i` si declared and set. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a scope function `i` is visible and can be scope, but here we also obtain that i can be modified (incremented) only inside the f*myFunction*.
 
 ### use in object oriented
 
@@ -92,8 +243,71 @@ struct Entity {
 Non-static methods can access static and non-static variables.
 Static methods cannot access non-static variables. 
 
+### another good example of static inside a scope
 
+let's create a **Singleton**. We declare the private static instance globally, then we need a method to get() that instance.
 
+```c++
+class Singleton {
+private:
+	static Singleton* s_instance; // global declaration
+public:
+	static Singleton& get() {return *s_instance;}
+	void hello() {}
+};
+
+Singleton* Singleton::s_instance = nullptr;
+
+int main() {
+	Singleton::get().hello();
+}
+```
+
+we can write a most clean Singleton declaring the instance static inside a scope, e.g. inside the get function
+
+```c++
+class Singleton {
+public:
+	static Singleton& get() {
+		static Singleton instance; // declaring inside the scope
+		return instance;
+	}
+	void hello() {}
+}
+
+int main() {
+	Singleton::get().hello();
+}
+```
+
+## Enums
+
+Stands for enumeration, a set of values. It's a way to give a name to an integer value so the code becomes more readable.
+
+```cpp
+enum Example /* optionally specify the type of integer */: unsigned char {
+	A, B, C // A will be 0, B and C 1 and 2
+	// A = 4, B, C // B and C will be 5 and 6
+	// A = 5, B = 3, C = 7
+};
+
+class Log(){
+public:
+	enum Level {
+		Error, Warning, Info
+	};
+private:
+	Level m_logLevel = Info;
+public:
+	void setLevel(Level level){ m_logLevel = level;}
+};
+
+int main(){
+	Example value = B;
+	Log log;
+	log.setLevel(Log::Error);
+}
+```
 
 ## Objects and Classes
 
@@ -113,17 +327,23 @@ public:
 ```
 *this->* equals to *(*this).* i.e. dereference pointer and use method/field
 
-### constructor and destructor ~
+### constructor and destructor
 
 the *Entity* object will be instantiated and *m_name* and *m_age* fields will be immediately initialized to *Unknown* and *0* in the constructor.
 
 ```cpp
-Entity {
+class Entity {
 public:
 	/* the constructor */
-	Entity() : m_name("Unknown"), m_age(0) {
+	Entity() 
+		: m_name("Unknown"), m_age(0) // initializer list more efficient!
+	{
+		// standard way to initialize class members (less efficient!)
+		//m_name = "Unknown"; 
+		//m_age = 0;		
 		std::cout << "Entity created" << std::endl;
 	}
+	
 	/* the destructor */
 	~Entity() {
 		/* deallocate here everything created on the 
@@ -132,7 +352,8 @@ public:
 	}
 };
 ```
-the destructor *~Entity* will be called when deleting the *Entity* object. Inside the destructor deallocate with *delete* or *delete[]* everything that was created on the heap memory during the construction
+the destructor *~Entity* will be called when the *Entity* object gets deleted. Inside the destructor deallocate everything that was created on the heap memory during the construction.
+***NB***: if the object was created on the heap (using new operator) we need to call manually the destructor using "*delete*" or "*delete[]*" for arrays. If the object was created on the stack, the destructor will be automatically called when the program gets out of scope.
 
 ### class inheritance
 
@@ -145,7 +366,9 @@ public:
 ```
 the sub class Player extends the base class Entity, so Player class contains everything (methods and fields) that Entity class contains. Player just provides more functionalities to the Entity base class. And it can override any Entity class method. 
 
-### virtual functions i.e. methods overriding
+### virtual functions for methods overriding
+
+Virtual functions allow us to override methods in sub-classes.
 
 ```cpp
 class Entity {
@@ -172,7 +395,8 @@ int main() {
 If any sub class overwrites a method, it's good to make that method ***virtual*** in the base class. And to mark with ***override***  the method in the derived class. 
 
 ### interfaces
-you are using an interface class when you want to guarantee that the subclasses extending that interface have specific methods
+Interfaces (a.k.a. abstract methods or pure virtual functions) allow us to define a function in a base-class that does not have an implementation, and at the same time force the sub-classes to implement that function. 
+You are using an interface class when you want to guarantee that the subclasses extending that interface have specific methods
 ```cpp
 class Printable {
 public:
@@ -214,16 +438,13 @@ struct Entity {
 
 in structs if I don't specify the visibility, it will be public by default, so like to write *public:* before the declaration of the methods/fileds. 
 
-**FUN FACT**: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
-
-
-
+***FUN FACT***: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
 
 ## Arrays 
 
 ### arrays on the stack memory
 ```c
-int stackArr[10];
+int stackArr[10]; // now stackArr is already a pointer!
 stackArr[3] = 666;
 ```
 an array is just a pointer to the first element of the array so we can write
@@ -234,8 +455,9 @@ stackArr[3] = 666; */
 ```
 ``*(ptr+3)`` means first increment by 3 the pointer, then dereference it 
 
-**FUN FACT**: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
-**FUN FACT**: the row arrays do not have any *.size* or *.lenght* operators so: 
+***FUN FACT***: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
+***FUN FACT***: the row arrays do not have any *.size* or *.lenght* operators so: 
+
 1. if you declare the array in the stack use this trick:
 ```c
 lenght = sizeof(stackArr) / sizeof(int);
@@ -245,6 +467,7 @@ lenght = sizeof(stackArr) / sizeof(int);
 static const int numOfElements = 10;
 int* heapArr = new[numOfElements];
 ```
+
 
 ### arrays on the heap memory
 
@@ -273,7 +496,7 @@ public:
 };
 ```
 
-### array from the c++ standard library v11
+### array standard library
  
 ```c
 #include <array>
@@ -282,8 +505,19 @@ std::cout << stdArr.size() << std::endl;
 ```
 it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
 
+### reasuming
 
-
+code | meaning
+-|-
+T ar[n] | declare array ar of n elements of type T
+&ar[0] |the memory address of the first element of ar
+&ar | the memory address of the first element of ar
+ar | the memory address of the first element of ar
+T* p = ar | create pointer p that points to the first element of array ar
+*(ar + 1) | get the second element of array ar
+ar[1] | get the second element of array ar
+T* ha = new T[n] | declare on the heap array ha of n elements of type T 
+delete[] ha | delete/remove array ha from the heap
 
 
 ## Strings
@@ -308,7 +542,7 @@ char str2[40];
 strcpy(str2, str1); // copy str1 into str2 
 ```
 
-### string from the c++ standard library
+### string standard library
 Finally if we want to use the *standard string* implementation. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout 
 
 ```c++
@@ -323,8 +557,6 @@ bool contains = myString.find("c") != std::string::npos;
 ```
 
 
-
-
 ## Const
 
 ### normal use
@@ -337,12 +569,12 @@ normal use of const: the 'variable' MAX_AGE becomes basically a constant, it is 
 ### with pointers
 
 const BEFORE the asterix: what the pointer points at can't be modfied
-
+	  
 ```c++
 const int* a = new int; // i.e.: int const* a
 // *a = 5; // I cannot modify what the pointer points at!
-```
-
+```	
+	
 const AFTER the asterix: the pointer address can't be modified
 
 ```c
@@ -361,33 +593,35 @@ const int* const c = new int;
 
 ### with classes
 
+Why declaring method const? if I declare a const entity or a const ref, then I will be able to call on that only const methods
+
 ```c++
 class Entity {
-private:
+private: 
 	int m_X, m_Y;
 	int* age;
 public:
 	/* used by a non-const Entity or Entity reference/pointer */
 	int getX() {
-		m_X = 2; // this is allowed
+		m_X = 2; // this is allowed		
 		return m_X;
 	}
-
+	
 	/* This method will be used by a const Entity reference */
 	/* const here means I cannot modify the field inside the method */
 	int getX() const {
 		//m_X = 2; // this is not allowed
 		return m_X;
-	}
+	}	
 };
 ```
-if an Entity is used as parameter in some function, passed by *const reference* (not to copy all the class object) the normal *getX()* will not work. We need to create another method *getX() const* that will work (promising that the field inside the method will not be modified).
+if an Entity is used as parameter in some function, passed by *const reference* (not to copy all the class object) the normal *getX()* will not work. We need to create another method *getX() const* that will work (promising that inside the const method I don't modify the field). 
 
-***FUN FACT***: if I declare the the class field as ***MUTABLE*** i can still modify it's value inside the const method! :P
+***FUN FACT***: if I declare the class field as ***MUTABLE*** i can still modify it's value inside the const method! :P
 
 ```c++
 class Entity {
-private:
+private: 
 	int m_X;
 	mutable int m_debugCount = 0;
 
@@ -395,12 +629,9 @@ private:
 		m_debugCount++; // allowed because the filed is mutable!
 		m_X = 3; // not allowed because the method is const!
 		return m_X;
-	}
+	}	
 }
 ```
-
-
-
 
 ## The ternary operator
 
@@ -422,10 +653,7 @@ int main() {
 }
 ```
 
-
-
-
-## Instantiate classes/objects
+## Instantiate classes and objects
 
 our Entity class 
 ```c++
@@ -456,8 +684,8 @@ int main() {
 }
 ```
 
-### allocate on the heap (dinamic allocation)
-when allocadet an object inside the heap, it's gonna sit there untill you decide I no longer need it, I will free it.
+### allocate on the heap (dynamic allocation)
+when allocated an object inside the heap, it's gonna sit there untill you decide I no longer need it, I will free it.
 
 ```c++
 int main() {
@@ -497,13 +725,9 @@ int main(){
 
 
 
-
-
-
-
 ## Implicit conversion
 
-is the automatic conversion that c++ doeas from one type to another, see the following examples
+is the automatic conversion that c++ does from one type to another, see the following examples
 
 ```c++
 // some cool printing function
@@ -583,6 +807,7 @@ public:
 ```
 
 
+
 ## Smartpointers
 
 are **scoped pointers** (created on the stack) that will create and point to objects created on the heap. Once out of the scope the pointer and the pointed objects get automatically deleted. 
@@ -618,4 +843,199 @@ doesn't increment the reference count
 		// at scope exit ref count gets 0,  Entity object gets freed
 	}
 }
-``` 
+```  
+
+
+## The copy constructor
+
+Unnecessary copying is to be avoided, but sometimes copying is essential. When we are playing with copying class objects we need to verify that the classes we wrote have a copy constructor. Let's write a custom String class to make an example
+
+```c++
+class String {
+private:
+	char* m_buffer;
+	unsigned int m_size;
+public:
+	String(const char* string) {
+		m_size = strlen(string);
+		m_buffer = new char[m_size + 1];
+		memcpy(m_buffer, string, m_size);
+		m_buffer[m_size] = 0; // null termination char
+	}
+
+	/* this is the copy constructor!! that guarantees that 
+	m_buffer of a String object copy will be created on a 
+	new block of memory */
+	String(const String& other)
+		: m_size(other.m_size) {
+		m_buffer = new char[m_size + 1];
+		memcpy(m_buffer, other.m_buffer, m_size + 1);
+	}
+
+	/* this is the way to prevent the user to make copies 
+	of the String objects */
+	// String(const String& other) = delete;
+
+	~String() {delete[] m_buffer;}
+}
+
+int main() {
+	String string = "Cherno";
+	String another = string; // copying a String object
+	/*  */
+}
+```  
+
+
+> NB: if  String class doeasn't have a copy construstor that makes a deep copy, the m_buffer of 'string' and 'another' will be the very same at the very same block of memory.
+
+## The arrow operator
+
+If we have an object delared on the stack then to access fields we use ``.`` 
+If we have an object on the heap, created with new, so basically a pointer, we access its fields using ``->``
+Indeed -> is a shortcut of *dereference a pointer and use a method* of the dereferenced object.
+Therefore, when we use the word ``this`` inside the definition of a class, that is the pointer to the actual object we use ``this->`` 
+
+```c++
+
+int main() {
+	Entity e; // create an entity on the stack
+	Entity* ptr = &e; // make ptr point to it
+	
+	/* create a reference and assign it the 
+	the object dereferenced by ptr pointer */ 
+	Entity& entity = *ptr;
+	entity.print();
+
+	/* the last two lines can be shortcutted like this */
+	(*ptr).print() // dereference first and then use print()
+	/* or even better */
+	ptr->print();
+	ptr->age = 5;
+}
+```
+
+> so what *->* operator does is dereference that pointer into an reference type and then call its method or field
+
+you can overload the -> operator in this way. Let's create a scoped pointer  as an example
+
+```c++
+
+class Entity {
+public:
+	void print() const {..}
+};
+
+class ScopedPtr {
+private:
+	Entity* m_obj;
+public:
+	ScopedPtr(Entity* entity) : m_obj(entity) {}
+	~ScopedPtr() {delete m_obj;}
+
+	/* that's how we overload the -> operator */
+	const Entity* operator->() const {
+		return m_obj;
+	}
+};
+
+int main() {
+	// entity automatically deleted when it goes out of scope
+	ScopedPtr entity = new Entity();
+	
+	/* the overload of the -> operator may allow 
+	this even if entity is not a heap allocated entity */
+	entity->print(); 
+}
+```
+
+## Dynamic arrays 
+
+It is just an array for which it is not necessary to specify the size.
+So we declare a dynamic array using:
+
+```c++
+#include <vector>
+std::vector<Point> pointArray;
+```
+
+and we add elements to a dynamic array using ``pushback()``:
+
+```c++
+pointArray.push_back(Point(x, y));
+```
+
+### Optimizations
+
+There are a couple of optimizations we can do using a dynamic array:
+1. if we know in advance how many elements we are gonna put into the array we can "reserve" the memory so the array will be resized just one time and not every time a new element is pushed_back in.
+
+```c++
+pointArray.reserve(8); 
+```
+
+2. we can use ``emplace_back`` passing just the parameters to build a new element, in place of ``push_back``  already istanciated elements. In this way the elements will not be copied around uselessly
+
+```c++
+pointArray.emplace_back(x, y);
+```
+
+## Static and Dynamic libraries
+
+### static linking
+the library gets basically put into your executable (it's inside your .exe file). Technically faster. Use static whenever possible.
+
+Create a *Dependencies* directory and inside another directory with the name of the dependency e.g. GLFW. Inside it we put the *include* folder and the *lib* folder. In VB we go to project properties > c/c++ > general > additional include directories, we select all configurations Win32 and we add $(SolutionDir)Dependencies\GLFW\include.
+Now in my code I can ``#include <GLFW/glfw3.h>``
+
+but we haven' t linked our actual library. We need the definition for the glfw3 functions.
+
+We go to project properties > linker > general > additional librariy directories, and we add $(SolutionDir)Dependencies\GLFW\lib-vc2015.
+Then we go to project properties > linker > input, and we add glfw3.lib
+
+### dynamic libraries
+the library gets linked at run-time. In windows you can use some function like load_library or at the application lunch it loads a .dll file (dynamic link library)
+
+## Templates
+
+It's kind of generics, but it can do much more, it's not limited by the generic type system. It's a template specifying the compiler how to create methods, classes, or whatever, at compile time, based on the specific usage. 
+The class *Array* will be compiled if and only when used; type T and size N will be substituted by the type and size we specify when we actually use it (at compile time :P).
+
+```cpp
+template<typename T, int N>
+class Array {
+private:
+	T m_array[N];
+public:
+	int getSize() const { return N; }
+};
+
+int main() {
+	Array<int, 50> array;
+	array.getSize();
+}
+```
+
+## Singleton
+
+It's just a single instance of a class that you "have around" your code. A singleton is a class that you only intend to have a single instalce of. In C++ its just a way to organize a bunch of global variables and static functions that may act on those variables.
+
+```cpp
+class  BetterSingleton {
+public:
+	static  BetterSingleton&  get(){
+		static  BetterSingleton  instance;
+		return  instance;
+	}
+	
+	void  hello() { std::cout  <<  "hello"  << std::endl; }
+};
+
+Singleton*  Singleton::s_instance  =  nullptr;
+
+int  main() {
+	Singleton::get().hello();
+	BetterSingleton::get().hello();
+	std::cin.get();
+}
+```
