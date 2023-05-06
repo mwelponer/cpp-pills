@@ -1,7 +1,7 @@
-C++ for dummies
+C++ pills
 ===
 
-- [C++ for dummies](#c---for-dummies)
+- [C++ pills](#c---for-dummies)
   * [Pointers](#pointers)
     + [dereference a variable](#dereference-a-variable)
     + [declare a pointer](#declare-a-pointer)
@@ -10,7 +10,7 @@ C++ for dummies
     + [pointer arithmetic](#pointer-arithmetic)
   * [References](#references)
     + [Passing by reference](#passing-by-reference)
-    + [reasuming](#reasuming)
+    + [resuming](#resuming)
   * [Static keyword](#static-keyword)
     + [general use](#general-use)
     + [inside a scope](#inside-a-scope)
@@ -27,7 +27,7 @@ C++ for dummies
     + [arrays on the stack memory](#arrays-on-the-stack-memory)
     + [arrays on the heap memory](#arrays-on-the-heap-memory)
     + [array standard library](#array-standard-library)
-    + [reasuming](#reasuming-1)
+    + [resuming](#resuming-1)
   * [Strings](#strings)
     + [manual declaration](#manual-declaration)
     + [declaration via char pointer](#declaration-via-char-pointer)
@@ -182,7 +182,7 @@ int main(){
 
 ***NB***: if we don't pass the variable by reference or by pointer to the function and we simply use ``increment(int value)`` a new ``int value`` variable will be created, initialized and incremented inside the function, but the external variable (the one we pass to the function won't be modified!)
 
-### reasuming
+### resuming
 
 code | meaning
 -|-
@@ -511,7 +511,7 @@ std::cout << stdArr.size() << std::endl;
 ```
 it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
 
-### reasuming
+### resuming
 
 code | meaning
 -|-
@@ -680,28 +680,39 @@ public:
 };
 ```
 
-### allocate on the stack i.e. static allocation
-as soon as that variable gets out of scope the memory is freed. When that scope ends, the stack pops and anything was inside gets lost.
+### Stack Heap memory allocation
+
+**stack allocation** : as soon as that variable gets out of scope the memory is freed. When that scope ends - whichever scope - the stack pops off and anything was inside gets lost. Data is stored in contiguous way, stack memory is limited but very fast.
 
 ```c++
-int main() {
-	Entity entity("Mike"); // equal to Entity entity = Entity("Mike");
-	std::cout << entity.getName() << std::endl;
-}
+int value = 4;
+int array[] = {1, 2, 3, 4, 5};
+Entity entity("Mike"); // equals to Entity entity = Entity("Mike");
 ```
 
-### allocate on the heap i.e. dynamic allocation
-when allocated an object inside the heap, it's gonna sit there untill you decide I no longer need it, I will free it.
+**heap allocation**: when allocated an object inside the heap, it's gonna sit there untill you decide I no longer need it, I will free it.
 
 ```c++
-int main() {
-	Entity* entity = new Entity()
-	std::cout << entity->getName() << std::endl;
-}
+int* hvalue = new int;
+*hvalue = 4;
+int* harray = new int[5];
+array[0] = 1;
+array[1] = 2;
+array[2] = 3;
+Entity* hentity = new Entity("Mike");
+// free the allocated memory on the heap!
+delete hvalue;
+delete[] harray;
+delete hentity;
 ```
 
-Now when to instantiate on the *stack* and when to instantiate on the *heap*? In terms of performance allocating on the heap takes longer, moreover you need to manually free the memory. So the rule of thumb is **whenever possible instantiate on the *stack* otherwise on the *heap***. 
-It can be impossible when for example 1. the object is inside a scope and needs to remain alive also outside of that scope, or when 2. the object is too big to stay on the stack (stack is usually 1-2MB) or there are too many objects that need to be allocated.
+Allocating on the heap takes longer: when we write "**new** *dataType*" we require the compiler to find and allocate a dataType long free and contiguous space in heap memory and return a pointer to that memory address (i.e. malloc function). Allocation on the heap is indeed a very heavy task, compared to the allocation on the stack that just needs 1 cpu instruction. Moreover, when allocating on the heap, we need then to remember to manually free the allocated memory. So the rule of thumb is ***whenever possible instantiate on the stack otherwise on the heap***. 
+It can be impossible to use stack memory when for example:
+1. the object is inside a scope and needs to remain alive also outside of that scope, or when 
+2. the object is too big to stay on the stack (stack is usually 1-2MB) or 
+3. there are too many objects that need to be allocated.
+
+``NB``: So, whenever we use the word **new**, we need then to delete!
 
 ### the new keyword
 
@@ -728,8 +739,6 @@ int main(){
 	delete[] aArr, eArr;
 }
 ```
-
-
 
 ## Implicit conversion
 
@@ -962,6 +971,8 @@ So we declare a dynamic array using:
 
 ```c++
 #include <vector>
+
+std::vector<int> v {1, 2, 3, 4, 5};
 std::vector<Point> pointArray;
 ```
 
@@ -1024,7 +1035,7 @@ int main() {
 
 ## Function pointers
 
-You can actually assign functions to variables. Starting from that, you can also pass a function into another function as paramenter.. there's a whole bunch of things that we can actually do with functions and function pointers that do create intresting and complex logic. 
+You can actually assign functions to variables. Starting from that, you can also pass a function into another function as paramenter. There's a whole bunch of things that we can actually do with functions and function pointers that do create intresting and complex logic. 
 
 ```cpp
 // a very simple function
@@ -1083,8 +1094,8 @@ int main(){
 	foreach(vector, printValue);
 }
 ```
-so here I use foreach function to which I pass a vector of elements and a function pointer: the function the pointer points to defines what I want to do with each element of the vector.
-Though we can rewrite this is a more simple way, avoiding to write an extra function, using lambda. Lambda is just a normal function except that it is not declared as a normal function.
+so here I use foreach function to which I pass a vector of elements and a function pointer. The function the pointer points to defines what I want to do with each element of the vector.
+Though we can rewrite this is a more simple way, avoiding to write an extra function, using **lambda**. Lambda is just a normal function except that it is not declared as a normal function.
 
 ```cpp
 void foreach(const std::vector<int>& values, void(*func)(int)){
@@ -1100,25 +1111,64 @@ int main(){
 
 ## Lambdas
 
+ref. https://en.cppreference.com/w/cpp/language/lambda
+
+Lambdas are a way to define "anonymous functions". A way to create a function without the need to "phisically" create a function. This sort of function, we want to treat it more like a variable unless then a formal function that exsists like a symbol in our compiled code.
+So when to use it? In C++, whenever we set a function pointer to a function, we can set it to a lambda instead.
+
+```cpp
+std::vector<int> v {1, 2, 3, 4};
+
+// defining my lambda: check if i is even or odd
+auto is_even = [](int i) { return i % 2 == 0; };
+// result is an iterator that points to the first match
+// or to end() if no match are found
+auto result = std::find_if(begin(v), end(v), is_even);
+
+// if something is found dereference iterator to print the first match
+(result != std::end(v))
+? std::cout << "v contains an even number: " << *result << '\n'
+: std::cout << "v does not contain even numbers\n";
+```
+
+```cpp
+// inside [] I can put captures, variables/objects that are outside
+// my lambda function
+// I can use:
+// [=] captures everything by value
+// [&] captures everything by reference
+// zero to n variables/classes by reference or by value
+// e.g. [a] to pass variable a by value
+// [&a] to passa variable a by reference
+
+int const max = 100;
+std::vector<int> vec {178, 101, 123, 145, 45, 33};
+
+auto lambda = [max](int i){ return i < max; };
+auto it = std::find_if(begin(vec), end(vec), lambda);
+(it != end(vec))
+? std::cout << "first element <= then max is: " << *it <<std::endl
+: std::cout << "all element are greater then max." << std::endl;
+```
 
 ## Singleton
 
-It's just a single instance of a class that you "have around" your code. A singleton is a class that you only intend to have a single instalce of. In C++ its just a way to organize a bunch of global variables and static functions that may act on those variables.
+It's just a single instance of a class that you "have around" your code. A singleton is a class that you only intend to have a **single instance** of. In C++ its just a way to organize a bunch of global variables and static functions that may act on those variables.
 
 ```cpp
-class  BetterSingleton {
+class BetterSingleton {
 public:
-	static  BetterSingleton&  get(){
-		static  BetterSingleton  instance;
-		return  instance;
+	static BetterSingleton& get(){
+		static BetterSingleton instance;
+		return instance;
 	}
 	
-	void  hello() { std::cout  <<  "hello"  << std::endl; }
+	void hello() { std::cout << "hello" << std::endl; }
 };
 
-Singleton*  Singleton::s_instance  =  nullptr;
+Singleton* Singleton::s_instance = nullptr;
 
-int  main() {
+int main() {
 	Singleton::get().hello();
 	BetterSingleton::get().hello();
 	std::cin.get();
