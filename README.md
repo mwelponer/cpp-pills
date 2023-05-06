@@ -1,67 +1,65 @@
 C++ pills
 ===
+Copyright (C) 2021 Michele Welponer
 
-- [C++ pills](#c---for-dummies)
-  * [Pointers](#pointers)
-    + [dereference a variable](#dereference-a-variable)
-    + [declare a pointer](#declare-a-pointer)
-    + [set a pointer](#set-a-pointer)
-    + [dereference a pointer](#dereference-a-pointer)
-    + [pointer arithmetic](#pointer-arithmetic)
-  * [References](#references)
-    + [Passing by reference](#passing-by-reference)
-    + [resuming](#resuming)
-  * [Static keyword](#static-keyword)
-    + [general use](#general-use)
-    + [inside a scope](#inside-a-scope)
-    + [use in object oriented](#use-in-object-oriented)
-    + [another good example of static inside a scope](#another-good-example-of-static-inside-a-scope)
-  * [Enums](#enums)
-  * [Objects and Classes](#objects-and-classes)
-    + [constructor and destructor](#constructor-and-destructor)
-    + [class inheritance](#class-inheritance)
-    + [virtual functions for methods overriding](#virtual-functions-for-methods-overriding)
-    + [interfaces](#interfaces)
-    + [visibility](#visibility)
-  * [Arrays](#arrays)
-    + [arrays on the stack memory](#arrays-on-the-stack-memory)
-    + [arrays on the heap memory](#arrays-on-the-heap-memory)
-    + [array standard library](#array-standard-library)
-    + [resuming](#resuming-1)
-  * [Strings](#strings)
-    + [manual declaration](#manual-declaration)
-    + [declaration via char pointer](#declaration-via-char-pointer)
-    + [string standard library](#string-standard-library)
-  * [Const](#const)
-    + [normal use](#normal-use)
-    + [with pointers](#with-pointers)
-    + [with classes](#with-classes)
-  * [The ternary operator](#the-ternary-operator)
-  * [Instantiate classes and objects](#instantiate-classes-and-objects)
-    + [allocate on the stack i.e. static allocation](#allocate-on-the-stack-ie-static-allocation)
-    + [allocate on the heap i.e. dynamic allocation](#allocate-on-the-heap-ie-dynamic-allocation)
-    + [the new keyword](#the-new-keyword)
-  * [Implicit conversion](#implicit-conversion)
-  * [Operator overloading](#operator-overloading)
-  * [The this keyword](#the-this-keyword)
-  * [Smartpointers](#smartpointers)
-    + [1. unique pointers](#1-unique-pointers)
-    + [2. shared pointers](#2-shared-pointers)
-    + [3. weak pointers](#3-weak-pointers)
-  * [The copy constructor](#the-copy-constructor)
-  * [The arrow operator](#the-arrow-operator)
-  * [Dynamic arrays](#dynamic-arrays)
-    + [Optimizations](#optimizations)
-  * [Static and Dynamic libraries](#static-and-dynamic-libraries)
-    + [static linking](#static-linking)
-    + [dynamic libraries](#dynamic-libraries)
-  * [Templates](#templates)
-  * [Function pointers](#function-pointers)
-  * [Lambdas](#lambdas)
-  * [Singleton](#singleton)
+- [Pointers](#pointers)
+  * [dereference a variable](#dereference-a-variable)
+  * [declare a pointer](#declare-a-pointer)
+  * [set a pointer](#set-a-pointer)
+  * [dereference a pointer](#dereference-a-pointer)
+  * [pointer arithmetic](#pointer-arithmetic)
+- [References](#references)
+  * [Passing by reference](#passing-by-reference)
+  * [reasuming](#reasuming)
+- [Static keyword](#static-keyword)
+  * [general use](#general-use)
+  * [inside a scope](#inside-a-scope)
+  * [use in object oriented](#use-in-object-oriented)
+  * [another good example of static inside a scope](#another-good-example-of-static-inside-a-scope)
+- [Enums](#enums)
+- [Objects and Classes](#objects-and-classes)
+  * [constructor and destructor](#constructor-and-destructor)
+  * [class inheritance](#class-inheritance)
+  * [virtual functions for methods overriding](#virtual-functions-for-methods-overriding)
+  * [interfaces](#interfaces)
+  * [visibility](#visibility)
+- [Arrays](#arrays)
+  * [arrays on the stack memory](#arrays-on-the-stack-memory)
+  * [arrays on the heap memory](#arrays-on-the-heap-memory)
+  * [array standard library](#array-standard-library)
+  * [reasuming](#reasuming-1)
+- [Strings](#strings)
+  * [manual declaration](#manual-declaration)
+  * [declaration via char pointer](#declaration-via-char-pointer)
+  * [string standard library](#string-standard-library)
+- [Const](#const)
+  * [normal use](#normal-use)
+  * [with pointers](#with-pointers)
+  * [with classes](#with-classes)
+- [The ternary operator](#the-ternary-operator)
+- [Instantiate classes and objects](#instantiate-classes-and-objects)
+  * [Stack Heap memory allocation](#stack-heap-memory-allocation)
+  * [the new keyword](#the-new-keyword)
+- [Implicit conversion](#implicit-conversion)
+- [Operator overloading](#operator-overloading)
+- [The this keyword](#the-this-keyword)
+- [Smartpointers](#smartpointers)
+  * [1. unique pointers](#1-unique-pointers)
+  * [2. shared pointers](#2-shared-pointers)
+  * [3. weak pointers](#3-weak-pointers)
+- [The copy constructor](#the-copy-constructor)
+- [The arrow operator](#the-arrow-operator)
+- [Dynamic arrays](#dynamic-arrays)
+  * [Optimizations](#optimizations)
+- [Static and Dynamic libraries](#static-and-dynamic-libraries)
+  * [static linking](#static-linking)
+  * [dynamic libraries](#dynamic-libraries)
+- [Templates](#templates)
+- [Function pointers](#function-pointers)
+- [Lambdas](#lambdas)
+- [Singleton](#singleton)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 
 ## Pointers
@@ -182,7 +180,7 @@ int main(){
 
 ***NB***: if we don't pass the variable by reference or by pointer to the function and we simply use ``increment(int value)`` a new ``int value`` variable will be created, initialized and incremented inside the function, but the external variable (the one we pass to the function won't be modified!)
 
-### resuming
+### reasuming
 
 code | meaning
 -|-
@@ -511,7 +509,7 @@ std::cout << stdArr.size() << std::endl;
 ```
 it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
 
-### resuming
+### reasuming
 
 code | meaning
 -|-
