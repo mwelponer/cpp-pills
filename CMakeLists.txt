@@ -20,6 +20,8 @@ add_subdirectory(3_classes)
 
 add_subdirectory(4_structs)
 
+add_subdirectory(5_static)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
