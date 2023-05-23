@@ -23,4 +23,10 @@ int main()
     /* if getName() in base class Entity is not declared virtual
      and the getName in Player is not declared to override
      then the printout will be "Entity" */
+
+    // same here
+    Player* pla = new Player("Mike");
+	Entity* ent = pla;
+    std::cout << ent->getName() << std::endl;
+
 }
