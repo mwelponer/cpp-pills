@@ -30,6 +30,10 @@ add_subdirectory(6_enum)
 add_subdirectory(7_interfaces)
 add_subdirectory(7_virtualFunctions)
 
+add_subdirectory(8_strings)
+
+add_subdirectory(9_const)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
