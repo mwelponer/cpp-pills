@@ -14,7 +14,7 @@ public:
 	/* this will be used by a non-const Entity or by a non-const Entity reference/pointer */
 	int getX()
 	{
-		std::cout << "\n  into getX()" << std::endl;
+		std::cout << "\n  into getX(), ";
 		m_X = 2;
 		return m_X;
 	}
@@ -25,12 +25,20 @@ public:
 	 * So this method here is just kinda read-only method */ 
 	int getX() const 
 	{
-		std::cout << "\n  into getX() const" << std::endl;
+		std::cout << "\n  into getX() const, ";
 		//m_X = 2; // this is not allowed because the method is const!
 		m_debugCount++; // allowed because the variable is declared as mutable!
-		std::cout << "  m_debugCount: " << m_debugCount << std::endl;
+		std::cout << "m_debugCount: " << m_debugCount << ", ";
 		return m_X;
 	}	
+
+	void nonConst() {
+		std::cout << "into non-const function" << std::endl;
+	}
+
+	void Const() const {
+		std::cout << "into const function" << std::endl;
+	}
 
 	/* we return a pointer
 	 * 1. which we cannot modify what it points to (const after *)
@@ -74,17 +82,20 @@ int main()
 	delete entity_c;	
 
 	
-	
+	/* Let's create a non-const Entity. This will use the normal getX() */
 	Entity ent;
+	std::cout << "ent.getX:" << ent.getX() << std::endl;
+	ent.nonConst();
+	ent.Const();
+
+
 	
-	/* Let's use the direct Entity. This will use the normal getX() */
-	std::cout << "\nent.getX:" << ent.getX() << std::endl;
-	
-	/* let's create a const Entity reference */
+	/* Let's create a const Entity reference */
 	const Entity& ref = ent;
 	/* this will use the getX() const 
 	 * because the Entity ref is declared const 
 	 * so the normal getX() cannot be used */
 	std::cout << "\nref.getX:" << ref.getX() << std::endl;
-	std::cout << "\nref.getX:" << ref.getX() << std::endl;
+	std::cout << "ref.getX:" << ref.getX() << std::endl;
+	//ref.nonConst(); this is not allowed
 }
