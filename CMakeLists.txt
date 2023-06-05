@@ -10,30 +10,34 @@ add_subdirectory(0_hello)
 add_subdirectory(0_functions)
 add_subdirectory(0_headers)
 add_subdirectory(0_loops)
-
 add_subdirectory(1_pointers)
 add_subdirectory(1_arrays)
 add_subdirectory(1_arrayFromFunction)
 add_subdirectory(1_arrayToFunction)
-
 add_subdirectory(2_references)
-
 add_subdirectory(3_classes)
-
 add_subdirectory(4_structs)
-
 add_subdirectory(5_static)
 add_subdirectory(5_staticInClasses)
-
 add_subdirectory(6_enum)
-
 add_subdirectory(7_interfaces)
 add_subdirectory(7_virtualFunctions)
-
 add_subdirectory(8_strings)
-
 add_subdirectory(9_const)
 add_subdirectory(10_ternaryOperator)
+add_subdirectory(11_instantiateObjects)
+add_subdirectory(12_newKeyword)
+add_subdirectory(13_implicitConversion)
+add_subdirectory(14_operatorOverloading)
+add_subdirectory(15_thisOperator)
+add_subdirectory(16_smartPointers)
+add_subdirectory(17_copyConstructor)
+add_subdirectory(18_arrowOperator)
+add_subdirectory(19_dynamicArray)
+add_subdirectory(20_templates)
+add_subdirectory(21_functionPointers)
+add_subdirectory(22_lambdas)
+add_subdirectory(30_singleton)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

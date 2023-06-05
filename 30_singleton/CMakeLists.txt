@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(multidimensionalArrays VERSION 0.1.0)
+project(singleton VERSION 0.1.0)
 
-add_executable(multidimensionalArrays multidimensionalArrays.cpp)
+add_executable(singleton singleton.cpp)
 #target_sources(neetcode PRIVATE Utils.cpp)
 #target_include_directories(neetcode PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+

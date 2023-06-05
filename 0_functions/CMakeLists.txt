@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(thecherno VERSION 0.1.0)
+project(functions VERSION 0.1.0)
 
 add_executable(functions functions.cpp)
 #target_sources(neetcode PRIVATE Utils.cpp)
