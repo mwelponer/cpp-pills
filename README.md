@@ -23,6 +23,7 @@ Copyright (C) 2021 Michele Welponer
   * [virtual functions for methods overriding](#virtual-functions-for-methods-overriding)
   * [interfaces](#interfaces)
   * [visibility](#visibility)
+  * [class header](#class-header)
 - [Arrays](#arrays)
   * [arrays on the stack memory](#arrays-on-the-stack-memory)
   * [arrays on the heap memory](#arrays-on-the-heap-memory)
@@ -55,8 +56,18 @@ Copyright (C) 2021 Michele Welponer
   * [static linking](#static-linking)
   * [dynamic libraries](#dynamic-libraries)
 - [Templates](#templates)
+- [Macros](#macros)
+- [Namespace](#namespace)
 - [Function pointers](#function-pointers)
 - [Lambdas](#lambdas)
+- [Multidimensional arrays](#multidimensional-arrays)
+- [Sorting](#sorting-std-sort)
+- [Type punning](#type-punning)
+- [Union](#union)
+- [Virtual Destructors](#virtual-destructors)
+- [Casting](#casting)
+  * [static cast](#static-cast)
+  * [dynamic cast](#dynamic-cast) 
 - [Singleton](#singleton)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -118,10 +129,10 @@ first dereference using the *, then increment
 
 code|meaning
 -|-
-++*p|take data and increment data
-*++p|move pointer to next and read data
-*p++|read data, then move p to next
-(*p)++|increment data 
+++*p|take data, increment data, return data
+*++p|move pointer to next, read data, return data
+*p++|read data, return data, move p to next
+(*p)++|take data, increment data, return data
 
 
 ## References
@@ -129,15 +140,10 @@ code|meaning
 References are like Pointers but less powerful. Reference are just syntax sugar, whatever you can do with references you can also do it using pointers.
 Declare and set a **reference**. & is part of the type
 ```c
-int& myReference1 = myVariable;
-int& myReference2 = *myPointer;
+int& myRef1 = myVar; // myRef1 now is an alias of myVar
+int& myRef2 = *myPtr; // myRef2 now is an alias of the variable pointed by myPtr*
+myRef2 = 3; // assigns/writes 3 to the variable referenced by myPtr
 ```
-*myReference* now is an alias of *myVariable*.
-
-```c
-myReference = 3;
-```
-assigns/writes 3 to the variable referenced by *myReferencePointer*.
 
 
 ### Passing by reference
@@ -203,7 +209,7 @@ std::cout << ref << std::endl; // prints 3
 ref++; // increment using the reference
 std::cout << a << *ptr << ref << std::endl; // 444
 
-a++; // inrement the variable a
+a++; // increment the variable a
 std::cout << a << *ptr << ref << std::endl; // 555
 
 (*ptr)++; // dereference first to get the data, then increment it 
@@ -229,7 +235,7 @@ void myFunction() {
 	i++;
 }
 ```
-First time we call *myFunction* `i` si declared and set. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a scope function `i` is visible and can be scope, but here we also obtain that i can be modified (incremented) only inside the f*myFunction*.
+First time we call *myFunction* `i` si declared and set. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a function we also guarantee that *i* can be modified only inside the function.
 
 ### use in object oriented
 
@@ -329,7 +335,7 @@ public:
 	}
 };
 ```
-*this->* equals to *(*this).* i.e. dereference pointer and use method/field
+``NB``: *this* is the current object pointer, *->* means dereference the pointer and then use the . to access the member method/field.
 
 ### constructor and destructor
 
@@ -392,11 +398,16 @@ public:
 int main() {
 	Player* p = new Player("Mike");
 	Entity* entity = p;
-	entity->getName(); /* if Entity::getName() 
+	// OR using polimorphism
+	Entity*  entity  =  new  Player("Mike"); // polimorphism
+	
+	/* if Entity::getName() 
 	is not virtual, this will output "Entity" */
+	std::cout  <<  entity->getName() << std::endl;
 }
 ```
 If any sub class overwrites a method, it's good to make that method ***virtual*** in the base class. And to mark with ***override***  the method in the derived class. 
+If *getName()* in base class *Entity* is not declared *virtual*then the printout will be *Entity*.
 
 ### interfaces
 Interfaces (a.k.a. abstract methods or pure virtual functions) allow us to define a function in a base-class that does not have an implementation, and at the same time force the sub-classes to implement that function. 
@@ -444,6 +455,89 @@ in structs if I don't specify the visibility, it will be public by default, so l
 
 ***FUN FACT***: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
 
+
+### class header
+
+example of a class Human that extends from LivingBeing
+
+***Everything inside *Human.h****
+
+```cpp
+class Human : public LivingBeing {
+private:
+    std::string m_name;
+    int m_age;
+    Human* m_son;
+public:
+    Human() 
+	    :m_name("unknown"), m_age(0){}
+    Human(const std::string& name, const int age)
+        :m_name(name), m_age(age){}
+    Human(const std::string& name, const int age, Human* son)
+        :m_name(name), m_age(age), m_son(son{}
+    ~Human(){
+		if (this->m_son)
+			delete son;
+    }
+        
+    void print(){
+        std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
+    }
+    
+    int age(){ return this->m_age; }
+	Human* son(){ return this->m_son; }
+};
+```
+
+If we want to separate the file into .h and .cpp then it becomes:
+
+***Human.h***
+```cpp
+#pragma once
+#include <string>
+
+namespace myNamespace {
+	class Human : public LivingBeing {
+	private:
+		std::string m_name;
+	    int m_age;
+	    Human* m_son;
+	public:
+	    Human();
+	    Human(const std::string& name, const int age);
+	    Human(const std::string& name, const int age, Human* son);
+		~Human();
+	    void print();
+	    int age();
+	}
+}
+```
+
+***Human.cpp***
+
+```cpp
+#include "Human.h"
+
+namespace myNamespace {
+    Human::Human()
+	    : m_name("unknown"), m_age(0){}
+    Human::Human(const std::string& name, const int age)
+	    :m_name(name), m_age(age){}
+    Human::Human(const std::string& name, const int age, Human* son)
+	    :m_name(name), m_age(age), m_son(son{}
+	Human::~Human(){
+		if (m_son)
+			delete son;
+	}
+	    	    
+    void print(){
+	    std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
+    }
+    
+    int age(){ return this->m_age; }
+}
+```
+
 ## Arrays 
 
 ### arrays on the stack memory
@@ -454,8 +548,7 @@ stackArr[3] = 666;
 an array is just a pointer to the first element of the array so we can write
 ```c
 int* ptr = stackArr;
-*(ptr+3) = 666; /* this equals to 
-stackArr[3] = 666; */
+*(ptr+3) = 666; /* this equals to stackArr[3] = 666; */
 ```
 ``*(ptr+3)`` means first increment by 3 the pointer, then dereference it 
 
@@ -535,9 +628,10 @@ std::cout << mystring << std::endl;
 ```
 
 ### declaration via char pointer
-Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``
+Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout, *strlen* and *strcpy*
 
 ```c++
+#include <string.h>
 const char* name = "Mike";
 std::cout << name << ", " << strlen(name) << std::endl;
 
@@ -547,7 +641,7 @@ strcpy(str2, str1); // copy str1 into str2
 ```
 
 ### string standard library
-Finally if we want to use the *standard string* implementation. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout 
+Finally if we want to use the *standard string* implementation. 
 
 ```c++
 std::string myString = "ciao";
@@ -557,7 +651,7 @@ std::cout << myString << std::endl;
 /* useful string methods */
 myString.size();
 myString.find("ao");
-bool contains = myString.find("c") != std::string::npos;
+bool contains = myString.find("c") != std::string::npos; // std::string::npos means the end of the string
 ```
 
 
@@ -597,7 +691,8 @@ const int* const c = new int;
 
 ### with classes
 
-Why declaring method const? if I declare a const entity or a const ref, then I will be able to call on that only const methods
+Why declaring method const? Non-const objects can call either const or non-const methods. If I declare a const object like entity or a reference, then I will be able to call only on those const methods.
+``RULE``: *const objects can not call non-const functions*
 
 ```c++
 class Entity {
@@ -659,7 +754,6 @@ int main() {
 
 ## Instantiate classes and objects
 
-our Entity class 
 ```c++
 #include <iostream>
 #include <string>
@@ -669,12 +763,17 @@ class Entity
 private:
 	std::string m_name;
 public:
-	Entity() 
-		: m_name("unknown") {}
-	Entity(const std::string& name) 
-		: m_name(name) {}
+	Entity()
+		: m_name("Unknown"), m_age(-1) {}
+	Entity(const std::string&  name)
+		: m_name(name), m_age(-1) {}
+	Entity(const  int  age)
+		: m_age(age), m_name("Unknown") {}
 		
-	const std::string& getName(){ return m_name; }
+	std::string& getName() const { return m_name; }
+	int getAge() const {return  m_age;}	
+	void setName(const std::string& name) {m_name = name;}
+	void setAge(const int age) {m_age = age;}
 };
 ```
 
@@ -748,8 +847,10 @@ void PrintEntity(const Entity& entity) { // cool printing }
 
 int main()
 {
-	Entity a("Mike"); // equivalent to a = std::string("Mike")
-	Entity b(43); // equivalent to b = 43
+	Entity a("Mike"); 
+	// we can also write Entity a = std::string("Mike")
+	
+	Entity b(43); // we can also write b = 43
 	
 	// implicit conversion
 	PrintEntity(22); 
@@ -826,18 +927,20 @@ public:
 are **scoped pointers** (created on the stack) that will create and point to objects created on the heap. Once out of the scope the pointer and the pointed objects get automatically deleted. 
 
 ### 1. unique pointers
-simple type of smarpointer whose created object cannot have more than one pointer reference.
+simple type of smarpointer whose created object cannot have more than one pointer reference. *You cannot copy unique pointers*: if you have two unique pointers pointing to the same loc of memory and one of them dies, the loc will be freed and suddenly the second pointer will point then to memory that has been freed.
 ```c++
 std::unique_ptr<Entity> entity = std::make_unique<Entity>();
+// OR
+std::unique_ptr<Entity> entity(new Entity());
 ```  
 **make_unique** will create a new Entity that can have just one pointer reference.
 
 ### 2. shared pointers
-smartpointer that maintain a reference count. Will free Entity only when last pointer reference is deleted.
+smartpointer that can be copied and actually maintain a reference copy count. Will free Entity only when last pointer reference gets deleted.
 ```c++
-{
+{ // first scope
 	std::shared_ptr<Entity> anotherPtr;
-	{
+	{ // second scope
 		std::shared_ptr<Entity> sharedEntityPtr = std::make_shared<Entity>();
 		anotherPtr = sharedEntityPtr; // ref count = 2
 		// at scope exit ref count become 1
@@ -846,7 +949,9 @@ smartpointer that maintain a reference count. Will free Entity only when last po
 }
 ```  
 ### 3. weak pointers
-doesn't increment the reference count
+
+weak pointer doesn't increment the reference count of a shared pointer, so in the following example, when we get out of the inner scope, the memory gets freed. However we can still ask the weak pointer, are you expired? are you still valid?
+
 ```c++
 {
 	std::weak_ptr<Entity> anotherPtr;
@@ -904,7 +1009,7 @@ int main() {
 
 ## The arrow operator
 
-If we have an object delared on the stack then to access fields we use ``.`` 
+If we have an object declared on the stack then to access fields we use ``.`` 
 If we have an object on the heap, created with new, so basically a pointer, we access its fields using ``->``
 Indeed -> is a shortcut of *dereference a pointer and use a method* of the dereferenced object.
 Therefore, when we use the word ``this`` inside the definition of a class, that is the pointer to the actual object we use ``this->`` 
@@ -928,7 +1033,7 @@ int main() {
 }
 ```
 
-> so what *->* operator does is dereference that pointer into an reference type and then call its method or field
+> so what *->* operator does is dereference that pointer into a reference type and then call its method or field
 
 you can overload the -> operator in this way. Let's create a scoped pointer  as an example
 
@@ -1028,6 +1133,52 @@ public:
 int main() {
 	Array<int, 50> array;
 	array.getSize();
+}
+```
+## Macros
+
+Macros are pre-processor, pure text replacing, before everything gets compiled.
+A simple example
+
+```cpp
+#define WAIT std::cin.get()
+
+int main(){
+	WAIT;
+}
+```
+
+a more useful example, using a parameter and a preprocess definition
+```cpp
+#ifdef PR_DEBUG // preprocess definition variable
+#define LOG(x) std::cout << x << std::endl
+#else
+#define LOG(x) // this will basically remove LOG line in main
+#endif
+
+int main(){
+	LOG("Hello");
+}
+```
+
+## Namespace
+
+The primary purpose of namespaces is to avoid naming conflicts, i.e. with namespaces we can have symbols (classes, functions, variables) with the same signature in different context
+
+```cpp
+namspace apple {
+	void print(const char* str){}
+}
+
+namspace orange {
+	void print(const char* str){}
+}
+
+int main(){
+	orange::print("ciao a tutti");
+	// or
+	using namespace apple;
+	print("ciao a tutti");
 }
 ```
 
@@ -1148,6 +1299,265 @@ auto it = std::find_if(begin(vec), end(vec), lambda);
 ? std::cout << "first element <= then max is: " << *it <<std::endl
 : std::cout << "all element are greater then max." << std::endl;
 ```
+
+## Multidimensional arrays
+
+A simple array is a pointer to the first element of the array
+
+```cpp
+// on the stack
+int a[50];
+int* ptr = a;
+
+// on the heap 
+char* buffer = new char[8];
+```
+
+A 2d array in C++ is an array of pointers, each one pointing to another array
+
+```cpp
+int x[3][4] = {{0,1,2,3}, {4,5,6,7}, {8,9,10,11}}
+// OR
+int x[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11}
+```
+
+On the heap a 2d array in is still a buffer of pointers that points to arrays stored somewhere in the memory.
+
+```cpp
+// a pointer to a pointer to an integer
+int** a2d = new int*[50];
+// with this we just have allocated memory
+// specifically 50 integer pointers, so
+// 4bytes * 50 = 200 bytes of memory
+
+// now we need to initialize the 50 arrays 
+for (int i = 0; i < 50; i++)
+	a2d[i] = new int[50];
+
+// so to delete we need to dolete them one by one
+for (int i = 0; i < 50; i++)
+	delete[] a2d[i];
+// and finally
+delete[] a2d;
+```
+
+so for a 3d array it would be
+
+```cpp
+int*** a3d = new int**[50];
+for(int i = 0; i < 50; i++){
+	a3d[i] = new int*[50];
+	for(int i = 0; i < 50; i++)
+		a3d[i][j] = new int[50];
+}
+```
+
+Managing multidimensional arrays this way though is not very convenient, nor very efficient, because an 2d array ends up to be a buffer of pointers to not contiguous arrays, so we continuously jump from one part to another part of the memory. The more optimized version is a single dimension array
+
+```cpp
+int* fake2darray = new int[3*3];
+
+for(int i = 0; i < 3*3; i++){
+	for(int j = 0; j < 3; j++)
+		fake2darray[j + i * 3] = 0; 
+}
+```
+## Sorting std sort
+
+ref. en.cppreference.com/w/cpp/algorithm/sort
+
+sorting a simple array
+
+```cpp
+#include <algorithm>
+int n = 7; // array size
+int a[] = {4,2,5,3,5,8,3};
+sort(a, a+n);
+```
+
+here we just sort a simple vector of elements
+```cpp
+#include <algorithm>
+std::vector<int> values = {3, 5, 1, 4, 2};
+std::sort(values.begin(), values.end()); // 1 2 3 4 5
+std::sort(values.rbegin(), values.rend()); // 5 4 3 2 1
+```
+
+sorting a string
+
+```cpp
+#include <algorithm>
+string s = "monkey";
+sort(s.begin(), s.end());
+```
+
+sorting classes based on some kind of comparison
+
+```cpp
+bool compare(Man& m1, Man& m2){
+    return m1.age() < m2.age();
+}
+std::vector<Man> v = {mike, alice, bob};
+sort(v.begin(), v.end(), compare);
+```
+if we want to provide some kind of way to sort providing it with a lambda function
+
+```cpp
+#include <functional>
+
+std::sort(values.begin(), values.end(), std::greater<int>()); // > 5 4 3 2 1
+std::sort(values.begin(), values.end(), [](int a, int b){ return a < b; }); // > 1 2 3 4 5
+std::sort(values.begin(), values.end(), [](int a, int b){ return a > b; }); // > 5 4 3 2 1
+```
+
+## type Punning
+
+Type punning an integer to a double would look something like this
+
+```cpp
+int a = 50;
+double value = *(double*)&a;
+// basically take the mem address of a, cast it to double pointer, then dereference the pointer to get back to the value
+std::cout << value << std::endl;
+```
+
+## Union
+
+Imagine we have a Vector2 and a Vector4 and we want to access Vector4 parts using Vector2
+
+```cpp
+struct Vector2 {
+	float x, y;
+};
+// operator overloading to print Vector2
+std::ostream& operator<<(std::ostream& stream, Vector2& vector){
+	stream << vector.x << ", " << vector.y;
+	return stream;
+}
+```
+using type punning, we could write getA() and getB() to get respectively x, y and z, w
+
+```cpp
+struct Vector4 {
+	float x, y, z, w;
+	Vector2& getA() { return *(Vector2*)&x; }
+	Vector2& getB() { return *(Vector2*)&z; }
+};
+
+int main() {
+	Vector4 v4 = {1, 2, 3, 4};
+	std::cout << v4.getA() << std::endl;
+}
+```
+using Union we can instead write something simplier like this:
+
+```cpp
+struct Vector4 {
+	union {	
+		// an anonymous struct to structure the data
+		struct { float x, y, z, w; }; 
+		struct { Vector2 a, b; };
+		// so now I can access data in two ways: 
+		// 1. using x, y, z, w
+		// 2. using a and b, where a happens to be x, y 
+		// b happens to be z, w
+	};
+};
+
+int main(){
+	Vector4 v4 = {1, 2, 3, 4};
+	v4.z = 33;
+	std::cout << v4.b << std::endl;
+}
+```
+
+## Virtual Destructors
+
+When inheritance and virtual functions come together, then we need to deal with virtual destructors too.
+
+```cpp
+class Base {
+public:
+	Base(){std::cout << "B constr, ";}
+	~Base(){std::cout << "B destr, ";}	
+};
+class Derived : public Base {
+public:
+	Derived(){std::cout << "D constr, ";}		
+	~Derived(){std::cout << "D destr, ";}
+};
+int main(){
+	Derived* derived = new Derived();
+	delete derived;
+}
+```
+this will printout ``B constr, D constr, B destr, D destr,`` as we expect!
+What will happen when we use a polymorphic like this:
+
+```cpp
+int main(){
+	Base* poly = new Derived();
+	delete poly;
+}
+```
+just the Base destructor will be called, leading to a memory leak!
+So to solve this, we need to set destructor of Base class as **virtual**, telling this way that the class may be extended, so call the derived destructors if present
+
+```cpp
+class Base {
+public:
+	Base(){std::cout << "B constr";}
+	virtual ~Base(){std::cout << "B destr";}	
+}
+```
+So, *whenever writing a class that you will be extending or might be subclassed, you need to 100% declare destructor as virtual*
+
+## Casting
+
+### static cast 
+
+Type casting, means conversion within the type system that C++ provide us with. If I declare a variable of a specific type, I need to stick with that type unless either there is an **implicit conversion** (C/C++ knows how to convert from one type to another) or we write an **explicit conversion**, so we tell C/C++ how to convert from one type to another.
+
+C style cast:
+
+```cpp
+double value = 5.32;
+int a = (int)value + 5.4;
+```
+
+C++ style cast (static cast):
+
+```cpp
+double value = 5.32;
+int a = static_cast<int>(value) + 5.4;
+```
+the good thing about C++ style of casting is that if something goes wrong with my compilation and I get some compile check messages, moreover I can search for casting in my code easily trying to figure out the problem
+
+### dynamic cast
+
+suppose we have another class that extends Base
+
+```cpp
+class AnotherClass : public Base {
+public:
+	AnotherClass () {}
+	~AnotherClass () {}	
+}
+```
+and we want to know if a pointer of type Base specialized to Derived or to AnotherClass
+
+```cpp
+Derived* derived = new Derived()
+Base* base = derived // suppose we don't know that base specialized to derived
+
+AnotherClass* ac = static_cast<AnotherClass*>(base); // will do the conversion
+AnotherClass* ac = dynamic_cast<AnotherClass*>(base); // will check if base specialized to AnotherClass, if not it will return NULL, so we can check the type by writing if (!ac) {} or if (ac) {}
+```
+
+### reinterpret cast
+
+type punning :P
+
 
 ## Singleton
 
