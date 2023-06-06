@@ -1403,7 +1403,7 @@ sort(v.begin(), v.end(), compare);
 if we want to provide some kind of way to sort providing it with a lambda function
 
 ```cpp
-#include <functional>
+#include <functional> // to use std::greater
 
 std::sort(values.begin(), values.end(), std::greater<int>()); // > 5 4 3 2 1
 std::sort(values.begin(), values.end(), [](int a, int b){ return a < b; }); // > 1 2 3 4 5
@@ -1412,13 +1412,38 @@ std::sort(values.begin(), values.end(), [](int a, int b){ return a > b; }); // >
 
 ## type Punning
 
-Type punning an integer to a double would look something like this
+Type punning means treat a memory of a specific type as another type
 
 ```cpp
-int a = 50;
-double value = *(double*)&a;
-// basically take the mem address of a, cast it to double pointer, then dereference the pointer to get back to the value
-std::cout << value << std::endl;
+int a = 5;
+std::cout << "a:" << a << std::endl;
+double value = a; // this one here is an implicit conversion, so the compiler implicitly did
+// double value = (double)a;
+// what was actually done was a conversion from int to double 
+// so we will find different things into the memory
+std::cout << "value:" << value << std::endl;
+```
+
+what instead if we want to take that exsisting original int memory and treat it as a double? (type punning)
+
+```cpp
+// we take memory address of 'a', cast it to double pointer, then dereference to get back the value 
+value = *(double*)&a;
+std::cout << "value:" << value << std::endl;
+```
+
+a more interesting example: let's type punning a struct into an array:
+
+```cpp
+struct entity {
+	int a, b;
+};
+
+int main() {
+	entity e = {5, 8};
+	int* arr = (int*)&e;
+	std::cout << "arr: " << arr[0] << ", " << arr[1] << std::endl;
+}
 ```
 
 ## Union
