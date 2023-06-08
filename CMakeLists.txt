@@ -41,6 +41,8 @@ add_subdirectory(23_multidimensionalArrays)
 add_subdirectory(24_sorting)
 add_subdirectory(25_typePunning)
 add_subdirectory(26_union)
+add_subdirectory(27_vistualDestructors)
+add_subdirectory(28_casting)
 add_subdirectory(30_singleton)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

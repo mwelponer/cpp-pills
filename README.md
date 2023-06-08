@@ -1448,19 +1448,18 @@ int main() {
 
 ## Union
 
-Imagine we have a Vector2 and a Vector4 and we want to access Vector4 parts using Vector2
+Imagine we have  a Vector2 and a Vector4 and we want to access Vector4 memory parts using Vector2, i.e. treating a Vec4 as a couple of Vec2. 
 
 ```cpp
-struct Vector2 {
-	float x, y;
-};
+struct Vector2 { float x, y; };
 // operator overloading to print Vector2
 std::ostream& operator<<(std::ostream& stream, Vector2& vector){
 	stream << vector.x << ", " << vector.y;
 	return stream;
 }
 ```
-using type punning, we could write getA() and getB() to get respectively x, y and z, w
+
+Using **type punning**, we could write getA() and getB() to get respectively x, y and z, w
 
 ```cpp
 struct Vector4 {
@@ -1474,7 +1473,7 @@ int main() {
 	std::cout << v4.getA() << std::endl;
 }
 ```
-using Union we can instead write something simplier like this:
+using **Union** we can instead write something simplier like this:
 
 ```cpp
 struct Vector4 {
@@ -1547,7 +1546,7 @@ C style cast:
 
 ```cpp
 double value = 5.32;
-int a = (int)value + 5.4;
+int a = (int)value + 5.4; // explicit conversion
 ```
 
 C++ style cast (static cast):
@@ -1556,24 +1555,34 @@ C++ style cast (static cast):
 double value = 5.32;
 int a = static_cast<int>(value) + 5.4;
 ```
-the good thing about C++ style of casting is that if something goes wrong with my compilation and I get some compile check messages, moreover I can search for casting in my code easily trying to figure out the problem
+the good thing about C++ style of casting is that if something goes wrong with my compilation and I get some compile check messages and I can search for casting in my code easily trying to figure out the problem
 
 ### dynamic cast
 
-suppose we have another class that extends Base
+We can use **dynamic cast** to check if an object is of a specific type. Suppose we have *Base* class, *Derived* and *Another* classes that both extend from *Base*.
 
 ```cpp
+class Base {
+public: 
+	Base(){} 
+	virtual ~Base(){}
+};
+class Derived : public Base {
+public:
+	Derived(){}
+	~Derived(){}
+};
 class AnotherClass : public Base {
 public:
 	AnotherClass () {}
 	~AnotherClass () {}	
-}
+};
 ```
 and we want to know if a pointer of type Base specialized to Derived or to AnotherClass
 
 ```cpp
 Derived* derived = new Derived()
-Base* base = derived // suppose we don't know that base specialized to derived
+Base* base = derived // suppose we don't know that base specialized to Derived
 
 AnotherClass* ac = static_cast<AnotherClass*>(base); // will do the conversion
 AnotherClass* ac = dynamic_cast<AnotherClass*>(base); // will check if base specialized to AnotherClass, if not it will return NULL, so we can check the type by writing if (!ac) {} or if (ac) {}
@@ -1582,6 +1591,10 @@ AnotherClass* ac = dynamic_cast<AnotherClass*>(base); // will check if base spec
 ### reinterpret cast
 
 type punning :P
+
+### const cast
+
+removes or add const :P
 
 
 ## Singleton
