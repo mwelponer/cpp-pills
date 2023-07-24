@@ -127,12 +127,24 @@ first dereference using the *, then increment
 
 ### pointer arithmetic
 
-code|meaning
--|-
-++*p|take data, increment data, return data
-*++p|move pointer to next, read data, return data
-*p++|read data, return data, move p to next
-(*p)++|take data, increment data, return data
+take this example:
+
+```c++
+char str[] = "Hello";
+char* ptr = str;
+std::cout << code << std::endl;
+```
+
+code|meaning | output
+-|-|-
+++*ptr |dereference, increment, return | I
+++(*ptr) |dereference, increment, return | I
+*++ptr|increment ptr, dereference, return | e
+*(++ptr)|increment ptr, dereference, return | e
+*ptr++ << *ptr|dereference, return, increment ptr | He
+*(ptr++) << *ptr|dereference, return, increment ptr | He
+(*ptr)++ << *ptr|dereference, return, increment | HI
+
 
 
 ## References
@@ -155,24 +167,41 @@ If we want to write a function that increments a variable, we can pass that vari
 // value which points to the memory address we pass as argument
 // so if we want to increment the variable we need to first 
 // de-reference the pointer to get the variable and then increment
-void  incrementUsingPointer(int* value) {
+void incrementUsingPointer(int* value) {
 	(*value)++; // dereference first then increment
     std::cout << "value:" << *value << std::endl;
 }
-
 // more simply, by reference: int& value means create a
 // reference (alias) named value and make it point exactly 
 // to the same variable we pass
-void  incrementUsingReference(int& value){
+void incrementUsingReference(int& value){
+	value++;
+	std::cout << "value:" << value << std::endl;
+}
+void increment(int value){
 	value++;
 	std::cout << "value:" << value << std::endl;
 }
 
 int main(){
 	int a = 5;
-	incrementUsingPointer(&a);
-	incrementUsingReference(a);
+	int& ref = a;
+	
+	incrementUsingPointer(&a); // value:6
+	std::cout << a << std::endl; // => 6
+	
+	incrementUsingReference(ref); // value:7
+	std::cout << a << ref << std::endl; // => 77
+	
+	incrementUsingReference(a); // value:8
+	std::cout << a << ref << std::endl; // => 88
 
+	increment(a); // value:9
+	std::cout << a << ref << std::endl; // => 88
+
+	increment(ref); // value:9
+	std::cout << a << ref << std::endl; // => 88
+	
 	// and with classes
 	Entity e1; // instance on the stack
 	incrementUsingPointer(&e1);
@@ -201,10 +230,13 @@ Examples:
 int a = 3; // declare a variable
 int* ptr = nullptr; // declare a pointer
 ptr = &a; // dereference the variable to get the address and set the pointer point to the variable
-std::cout << *ptr << std::endl; // dereference the pointer to get the data, 3
+std::cout << *ptr << std::endl; // dereference the pointer to get the data, => 3
+
+int& ref = a; // create a reference i.e. alias of variable a
+std::cout << ref << std::endl; // => 3
 
 int& ref = *ptr; // create a reference i.e. alias of what the pointer points, i.e. variable a
-std::cout << ref << std::endl; // prints 3
+std::cout << ref << std::endl; // => 3
 
 ref++; // increment using the reference
 std::cout << a << *ptr << ref << std::endl; // 444
@@ -220,20 +252,29 @@ std::cout << a << *ptr << ref << std::endl; // 666
 
 ### general use
 
-**Declare** a variable static
+**Declare** a variable or a function static (outside of a class/struct)
+
 ```c
 static int myVariable = 5;
+static void myFunc();
 ```
-*myVariable* will be visible only in that specific translation unit (file) 
+*myVariable* will be visible only in that specific translation unit (file). It means I can define another variable with the same name *myVariable* inside another translation unit without incurring in linking problems at compile time. It's like defining the variable "private" for the specific translation unit.
 
-### inside a scope
+***NB***: if I don't declare a variable static ``int var = 5;``, in another translation unit I can read that variable declaring ``external int var;``, to say that variable is defined and set in an external translation unit
+
+So the moral is: try to **always mark functions and variable static** unless you actually need them to be linked across different translation units.
+
+### inside a local scope
 
 Inside a function for example, but could be inside a for loop or whatever other type of scope
 ```c
-void myFunction() {
+void func() {
 	static int i = 0;
-	i++;
+	std::cout << ++i << std::endl;
 }
+// here i is not accessible
+func() // => 1
+func() // => 2
 ```
 First time we call *myFunction* `i` si declared and set. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a function we also guarantee that *i* can be modified only inside the function.
 
@@ -343,11 +384,15 @@ the *Entity* object will be instantiated and *m_name* and *m_age* fields will be
 
 ```cpp
 class Entity {
+private:
+	std::string m_name;
+    int m_age;
 public:
 	/* the constructor */
 	Entity() 
 		: m_name("Unknown"), m_age(0) // initializer list more efficient!
 	{
+		// here we don;t need to un-initialize anything because we didn't allocate anything in the constructor on the heap, m_name and m_age are on the stack memory
 		// standard way to initialize class members (less efficient!)
 		//m_name = "Unknown"; 
 		//m_age = 0;		
@@ -362,8 +407,10 @@ public:
 	}
 };
 ```
-the destructor *~Entity* will be called when the *Entity* object gets deleted. Inside the destructor deallocate everything that was created on the heap memory during the construction.
-***NB***: if the object was created on the heap (using new operator) we need to call manually the destructor using "*delete*" or "*delete[]*" for arrays. If the object was created on the stack, the destructor will be automatically called when the program gets out of scope.
+the destructor *~Entity* will be automatically called when the *Entity* object gets deleted. Inside the destructor we deallocate everything that was created in the constructor on the heap memory.
+
+***NB***: if the Entity object was created **on the heap** (using new operator) we need to manually deallocate the instance using "*delete*" (or "*delete[]*" for arrays). 
+If the Entity object was created **on the stack**, the object gets automatically deleted when the program gets out of scope, thus the destructor will be called.
 
 ### class inheritance
 
@@ -399,15 +446,16 @@ int main() {
 	Player* p = new Player("Mike");
 	Entity* entity = p;
 	// OR using polimorphism
-	Entity*  entity  =  new  Player("Mike"); // polimorphism
+	Entity* entity = new Player("Mike"); // polimorphism
 	
 	/* if Entity::getName() 
 	is not virtual, this will output "Entity" */
-	std::cout  <<  entity->getName() << std::endl;
+	std::cout << entity->getName() << std::endl;
 }
 ```
 If any sub class overwrites a method, it's good to make that method ***virtual*** in the base class. And to mark with ***override***  the method in the derived class. 
-If *getName()* in base class *Entity* is not declared *virtual*then the printout will be *Entity*.
+
+***NB:*** If *getName()* in base class *Entity* is not declared *virtual* then the printout will be *Entity*.
 
 ### interfaces
 Interfaces (a.k.a. abstract methods or pure virtual functions) allow us to define a function in a base-class that does not have an implementation, and at the same time force the sub-classes to implement that function. 
@@ -418,7 +466,7 @@ public:
     virtual std::string getClassName() = 0;
 };
 ```
-``= 0`` makes it a pure virtual function! so the method needs to be implemented in the subclasses. *Printable* being an interface, cannot be instantiated.
+***NB:*** ``= 0`` makes it a pure virtual function! so the method needs to be implemented in the subclasses. *Printable* being an interface, cannot be instantiated.
 
 
 ### visibility
@@ -434,7 +482,10 @@ public:
 };
 ```
 
-in general all that goes under **public** can be seen from outside and inside the class, all that goes under **private** can only be seen within the class itself. All that goes under **protected** can be seen from within the class itself and the subclasses.
+in general 
+- all that goes under **public** can be seen from outside and inside the class, 
+- all that goes under **private** can only be seen within the class itself, 
+- all that goes under **protected** can be seen from within the class itself and the subclasses.
 
 ```cpp
 class Entity {
@@ -442,7 +493,7 @@ class Entity {
 	int x, y; /* private by default */
 };
 ```
-in classes if I don't specify the visibility, it will be private by default, so like to write *private:* before the declaration of the methods/fileds
+in **classes** if I don't specify the visibility, it will be **private by default**, so like to write *private:* before the declaration of the methods/fileds
 
 ```c
 struct Entity {
@@ -451,9 +502,27 @@ struct Entity {
 };
 ```
 
-in structs if I don't specify the visibility, it will be public by default, so like to write *public:* before the declaration of the methods/fileds. 
+in **structs** if I don't specify the visibility, it will be **public by default**, so like to write *public:* before the declaration of the methods/fileds. 
 
 ***FUN FACT***: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
+
+```c++
+class c_entity {
+	int m_a, m_b;
+public:
+	centity(int a, int b) : m_a(a), m_b(b) {}
+};
+
+struct s_entity {
+	int a, b;
+	/* s_entity(int a, int b) : m_a(a), m_b(b) {} // this is optional */
+};
+
+int main() {
+	c_entity c = {3, 4}; // or c_entity(3, 4)
+	s_entity s = {3, 4}; // or s_entity(3, 4) if constructor is defined
+}
+```
 
 
 ### class header
@@ -541,19 +610,20 @@ namespace myNamespace {
 ## Arrays 
 
 ### arrays on the stack memory
-```c
-int stackArr[10]; // now stackArr is already a pointer!
-stackArr[3] = 666;
+```cpp
+int stackArr[4] // declare: stackArr is now a pointer to the 1st element of the array
+int stackArr[] = {1, 2, 3, 4} // declare and set 
+stackArr[3] = 666
 ```
-an array is just a pointer to the first element of the array so we can write
-```c
-int* ptr = stackArr;
-*(ptr+3) = 666; /* this equals to stackArr[3] = 666; */
-```
-``*(ptr+3)`` means first increment by 3 the pointer, then dereference it 
+***NB***:  we cannot use increment and decrement (++/--) operator on the array name e.g., ~~stackArr++~~, because the array name is not an lvalue pointer. But we can always write
 
-***FUN FACT***: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
-***FUN FACT***: the row arrays do not have any *.size* or *.lenght* operators so: 
+```cpp
+int* ptr = stackArr;
+std::cout << ++ptr << std::endl; // => 2
+*(ptr+3) = 666 // this equals to stackArr[3] = 666
+```
+
+***NB***: the row arrays do not have any *.size* or *.lenght* operators so: 
 
 1. if you declare the array in the stack use this trick:
 ```c
@@ -565,6 +635,7 @@ static const int numOfElements = 10;
 int* heapArr = new[numOfElements];
 ```
 
+***FUN FACT***: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
 
 ### arrays on the heap memory
 
@@ -779,7 +850,7 @@ public:
 
 ### Stack Heap memory allocation
 
-**stack allocation** : as soon as that variable gets out of scope the memory is freed. When that scope ends - whichever scope - the stack pops off and anything was inside gets lost. Data is stored in contiguous way, stack memory is limited but very fast.
+**stack allocation** : as soon as that variable gets out of scope the memory is freed. When that scope ends - whichever scope - the stack pops off and anything was inside gets lost (*destructor gets automatically called*). Data is stored in contiguous way, stack memory is limited but very fast.
 
 ```c++
 int value = 4;
@@ -787,7 +858,7 @@ int array[] = {1, 2, 3, 4, 5};
 Entity entity("Mike"); // equals to Entity entity = Entity("Mike");
 ```
 
-**heap allocation**: when allocated an object inside the heap, it's gonna sit there untill you decide I no longer need it, I will free it.
+**heap allocation**: when allocated an object inside the heap, it's gonna sit there untill you decide you no longer need it.
 
 ```c++
 int* hvalue = new int;
@@ -850,7 +921,7 @@ int main()
 	Entity a("Mike"); 
 	// we can also write Entity a = std::string("Mike")
 	
-	Entity b(43); // we can also write b = 43
+	Entity b(43); // we can also write Entity b = 43
 	
 	// implicit conversion
 	PrintEntity(22); 
@@ -873,8 +944,9 @@ int main()
 ``+``  ``-``  ``*``  ``/``  ``%``  ``^``  ``&``  ``|``  ``~``  ``!``  ``=``  ``<``  ``>``  ``+=``  ``-=``  ``*=`` ``/=``  ``%=``  ``^=``  ``&=``  ``|=``  ``<<``  ``>>``  ``>>=``  ``<<=``  ``==``  ``!=``  ``<=``  ``>=``  ``<=>``  ``&&``  ``||``  ``++``  ``--``  ``,``  ``->*``  ``->``  ``( )``  ``[ ]``
 
 Operators are just functions! All these c++ operators can be overloaded, i.e. definer/change the behaviour of the operator in the program.
-To overload an operator @ we just write the word operator followed by the operator @, then we define the function normally with its parameters.
+To overload an operator, e.g. the operator "@" we just write the word *operator* followed by the operator we want to overload @, then we define the function normally with its parameters.
 
+example of overloading operator "**+**" to define how to add two Vector2 objects 
 ```c++
 struct Vector2 {
 	float x, y;
@@ -886,14 +958,28 @@ struct Vector2 {
 		return Vector2(x + other.x, y + other.y);
 	}
 };
+```
 
-// another example: overloading of the << operator
+example of overloading the operator "**<<**", to define how a vector is to be printed in std::cout
+
+```cpp
 std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
 	stream << vector.x << ", " << vector.y;
 	return stream;
 }
 ```
 
+example of overloading of operator "**new**", to define what to do each time the word new is used: keep track of heap allocation count, show the quantity of heap memory allocated
+
+```cpp
+static uint32_t s_AllocCount = 0;
+void* operator new(size_t size){
+	s_AllocCount++;
+	std::cout << "Allocating " << size << " bytes\n";
+	return malloc(size);
+}
+std::cout << s_AllocCount << " allocations\n";
+```
 
 
 ## The this keyword
@@ -901,9 +987,6 @@ std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
 it is just the pointer to the current object instance that the method belongs to.
 
 ```c++
-// some kinda cool printing function forward definition
-void printEntity(Entity* e);
-
 class Entity {
 private:
 	int x, y;
@@ -913,13 +996,11 @@ public:
 		// then we use the Entity object
 		this->x = x; 
 		this->y = y;
-		// here we pass the pointer to the current object instance
-		// as parameter of the printing function
-		printEntity(this);
 	}
+	// some fancy printing function
+	void print() {};
 };
 ```
-
 
 
 ## Smartpointers
@@ -927,40 +1008,69 @@ public:
 are **scoped pointers** (created on the stack) that will create and point to objects created on the heap. Once out of the scope the pointer and the pointed objects get automatically deleted. 
 
 ### 1. unique pointers
-simple type of smarpointer whose created object cannot have more than one pointer reference. *You cannot copy unique pointers*: if you have two unique pointers pointing to the same loc of memory and one of them dies, the loc will be freed and suddenly the second pointer will point then to memory that has been freed.
-```c++
-std::unique_ptr<Entity> entity = std::make_unique<Entity>();
-// OR
-std::unique_ptr<Entity> entity(new Entity());
-```  
+simple type of smarpointer whose created object cannot have more than one pointer reference. 
 **make_unique** will create a new Entity that can have just one pointer reference.
+*You cannot copy unique pointers*: if you have two unique pointers pointing to the same loc of memory and one of them dies, the loc will be freed and suddenly the second pointer will point then to memory that has been freed.
+```c++
+// create a unique pointer to a new Entity
+std::unique_ptr<Entity> u1_ptr = std::make_unique<Entity>(7, 4);
+u1_ptr->print(); 
+
+// create another unique pointer and assign u1
+std::unique_ptr<Entity>  u2_ptr = move(u1_ptr);
+u2_ptr->print(); // let's check u2_ptr
+
+// this will cause segmentation fault!
+/* u1_ptr->print(); */ 
+// there can be just one unique pointer to the object !!!
+```  
 
 ### 2. shared pointers
-smartpointer that can be copied and actually maintain a reference copy count. Will free Entity only when last pointer reference gets deleted.
+smartpointer that can be copied and actually *maintain a reference copy count*. Will free Entity only when last pointer reference gets deleted.
+
 ```c++
-{ // first scope
-	std::shared_ptr<Entity> anotherPtr;
-	{ // second scope
-		std::shared_ptr<Entity> sharedEntityPtr = std::make_shared<Entity>();
-		anotherPtr = sharedEntityPtr; // ref count = 2
-		// at scope exit ref count become 1
-	}
-	// at scope exit ref count gets 0, Entity object gets freed
+// create a shared pointer to a new Entity
+std::shared_ptr<Entity> s1_ptr = std::make_shared<Entity>(7, 4);
+std::cout << "count: " << s1_ptr.use_count() << std::endl; // let's check s1 count => 1
+
+{ // an innner scope
+    // create another shared pointer and assign s1
+    std::shared_ptr<Entity> s2_ptr = s1_ptr;
+
+    // let's check s1 count
+    std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 2
+
+    // at the inner scope exit ref count gets decremented 
 }
+
+// let's check again 
+std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 1
 ```  
 ### 3. weak pointers
 
-weak pointer doesn't increment the reference count of a shared pointer, so in the following example, when we get out of the inner scope, the memory gets freed. However we can still ask the weak pointer, are you expired? are you still valid?
+weak pointer *doesn't increment the reference count* of a shared pointer, so in the following example, when we get out of the inner scope, the memory gets freed. However we can still ask the weak pointer, are you expired? are you still valid?
 
 ```c++
-{
-	std::weak_ptr<Entity> anotherPtr;
-	{
-		std::shared_ptr<Entity> sharedEntityPtr = std::make_shared<Entity>();
-		anotherPtr = sharedEntityPtr; // ref count remains 1
-		// at scope exit ref count gets 0,  Entity object gets freed
-	}
+std::weak_ptr<Entity> w_ptr; // create a weak pointer
+
+{ // an innner scope
+    // create a shared pointer to a new Entity
+    std::shared_ptr<Entity> s_ptr = std::make_shared<Entity>(7, 4);
+
+    // assign weak pointer the shared pointer
+    w_ptr = s_ptr; // ref count remains 1
+
+    // let's check if weak pointer is itact
+    std::string state = w_ptr.lock() ? "intact" : "gone";
+    std::cout << "state: " << state << std::endl; // => intact
+
+    // at the inner scope exit ref count gets 0, 
+    // Entity object gets freed
 }
+
+// let's check again 
+std::string state = w_ptr.lock() ? "intact" : "gone";
+std::cout << "state: " << state << std::endl; // => gone
 ```  
 
 
@@ -1004,13 +1114,12 @@ int main() {
 }
 ```  
 
-
-> NB: if  String class doeasn't have a copy construstor that makes a deep copy, the m_buffer of 'string' and 'another' will be the very same at the very same block of memory.
+***NB:*** if  String class doeasn't have a copy construstor that makes a deep copy, the m_buffer of 'string' and 'another' will be the very same at the very same block of memory.
 
 ## The arrow operator
 
 If we have an object declared on the stack then to access fields we use ``.`` 
-If we have an object on the heap, created with new, so basically a pointer, we access its fields using ``->``
+If we have an object on the heap, created with new, so basically we have a pointer to that object, we access its fields using ``->``
 Indeed -> is a shortcut of *dereference a pointer and use a method* of the dereferenced object.
 Therefore, when we use the word ``this`` inside the definition of a class, that is the pointer to the actual object we use ``this->`` 
 
@@ -1033,9 +1142,8 @@ int main() {
 }
 ```
 
-> so what *->* operator does is dereference that pointer into a reference type and then call its method or field
-
-you can overload the -> operator in this way. Let's create a scoped pointer  as an example
+So what *->* operator does is dereference that pointer into a reference type and then call its method or field.
+You can overload the -> operator in this way. Let's create a scoped pointer  as an example
 
 ```c++
 
@@ -1088,6 +1196,7 @@ pointArray.push_back(Point(x, y));
 ### Optimizations
 
 There are a couple of optimizations we can do using a dynamic array:
+
 1. if we know in advance how many elements we are gonna put into the array we can "reserve" the memory so the array will be resized just one time and not every time a new element is pushed_back in.
 
 ```c++
@@ -1119,7 +1228,6 @@ the library gets linked at run-time. In windows you can use some function like l
 ## Templates
 
 It's kind of generics, but it can do much more, it's not limited by the generic type system. It's a template specifying the compiler how to create methods, classes, or whatever, at compile time, based on the specific usage. 
-The class *Array* will be compiled if and only when used; type T and size N will be substituted by the type and size we specify when we actually use it (at compile time :P).
 
 ```cpp
 template<typename T, int N>
@@ -1135,10 +1243,12 @@ int main() {
 	array.getSize();
 }
 ```
+The class *Array* will be compiled if and only when used; type T and size N will be substituted by the type and size we specify when we actually use it (at compile time :P).
+
 ## Macros
 
 Macros are pre-processor, pure text replacing, before everything gets compiled.
-A simple example
+A simple example:
 
 ```cpp
 #define WAIT std::cin.get()
@@ -1148,7 +1258,7 @@ int main(){
 }
 ```
 
-a more useful example, using a parameter and a preprocess definition
+A more useful example, using a parameter and a preprocess definition:
 ```cpp
 #ifdef PR_DEBUG // preprocess definition variable
 #define LOG(x) std::cout << x << std::endl
@@ -1163,15 +1273,15 @@ int main(){
 
 ## Namespace
 
-The primary purpose of namespaces is to avoid naming conflicts, i.e. with namespaces we can have symbols (classes, functions, variables) with the same signature in different context
+The primary purpose of namespaces is to **avoid naming conflicts**, i.e. with namespaces we can have symbols (classes, functions, variables) with the same signature in different contexts
 
 ```cpp
 namspace apple {
-	void print(const char* str){}
+	void print(const char* str){//do something}
 }
 
 namspace orange {
-	void print(const char* str){}
+	void print(const char* str){//do something else}
 }
 
 int main(){
@@ -1244,7 +1354,7 @@ int main(){
 }
 ```
 so here I use foreach function to which I pass a vector of elements and a function pointer. The function the pointer points to defines what I want to do with each element of the vector.
-Though we can rewrite this is a more simple way, avoiding to write an extra function, using **lambda**. Lambda is just a normal function except that it is not declared as a normal function.
+Though we can rewrite this in a more simple way, avoiding to write an extra function, using **lambda**. Lambda is just a normal function except that it is not declared as a normal function.
 
 ```cpp
 void foreach(const std::vector<int>& values, void(*func)(int)){
@@ -1296,8 +1406,8 @@ std::vector<int> vec {178, 101, 123, 145, 45, 33};
 auto lambda = [max](int i){ return i < max; };
 auto it = std::find_if(begin(vec), end(vec), lambda);
 (it != end(vec))
-? std::cout << "first element <= then max is: " << *it <<std::endl
-: std::cout << "all element are greater then max." << std::endl;
+? std::cout << "first element <= max is: " << *it <<std::endl
+: std::cout << "all element are > max." << std::endl;
 ```
 
 ## Multidimensional arrays
@@ -1334,7 +1444,9 @@ int** a2d = new int*[50];
 for (int i = 0; i < 50; i++)
 	a2d[i] = new int[50];
 
-// so to delete we need to dolete them one by one
+// so to delete we need to de
+]
+\lete them one by one
 for (int i = 0; i < 50; i++)
 	delete[] a2d[i];
 // and finally
@@ -1620,3 +1732,56 @@ int main() {
 	std::cin.get();
 }
 ```
+
+## CMake
+
+see https://stackoverflow.com/questions/49996260/how-to-use-target-sources-command-with-interface-library
+
+### subdirectories
+```
+root/CMakeLists.txt
+root/Graphs
+root/include
+```
+CMakeLists.txt in *root* folder
+```c++
+cmake_minimum_required(VERSION 3.0.0)
+project(thecherno VERSION 0.1.0)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17")
+
+add_subdirectory(Graphs)
+```
+
+### include 
+```
+Graphs/CMakeLists.txt
+Grphs/include
+```
+CMakeLists.txt in subdir *Graphs*
+```c++
+cmake_minimum_required(VERSION 3.0.0)
+project(Graphs VERSION 0.1.0)
+
+add_executable(Graphs Graphs.cpp)
+
+#target_sources(Graphs PRIVATE log.cpp)
+
+target_include_directories(Graphs PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(Graphs PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+```
+
+### multiple translation units / main entry points
+Graphs/CMakeLists.txt
+Grphs/include
+```c++
+cmake_minimum_required(VERSION 3.0.0)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17")
+
+project(miketests VERSION 0.1.0)
+add_executable(main1 main.cpp anotherTransUnit.cpp)
+add_executable(main2 anotherMain.cpp)
+```
+
+### library
