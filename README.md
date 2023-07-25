@@ -145,6 +145,24 @@ code|meaning | output
 *(ptr++) << *ptr|dereference, return, increment ptr | He
 (*ptr)++ << *ptr|dereference, return, increment | HI
 
+take this example:
+
+```c++
+char str[] = "Hello";
+char* ptr = str;
+std::cout << code << std::endl;
+```
+
+code|meaning | output
+-|-|-
+++*ptr |dereference, increment, return | I
+++(*ptr) |dereference, increment, return | I
+*++ptr|increment ptr, dereference, return | e
+*(++ptr)|increment ptr, dereference, return | e
+*ptr++ << *ptr|dereference, return, increment ptr | He
+*(ptr++) << *ptr|dereference, return, increment ptr | He
+(*ptr)++ << *ptr|dereference, return, increment | HI
+
 
 
 ## References
@@ -1295,7 +1313,7 @@ namspace apple {
 }
 
 namspace orange {
-	void print(const char* str){//do something else}
+	void print(const char* str){//do something else//do something else}
 }
 
 int main(){
@@ -1458,9 +1476,7 @@ int** a2d = new int*[50];
 for (int i = 0; i < 50; i++)
 	a2d[i] = new int[50];
 
-// so to delete we need to de
-]
-\lete them one by one
+// so to delete we need to delete them one by one
 for (int i = 0; i < 50; i++)
 	delete[] a2d[i];
 // and finally
