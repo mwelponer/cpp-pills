@@ -145,24 +145,6 @@ code|meaning | output
 *(ptr++) << *ptr|dereference, return, increment ptr | He
 (*ptr)++ << *ptr|dereference, return, increment | HI
 
-take this example:
-
-```c++
-char str[] = "Hello";
-char* ptr = str;
-std::cout << code << std::endl;
-```
-
-code|meaning | output
--|-|-
-++*ptr |dereference, increment, return | I
-++(*ptr) |dereference, increment, return | I
-*++ptr|increment ptr, dereference, return | e
-*(++ptr)|increment ptr, dereference, return | e
-*ptr++ << *ptr|dereference, return, increment ptr | He
-*(ptr++) << *ptr|dereference, return, increment ptr | He
-(*ptr)++ << *ptr|dereference, return, increment | HI
-
 
 
 ## References
@@ -641,18 +623,6 @@ std::cout << ++ptr << std::endl; // => 2
 *(ptr+3) = 666 // this equals to stackArr[3] = 666
 ```
 
-***NB***: the row arrays do not have any *.size* or *.lenght* operators so: 
-
-1. if you declare the array in the stack use this trick:
-```c
-lenght = sizeof(stackArr) / sizeof(int);
-```
-2. if you declare the array in the heap just do:
-```c
-static const int numOfElements = 10;
-int* heapArr = new[numOfElements];
-```
-
 ***FUN FACT***: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
 
 ### arrays on the heap memory
@@ -680,6 +650,18 @@ public:
 			stackArr[i] = 0;
 	}
 };
+```
+
+***NB***: the row arrays do not have any *.size* or *.lenght* operators so: 
+
+1. if you declare the array in the stack use this trick:
+```c
+lenght = sizeof(stackArr) / sizeof(int);
+```
+2. if you declare the array in the heap just do:
+```c
+static const int numOfElements = 10;
+int* heapArr = new int[numOfElements];
 ```
 
 ### array standard library
@@ -1313,7 +1295,7 @@ namspace apple {
 }
 
 namspace orange {
-	void print(const char* str){//do something else//do something else}
+	void print(const char* str){//do something else}
 }
 
 int main(){
