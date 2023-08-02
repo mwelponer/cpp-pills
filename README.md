@@ -13,7 +13,7 @@ Copyright (C) 2021 Michele Welponer
   * [reasuming](#reasuming)
 - [Static keyword](#static-keyword)
   * [general use](#general-use)
-  * [inside a scope](#inside-a-scope)
+  * [inside a local scope](#inside-a-local-scope)
   * [use in object oriented](#use-in-object-oriented)
   * [another good example of static inside a scope](#another-good-example-of-static-inside-a-scope)
 - [Enums](#enums)
@@ -45,9 +45,9 @@ Copyright (C) 2021 Michele Welponer
 - [Operator overloading](#operator-overloading)
 - [The this keyword](#the-this-keyword)
 - [Smartpointers](#smartpointers)
-  * [1. unique pointers](#1-unique-pointers)
-  * [2. shared pointers](#2-shared-pointers)
-  * [3. weak pointers](#3-weak-pointers)
+  * [unique pointers](#unique-pointers)
+  * [shared pointers](#shared-pointers)
+  * [weak pointers](#weak-pointers)
 - [The copy constructor](#the-copy-constructor)
 - [The arrow operator](#the-arrow-operator)
 - [Dynamic arrays](#dynamic-arrays)
@@ -61,14 +61,46 @@ Copyright (C) 2021 Michele Welponer
 - [Function pointers](#function-pointers)
 - [Lambdas](#lambdas)
 - [Multidimensional arrays](#multidimensional-arrays)
-- [Sorting](#sorting-std-sort)
-- [Type punning](#type-punning)
+- [Sorting std sort](#sorting-std-sort)
+- [type Punning](#type-punning)
 - [Union](#union)
 - [Virtual Destructors](#virtual-destructors)
 - [Casting](#casting)
   * [static cast](#static-cast)
-  * [dynamic cast](#dynamic-cast) 
-- [Singleton](#singleton)
+  * [dynamic cast](#dynamic-cast)
+  * [reinterpret cast](#reinterpret-cast)
+  * [const cast](#const-cast)
+- [lvalues and rvalues](#lvalues-and-rvalues)
+  * [lvalue](#lvalue)
+  * [rvalue](#rvalue)
+- [Logical operators](#logical-operators)
+  * [Logical AND](#logical-and)
+  * [Logical OR](#logical-or)
+  * [Logical NOT](#logical-not)
+- [Bitwise operators](#bitwise-operators)
+  * [Bitwise AND](#bitwise-and)
+  * [Bitwise OR](#bitwise-or)
+  * [Bitwise XOR](#bitwise-xor)
+  * [Bitwise NOT](#bitwise-not)
+  * [Left Shift](#left-shift)
+  * [Right Shift](#right-shift)
+- [CMake](#cmake)
+  * [subdirectories](#subdirectories)
+  * [include](#include)
+  * [multiple translation units / main entry points](#multiple-translation-units---main-entry-points)
+  * [library](#library)
+- [Design patterns](#design-patterns)
+  * [Creational](#creational)
+    + [Singleton](#singleton)
+    + [Factory](#factory)
+    + [Builder](#builder)
+  * [Behavioural](#behavioural)
+    + [Observer](#observer)
+    + [Iterator](#iterator)
+    + [Strategy](#strategy)
+  * [Structural](#structural)
+    + [Facade](#facade)
+    + [Adapter](#adapter)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -1021,7 +1053,7 @@ public:
 
 are **scoped pointers** (created on the stack) that will create and point to objects created on the heap. Once out of the scope the pointer and the pointed objects get automatically deleted. 
 
-### 1. unique pointers
+### unique pointers
 simple type of smarpointer whose created object cannot have more than one pointer reference. 
 **make_unique** will create a new Entity that can have just one pointer reference.
 *You cannot copy unique pointers*: if you have two unique pointers pointing to the same loc of memory and one of them dies, the loc will be freed and suddenly the second pointer will point then to memory that has been freed.
@@ -1039,7 +1071,7 @@ u2_ptr->print(); // let's check u2_ptr
 // there can be just one unique pointer to the object !!!
 ```  
 
-### 2. shared pointers
+### shared pointers
 smartpointer that can be copied and actually *maintain a reference copy count*. Will free Entity only when last pointer reference gets deleted.
 
 ```c++
@@ -1060,7 +1092,7 @@ std::cout << "count: " << s1_ptr.use_count() << std::endl; // let's check s1 cou
 // let's check again 
 std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 1
 ```  
-### 3. weak pointers
+### weak pointers
 
 weak pointer *doesn't increment the reference count* of a shared pointer, so in the following example, when we get out of the inner scope, the memory gets freed. However we can still ask the weak pointer, are you expired? are you still valid?
 
@@ -1197,8 +1229,14 @@ So we declare a dynamic array using:
 ```c++
 #include <vector>
 
-std::vector<int> v {1, 2, 3, 4, 5};
+std::vector<int> v {1, 2, 3, 4, 5}; // ver1
+std::vector<int> v = {1, 2, 3, 4, 5}; // ver2
+std::vector<int> v(3); // size 3, initial value 0
+std::vector<int> v(3, 5); // size 3, initial value 5
 std::vector<Point> pointArray;
+
+// using lambda
+for_each( v.begin(), v.end(), [](int i) { cout << i << endl; } );
 ```
 
 and we add elements to a dynamic array using ``pushback()``:
@@ -1572,6 +1610,7 @@ int main() {
 
 ## Union
 
+A [union](https://en.cppreference.com/w/cpp/language/union) is a special class type that can hold only one of its non-static data members at a time.
 Imagine we have  a Vector2 and a Vector4 and we want to access Vector4 memory parts using Vector2, i.e. treating a Vec4 as a couple of Vec2. 
 
 ```cpp
@@ -1721,28 +1760,131 @@ type punning :P
 removes or add const :P
 
 
-## Singleton
+## lvalues and rvalues
 
-It's just a single instance of a class that you "have around" your code. A singleton is a class that you only intend to have a **single instance** of. In C++ its just a way to organize a bunch of global variables and static functions that may act on those variables.
+### lvalue 
+simply means an object that has an identifiable location in memory (i.e. having an address).
 
-```cpp
-class BetterSingleton {
-public:
-	static BetterSingleton& get(){
-		static BetterSingleton instance;
-		return instance;
-	}
-	
-	void hello() { std::cout << "hello" << std::endl; }
-};
+```c++
+int a; // declare an object of type int: a variable that has a location in memory
+a = 1; // a is therefore an l-value expression
+int b = a; // here a l-value can appear on right
 
-Singleton* Singleton::s_instance = nullptr;
+9 = a; // Error! 9 is an r-value because it is a value, and doesn't have a location in memory, therefore cannot be on the left of the operator =
+```
 
-int main() {
-	Singleton::get().hello();
-	BetterSingleton::get().hello();
-	std::cin.get();
-}
+### rvalue 
+
+A r-value is an expression, that can’t have a value assigned to it, which means r-value can appear on right but not on left hand side of an assignment operator(=)
+
+```c++
+// declare 'a', 'b'
+int a = 1, b;  // objects of type 'int'
+a + 1 = b; // Error! left expression is not a l-value
+ 
+// declare pointer variable 'p', and 'q'
+int *p, *q; // *p, *q are lvalue
+*p = 1; // valid l-value assignment
+p + 2 = 18; // Error! "p + 2" is not an l-value
+q = p + 5; // q is l-value, "p + 5" is an r-value
+*(p + 2) = 18; // dereferencing pointer: expression gives an l-value
+
+ 
+p = &b; // assign pointer p the mem addrs of b
+int arr[20]; // arr[12] is an l-value; equivalent to *(arr+12) Note: arr itself is also an l-value
+&a = p; // Error! &a is an r-value`
+ 
+struct S { int m; };
+struct S obj; // obj and obj.m are l-values
+
+// ptr-> is an l-value; equivalent to (*ptr).m
+// Note: ptr and *ptr are also l-values
+struct S* ptr = &obj;
+```
+
+## Logical operators
+
+used to perform logical operations on boolean expressions. Combine multiple conditions and evaluate the result as either true or false.
+
+### Logical AND
+The logical AND operator (&&) returns true if **both of its operands are true**. It evaluates the left operand first and if it is false, the right operand is not evaluated. If both operands are true, the result is true; otherwise, the result is false.
+
+```c++
+bool a = true;
+bool b = false;
+bool result = a && b;  // result is false
+```
+
+### Logical OR
+The logical OR operator (||) returns true if **at least one of its operands is true**. It evaluates the left operand first and if it is true, the right operand is not evaluated. If either operand is true, the result is true; otherwise, the result is false.
+
+```c++
+bool a = true;
+bool b = false;
+bool result = a || b;  // result is true
+```
+
+### Logical NOT
+The logical NOT operator (!) is a unary operator that negates the value of its operand. If the operand is true, the result is false; if the operand is false, the result is true.
+
+```c++
+bool a = true;
+bool result = !a;  // result is false
+```
+
+## Bitwise operators
+
+Bitwise operators are used to perform operations on individual bits of binary numbers. These operators allow you to manipulate the binary representation of integers at a bit level. There are six bitwise operators in C++:
+
+### Bitwise AND
+The bitwise AND & operator compares the corresponding bits of two operands and returns 1 if **both bits** are 1, otherwise it returns 0. For example:
+
+```c++
+int a = 5; // binary representation: 0101
+int b = 3; // binary representation: 0011
+int result = a & b; // binary representation: 0001 (1 in decimal)
+```
+
+### Bitwise OR
+The bitwise OR | operator compares the corresponding bits of two operands and returns 1 if **at least one** of the bits is 1, otherwise it returns 0. For example:
+
+```c++
+int a = 5; // binary representation: 0101
+int b = 3; // binary representation: 0011
+int result = a | b; // binary representation: 0111 (7 in decimal)
+```
+
+### Bitwise XOR
+The bitwise XOR  ^ operator compares the corresponding bits of two operands and returns 1 if **the bits are different**, otherwise it returns 0. For example:
+
+```c++
+int a = 5; // binary representation: 0101
+int b = 3; // binary representation: 0011
+int result = a ^ b; // binary representation: 0110 (6 in decimal)
+```
+
+### Bitwise NOT
+The bitwise NOT ~ operator is a unary operator that flips the bits of its operand. It returns **the one's complement** of the operand. For example:
+
+```c++
+int a = 5; // binary representation: 0101
+int result = ~a; // binary representation: 1010 (-6 in decimal)
+```
+
+### Left Shift
+The left shift << operator shifts the bits of the left operand to the left by a specified number of positions. The vacant positions are filled with zeros. For example:
+
+```c++
+int a = 5; // binary representation: 0101
+int result = a << 2; // binary representation: 010100 (20 in decimal)
+```
+
+### Right Shift
+The right shift >> operator shifts the bits of the left operand to the right by a specified number of positions. The vacant positions are filled with the sign bit (for signed types) or with zeros (for unsigned types). For example:
+
+```c++
+int a = 5; // binary representation: 0101
+int result = a >> 2; // binary representation: 0001 (1 in decimal)
 ```
 
 ## CMake
@@ -1797,3 +1939,45 @@ add_executable(main2 anotherMain.cpp)
 ```
 
 ### library
+
+ToDo
+
+
+## Design patterns
+
+### Creational
+#### Singleton
+
+It's just a single instance of a class that you "have around" your code. A singleton is a class that you only intend to have a **single instance** of. In C++ its just a way to organize a bunch of global variables and static functions that may act on those variables.
+
+```cpp
+class BetterSingleton {
+public:
+	static BetterSingleton& get(){
+		static BetterSingleton instance;
+		return instance;
+	}
+	
+	void hello() { std::cout << "hello" << std::endl; }
+};
+
+Singleton* Singleton::s_instance = nullptr;
+
+int main() {
+	Singleton::get().hello();
+	BetterSingleton::get().hello();
+	std::cin.get();
+}
+```
+
+#### Factory
+#### Builder
+
+### Behavioural
+#### Observer 
+#### Iterator
+#### Strategy
+
+### Structural
+#### Facade
+#### Adapter
