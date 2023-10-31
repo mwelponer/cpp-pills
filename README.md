@@ -70,6 +70,7 @@ Copyright (C) 2021 Michele Welponer
   * [dynamic cast](#dynamic-cast)
   * [reinterpret cast](#reinterpret-cast)
   * [const cast](#const-cast)
+- [Singleton](#singleton)
 - [lvalues and rvalues](#lvalues-and-rvalues)
   * [lvalue](#lvalue)
   * [rvalue](#rvalue)
@@ -89,20 +90,10 @@ Copyright (C) 2021 Michele Welponer
   * [include](#include)
   * [multiple translation units / main entry points](#multiple-translation-units---main-entry-points)
   * [library](#library)
-- [Design patterns](#design-patterns)
-  * [Creational](#creational)
-    + [Singleton](#singleton)
-    + [Factory](#factory)
-    + [Builder](#builder)
-  * [Behavioural](#behavioural)
-    + [Observer](#observer)
-    + [Iterator](#iterator)
-    + [Strategy](#strategy)
-  * [Structural](#structural)
-    + [Facade](#facade)
-    + [Adapter](#adapter)
+- [Mutex](#mutex)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 ## Pointers
@@ -1388,9 +1379,10 @@ int main(){
 }
 ```
 
-a more useful exmaple can be this:
+a more useful example can be this:
 
 ```cpp
+// this is the callback function
 void printValue(int value){
 	std::cout << value << std::endl;
 }
@@ -1760,6 +1752,50 @@ type punning :P
 removes or add const :P
 
 
+## Singleton
+
+it is basically a single instance of a class that you have around. So in some sense a singleton in c++ acts pretty much like a namespace, as it is a way to organize a bunch of global variables and static functions into a kind of "organized blob".
+
+```c++
+class SingletonExample {
+
+public:
+	// the method to retrieve the single instance
+	static SingletonExample& get() {
+		static SingletonExample instance;
+		return instance;
+	}
+
+	void setStatus() { this->status = 1; }
+	static int getStatus() { return get().status; }
+
+private:
+	int status; // a variable to prove the instance is unique
+	// declare private constructor to prevent the creation of objects
+	SingletonExample() : status(0) {
+		std::cout << "constr" << std::endl;
+	}
+};
+
+int main() {
+	std::cout << SingletonExample::getStatus() << std::endl;
+
+	// multiple references retrieve the very same instance 
+	SingletonExample& se1 = SingletonExample::get();
+	SingletonExample& se2 = SingletonExample::get();
+	auto& se3 = SingletonExample::get();
+
+	std::cout << "s1 " << se1.getStatus() << std::endl;
+	se1.setStatus();
+
+	std::cout << "s1 " << se1.getStatus() << std::endl;
+	std::cout << "s2 " << se2.getStatus() << std::endl;
+	std::cout << "s3 " << se3.getStatus() << std::endl;
+
+	std::cout << SingletonExample::getStatus() << std::endl;
+}
+```
+
 ## lvalues and rvalues
 
 ### lvalue 
@@ -1943,41 +1979,27 @@ add_executable(main2 anotherMain.cpp)
 ToDo
 
 
-## Design patterns
+## Mutex
 
-### Creational
-#### Singleton
+a mutex is a synchronization primitive used in C++ to protect shared resources from concurrent access by multiple threads. It ensures that only one thread can access the protected resource at a time, preventing data races and maintaining data integrity
 
-It's just a single instance of a class that you "have around" your code. A singleton is a class that you only intend to have a **single instance** of. In C++ its just a way to organize a bunch of global variables and static functions that may act on those variables.
+```c++
+#include <iostream>
+#include <thread>
+#include <mutex>
 
-```cpp
-class BetterSingleton {
-public:
-	static BetterSingleton& get(){
-		static BetterSingleton instance;
-		return instance;
-	}
-	
-	void hello() { std::cout << "hello" << std::endl; }
-};
+std::mutex mtx; // Create a mutex object
 
-Singleton* Singleton::s_instance = nullptr;
+void printMessage(const std::string& message) {
+    mtx.lock(); // Acquire the mutex lock
+    std::cout << message << std::endl;
+    mtx.unlock(); // Release the mutex lock
+}
 
 int main() {
-	Singleton::get().hello();
-	BetterSingleton::get().hello();
-	std::cin.get();
+	std::thread t1(printMessage, "Hello from Thread 1!");
+    std::thread t2(printMessage, "Hello from Thread 2!");
+    t1.join();
+    t2.join();
 }
 ```
-
-#### Factory
-#### Builder
-
-### Behavioural
-#### Observer 
-#### Iterator
-#### Strategy
-
-### Structural
-#### Facade
-#### Adapter
