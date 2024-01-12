@@ -27,6 +27,7 @@ int main()
 		<< ", at that address we find " << *ptr2
 		<< " and var is " << var << std::endl; 
 		
+
 	// if now we want to modify the data the pointer points to (e.g. the var variable) 
 	// using the pointer itself then we just use the dereference *pointer
 	*ptr2 = 3;
@@ -58,4 +59,52 @@ int main()
 	// declaration of two pointers on one line
 	// if we write int* x, y then we are declaring x as an int pointer and y as a normal int variable
 	int* x, *y;
+
+
+	std::cout << "\nPointer arithmetics:" << std::endl;
+
+	// these are all **syntax errors**
+	// p*++;
+	// p++*; 
+	// ++p*;
+
+	// the [] array operator is secretly a pointer, so it's somehow like to write
+	// int* b = {3, 0, 7}, but sintattically it's not correct, so we write
+	int b[] = {3, 0, 7};
+	int* p = b;
+
+	switch(4) {
+		case 1:
+			std::cout << *++p << std::endl; // move p, then dereference p -> 0
+			std::cout << *++p << std::endl; // -> 7, [3 0 7]
+			break;
+		case 11:
+			std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
+			std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
+			break;
+		case 2:
+			std::cout << ++*p << std::endl; // dereference p, then increment -> 4
+			std::cout << ++*p << std::endl; // -> 5, [5 0 7]
+			break;
+		case 22:
+			std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
+			std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
+			break;
+		case 3:
+			std::cout << *p++ << std::endl; // dereference p, then move p -> 3
+			std::cout << *p++ << std::endl; // -> 0, [3 0 7]
+			break;
+		case 33:
+			std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
+			std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
+			break;
+		case 4:
+			std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
+			std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
+			break;
+		//default:
+			// code block
+	}
+
+	std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
 }

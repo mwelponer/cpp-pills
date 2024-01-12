@@ -1,5 +1,6 @@
 C++ pills
 ===
+
 Copyright (C) 2021 Michele Welponer
 
 - [Pointers](#pointers)
@@ -23,6 +24,7 @@ Copyright (C) 2021 Michele Welponer
   * [virtual functions for methods overriding](#virtual-functions-for-methods-overriding)
   * [interfaces](#interfaces)
   * [visibility](#visibility)
+  * [struct](#struct)
   * [class header](#class-header)
 - [Arrays](#arrays)
   * [arrays on the stack memory](#arrays-on-the-stack-memory)
@@ -90,6 +92,18 @@ Copyright (C) 2021 Michele Welponer
   * [include](#include)
   * [multiple translation units / main entry points](#multiple-translation-units---main-entry-points)
   * [library](#library)
+- [Design patterns](#design-patterns)
+  * [Creational](#creational)
+    + [Singleton](#singleton-1)
+    + [Factory](#factory)
+    + [Builder](#builder)
+  * [Behavioural](#behavioural)
+    + [Observer](#observer)
+    + [Iterator](#iterator)
+    + [Strategy](#strategy)
+  * [Structural](#structural)
+    + [Facade](#facade)
+    + [Adapter](#adapter)
 - [Mutex](#mutex)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -142,32 +156,62 @@ this will assign/writes 3 (the value pointed by *myPointer*) to *b*
 this will assign/writes 6 to the variable pointed by *myPointer* i.e. *a*.
 
 Increment the value held by the variable pointed by *myPointer*
-```c
-(*myPointer)++;
-```
-first dereference using the *, then increment
+
+``++(*myPointer)`` or ``(*myPointer)++;``
+
+first dereference using the *, then increment. The difference here is the same between ``++i`` and ``i++``
 
 
 ### pointer arithmetic
 
-take this example:
-
 ```c++
-char str[] = "Hello";
+// the [] array operator is secretly a pointer, so it's somehow like to write
+// char* str = "Hello", but sintattically it's not correct, so we write
+char str[] = "Hello"; // and then, once we have an array we can 
 char* ptr = str;
-std::cout << code << std::endl;
 ```
 
-code|meaning | output
--|-|-
-++*ptr |dereference, increment, return | I
-++(*ptr) |dereference, increment, return | I
-*++ptr|increment ptr, dereference, return | e
-*(++ptr)|increment ptr, dereference, return | e
-*ptr++ << *ptr|dereference, return, increment ptr | He
-*(ptr++) << *ptr|dereference, return, increment ptr | He
-(*ptr)++ << *ptr|dereference, return, increment | HI
+``p*++``,  ``p++*`` and ``++p*`` are all **syntax errors**
 
+```cpp
+int b[] = {3, 0, 7};
+int* p = b;
+
+switch(4) {
+	case 1:
+		std::cout << *++p << std::endl; // move p, then dereference p -> 0
+		std::cout << *++p << std::endl; // -> 7, [3 0 7]
+		break;
+	case 11:
+		std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
+		std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
+		break;
+	case 2:
+		std::cout << ++*p << std::endl; // dereference p, then increment -> 4
+		std::cout << ++*p << std::endl; // -> 5, [5 0 7]
+		break;
+	case 22:
+		std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
+		std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
+		break;
+	case 3:
+		std::cout << *p++ << std::endl; // dereference p, then move p -> 3
+		std::cout << *p++ << std::endl; // -> 0, [3 0 7]
+		break;
+	case 33:
+		std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
+		std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
+		break;
+	case 4:
+		std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
+		std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
+		break;
+	//default:
+		// code block
+}
+
+std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
+```
 
 
 ## References
@@ -524,6 +568,8 @@ struct Entity {
 	int x, y; /* public by default */
 };
 ```
+
+### struct
 
 in **structs** if I don't specify the visibility, it will be **public by default**, so like to write *public:* before the declaration of the methods/fileds. 
 
