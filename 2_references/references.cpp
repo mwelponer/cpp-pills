@@ -3,7 +3,7 @@
 /* here if I use int value as argument a new int variable will be created 
  and initialized to what we pass to the function, then inside the 
  function it will be incremented, then it will be destroied outside of the function scope */
-void noIncrement(int value) 
+void increment(int value) 
 {
     value++;
 	std::cout << "inside the function: " << value << std::endl;
@@ -65,8 +65,11 @@ int main(int argc, char **argv)
 
     // now if we want to increment variable a, if we pass the variable (by value)
 	// it will be incremented just inside the function but not outside
-    noIncrement(a);
+    increment(a);
     std::cout << "outside the function: " << a << std::endl;
+
+	increment(ref);
+	std::cout << "outside the function: " << a << std::endl;
     
     // but if we pass the memory address of the variable (by reference)
 	// the variable will be incremented

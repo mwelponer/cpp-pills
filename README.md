@@ -1,7 +1,7 @@
 C++ pills
 ===
-
 Copyright (C) 2021 Michele Welponer
+
 
 - [Pointers](#pointers)
   * [dereference a variable](#dereference-a-variable)
@@ -77,34 +77,20 @@ Copyright (C) 2021 Michele Welponer
   * [lvalue](#lvalue)
   * [rvalue](#rvalue)
 - [Logical operators](#logical-operators)
-  * [Logical AND](#logical-and)
-  * [Logical OR](#logical-or)
-  * [Logical NOT](#logical-not)
 - [Bitwise operators](#bitwise-operators)
-  * [Bitwise AND](#bitwise-and)
-  * [Bitwise OR](#bitwise-or)
-  * [Bitwise XOR](#bitwise-xor)
-  * [Bitwise NOT](#bitwise-not)
-  * [Left Shift](#left-shift)
-  * [Right Shift](#right-shift)
+- [Threads](#threads)
+  * [Mutex](#mutex)
+  * [Condition variables](#condition-variables)
+    + [std::lock_guard vs std::unique_lock](#std--lock-guard-vs-std--unique-lock)
+  * [BOOST library semplification](#boost-library-semplification)
+    + [Lockfree Queue](#lockfree-queue)
+    + [Atomic operations](#atomic-operations)
+- [Standard input](#standard-input)
 - [CMake](#cmake)
   * [subdirectories](#subdirectories)
   * [include](#include)
   * [multiple translation units / main entry points](#multiple-translation-units---main-entry-points)
   * [library](#library)
-- [Design patterns](#design-patterns)
-  * [Creational](#creational)
-    + [Singleton](#singleton-1)
-    + [Factory](#factory)
-    + [Builder](#builder)
-  * [Behavioural](#behavioural)
-    + [Observer](#observer)
-    + [Iterator](#iterator)
-    + [Strategy](#strategy)
-  * [Structural](#structural)
-    + [Facade](#facade)
-    + [Adapter](#adapter)
-- [Mutex](#mutex)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -217,7 +203,8 @@ std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
 ## References
 
 References are like Pointers but less powerful. Reference are just syntax sugar, whatever you can do with references you can also do it using pointers.
-Declare and set a **reference**. & is part of the type
+Declare and set a **reference** using &, is part of the type. When we declare a reference we need to assign reference immediately.
+
 ```c
 int& myRef1 = myVar; // myRef1 now is an alias of myVar
 int& myRef2 = *myPtr; // myRef2 now is an alias of the variable pointed by myPtr*
@@ -236,37 +223,37 @@ If we want to write a function that increments a variable, we can pass that vari
 // de-reference the pointer to get the variable and then increment
 void incrementUsingPointer(int* value) {
 	(*value)++; // dereference first then increment
-    std::cout << "value:" << *value << std::endl;
+    std::cout << "value inside function:" << *value << std::endl;
 }
 // more simply, by reference: int& value means create a
 // reference (alias) named value and make it point exactly 
 // to the same variable we pass
 void incrementUsingReference(int& value){
 	value++;
-	std::cout << "value:" << value << std::endl;
+	std::cout << "value inside function:" << value << std::endl;
 }
 void increment(int value){
 	value++;
-	std::cout << "value:" << value << std::endl;
+	std::cout << "value inside function:" << value << std::endl;
 }
 
 int main(){
 	int a = 5;
 	int& ref = a;
 	
-	incrementUsingPointer(&a); // value:6
+	incrementUsingPointer(&a); // value inside function:6
 	std::cout << a << std::endl; // => 6
 	
-	incrementUsingReference(ref); // value:7
+	incrementUsingReference(ref); // value inside function:7
 	std::cout << a << ref << std::endl; // => 77
 	
-	incrementUsingReference(a); // value:8
+	incrementUsingReference(a); // value inside function:8
 	std::cout << a << ref << std::endl; // => 88
 
-	increment(a); // value:9
+	increment(a); // value inside function:9
 	std::cout << a << ref << std::endl; // => 88
 
-	increment(ref); // value:9
+	increment(ref); // value inside function:9
 	std::cout << a << ref << std::endl; // => 88
 	
 	// and with classes
@@ -286,17 +273,17 @@ int main(){
 
 code | meaning
 -|-
-T* p | declare pointer p of type T
-T& r | declare reference r of type T
+T* p = nullptr; | declare a pointer p of type T, p holds a memory address, for now set to null
+T& r = v; | declare reference r of type T to the variable v, r is now an alias of v
 *p | dereference pointer p i.e. get the data/variable/object pointed by p
-&v | dereference variable v i.e. get the memory address of v
+&v | dereference variable v i.e. get the memory address of v, this address can be assigned to a pointer
 
 
 Examples:
 ```c
 int a = 3; // declare a variable
 int* ptr = nullptr; // declare a pointer
-ptr = &a; // dereference the variable to get the address and set the pointer point to the variable
+ptr = &a; // dereference variable a to get its address and assign it to pointer ptr
 std::cout << *ptr << std::endl; // dereference the pointer to get the data, => 3
 
 int& ref = a; // create a reference i.e. alias of variable a
@@ -339,11 +326,11 @@ void func() {
 	static int i = 0;
 	std::cout << ++i << std::endl;
 }
-// here i is not accessible
-func() // => 1
-func() // => 2
+// outside func() i is not accessible
+func() // first time i is declared and incremented => 1
+func() // second time just incremented => 2
 ```
-First time we call *myFunction* `i` si declared and set. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a function we also guarantee that *i* can be modified only inside the function.
+First time we call *myFunction* `i` is declared, set and incremented. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a function we also guarantee that *i* can be modified only inside the function.
 
 ### use in object oriented
 
@@ -359,7 +346,7 @@ struct Entity {
 ```
 *x* will be unique and shared among all the *Entity* instances. 
 Non-static methods can access static and non-static variables.
-Static methods cannot access non-static variables. 
+***Static methods cannot access non-static variables***. 
 
 ### another good example of static inside a scope
 
@@ -1886,31 +1873,16 @@ struct S* ptr = &obj;
 
 ## Logical operators
 
-used to perform logical operations on boolean expressions. Combine multiple conditions and evaluate the result as either true or false.
-
-### Logical AND
-The logical AND operator (&&) returns true if **both of its operands are true**. It evaluates the left operand first and if it is false, the right operand is not evaluated. If both operands are true, the result is true; otherwise, the result is false.
-
-```c++
-bool a = true;
-bool b = false;
-bool result = a && b;  // result is false
-```
-
-### Logical OR
-The logical OR operator (||) returns true if **at least one of its operands is true**. It evaluates the left operand first and if it is true, the right operand is not evaluated. If either operand is true, the result is true; otherwise, the result is false.
+used to perform logical operations on boolean expressions. Combine multiple conditions and evaluate the result as either true or false. Conditions are evaluated from left to right
+The logical **AND** operator (&&) returns true if *both of its operands are true*.
+The logical **OR** operator (||) returns true if *at least one of its operands is true*. 
+The logical **NOT** operator (!) is a unary operator that *negates the value of its operand*
 
 ```c++
 bool a = true;
 bool b = false;
-bool result = a || b;  // result is true
-```
-
-### Logical NOT
-The logical NOT operator (!) is a unary operator that negates the value of its operand. If the operand is true, the result is false; if the operand is false, the result is true.
-
-```c++
-bool a = true;
+bool result = a && b;  // result false (immediately if a is false)
+bool result = a || b;  // result is true (immediately if a is true)
 bool result = !a;  // result is false
 ```
 
@@ -1918,56 +1890,313 @@ bool result = !a;  // result is false
 
 Bitwise operators are used to perform operations on individual bits of binary numbers. These operators allow you to manipulate the binary representation of integers at a bit level. There are six bitwise operators in C++:
 
-### Bitwise AND
-The bitwise AND & operator compares the corresponding bits of two operands and returns 1 if **both bits** are 1, otherwise it returns 0. For example:
+The bitwise **AND** (&) operator compares the corresponding bits of two operands and returns 1 if *both bits* are 1, otherwise it returns 0
+The bitwise **OR** (|) operator compares the corresponding bits of two operands and returns 1 if *at least one* of the bits is 1, otherwise it returns 0
+The bitwise **XOR** (^) operator compares the corresponding bits of two operands and returns 1 if *the bits are different*, otherwise it returns 0
+The bitwise **NOT** (~) operator is a unary operator that flips the bits of its operand. It returns *the one's complement* of the operand. For example:
 
 ```c++
 int a = 5; // binary representation: 0101
 int b = 3; // binary representation: 0011
 int result = a & b; // binary representation: 0001 (1 in decimal)
-```
-
-### Bitwise OR
-The bitwise OR | operator compares the corresponding bits of two operands and returns 1 if **at least one** of the bits is 1, otherwise it returns 0. For example:
-
-```c++
-int a = 5; // binary representation: 0101
-int b = 3; // binary representation: 0011
 int result = a | b; // binary representation: 0111 (7 in decimal)
-```
-
-### Bitwise XOR
-The bitwise XOR  ^ operator compares the corresponding bits of two operands and returns 1 if **the bits are different**, otherwise it returns 0. For example:
-
-```c++
-int a = 5; // binary representation: 0101
-int b = 3; // binary representation: 0011
 int result = a ^ b; // binary representation: 0110 (6 in decimal)
-```
-
-### Bitwise NOT
-The bitwise NOT ~ operator is a unary operator that flips the bits of its operand. It returns **the one's complement** of the operand. For example:
-
-```c++
-int a = 5; // binary representation: 0101
 int result = ~a; // binary representation: 1010 (-6 in decimal)
 ```
 
-### Left Shift
-The left shift << operator shifts the bits of the left operand to the left by a specified number of positions. The vacant positions are filled with zeros. For example:
+The left shift **<<** operator shifts the bits of the left operand to the left by a specified number of positions. The vacant positions are filled with zeros.  
+***NB***: left shift multiplies the original number by 2
+
+The right shift **>>** operator shifts the bits of the left operand to the right by a specified number of positions. The vacant positions are filled with the sign bit (for signed types) or with zeros (for unsigned types). ***NB***:  right shifts are equivalent to dividing a number by 2
 
 ```c++
 int a = 5; // binary representation: 0101
 int result = a << 2; // binary representation: 010100 (20 in decimal)
-```
-
-### Right Shift
-The right shift >> operator shifts the bits of the left operand to the right by a specified number of positions. The vacant positions are filled with the sign bit (for signed types) or with zeros (for unsigned types). For example:
-
-```c++
-int a = 5; // binary representation: 0101
 int result = a >> 2; // binary representation: 0001 (1 in decimal)
 ```
+
+## Threads
+
+A thread is the smallest unit of execution in a process.
+Multithreading involves the execution of multiple threads concurrently within a single program. It allows multiple threads to run independently, sharing the same resources (memory) but having their own execution contexts (stack and registers).
+Once a thread is created, its function or callable object is executed concurrently with other threads. 
+
+```c++
+
+#import <thread>
+
+void myThreadFunction(){
+	// code to be executed on a separate thread
+}
+
+int main(){
+	std::thread myThread(myThreadFunction); // after this line myThread immediately 
+	//starts to run in parallel (with the main thread)
+
+	// Here we can do other work in the main thread	
+
+	myThread.join(); // tells main thread to wait the end of myThread before proceeding
+	
+	// or let it run independently
+	//myThread.detach();
+
+	// do other stuff here (only once myThreadFunction gets out of scope!)
+}
+```
+
+When multiple threads access shared data concurrently, synchronization mechanisms are necessary to avoid data races. Mutexes, condition variables, and atomic operations are commonly used for synchronization.
+
+### Mutex
+A mutex is a synchronization primitive used in C++ to protect shared resources from concurrent access by multiple threads. It ensures that only one thread can access the protected resource at a time, preventing data races and maintaining data integrity.
+
+```c++
+#include <iostream>  
+#include <thread>  
+#include <mutex> 
+
+std::mutex myMutex; 
+int sharedVariable = 0; 
+
+void myThreadFunction() { 
+	std::lock_guard<std::mutex> lock(myMutex); // Modify sharedVariable safely 
+	sharedVariable++; 
+} 
+int main() { 
+	std::thread myThread1(myThreadFunction); 
+	std::thread myThread2(myThreadFunction); 
+	myThread1.join(); 
+	myThread2.join(); 
+	// sharedVariable is now safely modified by both threads
+```
+
+### Condition variables
+
+`std::condition_variable` is a synchronization primitive in C++ that provides a way for threads to wait for a particular condition to be satisfied. It is often used in conjunction with a `std::mutex` to protect shared data and coordinate the execution of multiple threads
+
+example **Producer/Consumer**:
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <queue>
+
+std::mutex mutex_;
+std::condition_variable condVar;
+std::queue<int> dataQueue;
+
+const int MAX_QUEUE_SIZE = 5;
+
+void producer() {
+    for (int i = 0; i < 10; ++i) {
+        std::unique_lock<std::mutex> lock(mutex_);
+        
+        // Wait until there is space in the queue
+        condVar.wait(lock, [] { return dataQueue.size() < MAX_QUEUE_SIZE; });
+
+        // Produce data and add it to the queue
+        dataQueue.push(i);
+        std::cout << "Produced: " << i << std::endl;
+
+        // Notify consumers that data is available
+        condVar.notify_one();
+    }
+}
+
+void consumer() {
+    for (int i = 0; i < 10; ++i) {
+        std::unique_lock<std::mutex> lock(mutex_);
+        
+        // Wait until there is data in the queue
+        condVar.wait(lock, [] { return !dataQueue.empty(); });
+
+        // Consume data from the queue
+        int data = dataQueue.front();
+        dataQueue.pop();
+        std::cout << "Consumed: " << data << std::endl;
+
+        // Notify producer that space is available
+        condVar.notify_one();
+    }
+}
+
+int main() {
+    std::thread producerThread(producer);
+    std::thread consumerThread(consumer);
+
+    producerThread.join();
+    consumerThread.join();
+}
+``` 
+
+example **Thread Synchronization**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+std::mutex mutex_;
+std::condition_variable condVar;
+bool dataReady = false;
+
+void producer() {
+    std::this_thread::sleep_for(std::chrono::seconds(2)); // Simulate work
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        dataReady = true;
+    }
+    condVar.notify_one();
+}
+
+void consumer() {
+    {
+        std::unique_lock<std::mutex> lock(mutex_);
+        condVar.wait(lock, [] { return dataReady; });
+        // Do something with the data
+        std::cout << "Consumed data." << std::endl;
+    }
+}
+
+int main() {
+    std::thread producerThread(producer);
+    std::thread consumerThread(consumer);
+
+    producerThread.join();
+    consumerThread.join();
+}
+```
+
+#### std::lock_guard vs std::unique_lock
+
+-   If you need a simple and concise way to lock and unlock a mutex within a scope, and no manual unlocking is required, use `std::lock_guard`
+-   If you need more flexibility, such as manual unlocking, deferred locking, or using the lock with condition variables, use `std::unique_lock`
+    
+The choice between `std::lock_guard` and `std::unique_lock` depends on the specific requirements of your code and the level of control you need over the associated mutex.
+
+### BOOST library semplification
+
+Example **Mutex**
+
+```c++
+#include <boost/thread.hpp>
+
+boost::mutex myMutex;
+int sharedVariable = 0;
+
+void myThreadFunction() {
+    boost::unique_lock<boost::mutex> lock(myMutex);
+    sharedVariable++; // Modify sharedVariable safely
+}
+
+int main() {
+    boost::thread myThread1(myThreadFunction);
+    boost::thread myThread2(myThreadFunction);
+    myThread1.join();
+    myThread2.join();
+}
+```
+
+#### Lockfree Queue 
+
+Example **Producer/Consumer**
+
+Boost provides a lock-free queue implementation, removing the need for explicit locking and unlocking when accessing the shared data structure.
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <boost/lockfree/queue.hpp>
+
+const int MAX_QUEUE_SIZE = 5;
+boost::lockfree::queue<int> dataQueue(MAX_QUEUE_SIZE);
+
+void producer() {
+    for (int i = 0; i < 10; ++i) {
+        while (!dataQueue.push(i)) {
+            // Queue is full, spin-wait or implement backoff strategy
+        }
+        std::cout << "Produced: " << i << std::endl;
+    }
+}
+
+void consumer() {
+    int data;
+    while (true) {
+        while (dataQueue.pop(data)) {
+            // Process the consumed data
+            std::cout << "Consumed: " << data << std::endl;
+        }
+        // Queue is empty, spin-wait or implement backoff strategy
+    }
+}
+
+int main() {
+    std::thread producerThread(producer);
+    std::thread consumerThread(consumer);
+
+    producerThread.join();
+    consumerThread.join();
+
+    return 0;
+}
+```
+
+#### Atomic operations
+
+The `boost::atomic` library provides atomic operations, which can be used to perform operations on variables in a way that is guaranteed to be atomic and avoid data races.  Atomic operations are guaranteed to be executed as a single uninterruptable operation and are often implemented in a lock-free manner, making them suitable for scenarios where lock contention might be a concern. 
+Atomic operations are typically used for simple, low-level operations on shared variables without the need for explicit locking.
+
+Example **Atomic Operation** 
+
+```cpp
+#include <boost/atomic.hpp>
+
+boost::atomic<int> atomicVariable(0);
+
+void myThreadFunction() {
+    atomicVariable.fetch_add(1);
+}
+```
+
+## Standard input
+
+`std::cin.get()` is a member function of the `cin` object, which is an instance of the `istream` class. This function is used to read a single character from the standard input 
+
+```c++
+#include  <iostream>
+//...
+char ch;
+std::cout << "Enter a character: "; 
+
+ch = std::cin.get(); // to read any char (including spaces and new line chars)
+ch = std::cin << std::ws >> ch // read char (ignoring leading whitespace)
+
+"You entered: " << ch << std::endl;
+//...
+```
+
+`std::cin`  is also used to read words and strings 
+
+```c++
+std::string input; 
+std::cout << "Enter a word: "; 
+
+std::cin >> input; // to read a single word (sequence of chars without spaces)
+std::getline(std::cin, input); // to read a whole line (until a newline character is encountered. It discards the newline character and stores the entire line)
+
+std::cout << "You entered: " << input << std::endl;
+```
+
+
+
+
+
+
+
+
 
 ## CMake
 
@@ -2025,27 +2254,3 @@ add_executable(main2 anotherMain.cpp)
 ToDo
 
 
-## Mutex
-
-a mutex is a synchronization primitive used in C++ to protect shared resources from concurrent access by multiple threads. It ensures that only one thread can access the protected resource at a time, preventing data races and maintaining data integrity
-
-```c++
-#include <iostream>
-#include <thread>
-#include <mutex>
-
-std::mutex mtx; // Create a mutex object
-
-void printMessage(const std::string& message) {
-    mtx.lock(); // Acquire the mutex lock
-    std::cout << message << std::endl;
-    mtx.unlock(); // Release the mutex lock
-}
-
-int main() {
-	std::thread t1(printMessage, "Hello from Thread 1!");
-    std::thread t2(printMessage, "Hello from Thread 2!");
-    t1.join();
-    t2.join();
-}
-```
