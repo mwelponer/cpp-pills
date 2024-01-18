@@ -1347,6 +1347,59 @@ int main(){
 }
 ```
 
+It is common practice to use macros to add custom debugging or validation checks:
+
+```c++
+#include <iostream>
+
+// Custom assert macro
+#define MY_ASSERT(condition) \
+    do { \
+        if (!(condition)) { \
+            std::cerr << "Assertion failed: " << #condition << " in " << __FILE__ << " at line " << __LINE__ << std::endl; \
+            std::terminate(); \
+        } \
+    } while (false)
+
+int main() {
+    int x = 5;
+    MY_ASSERT(x == 5); // Use the custom assert macro
+
+    std::cout << "Program continues after the assertion check." << std::endl;
+}
+```
+
+***NB***: here the macro is wrapped in a `do { ... } while (false)` block to allow the use of multiple statements within the condition, ensuring proper scoping. 
+
+Example:
+```c++
+#define MY_ASSERT(condition) \ 
+	if (!(condition)) { \ 
+		std::cerr << "Assertion failed: " << #condition << std::endl; \ 
+		std::terminate(); \ 
+	}
+
+// Use the custom assert macro with multiple statements  
+if (x == 5) 
+	MY_ASSERT(x > 0); 
+else  
+	do_something_else();
+```
+
+the expanded code would look like this:
+
+```cpp
+if (x == 5) 
+	if (!(x > 0)) { 
+		std::cerr << "Assertion failed: " << std::endl; 
+		std::terminate(); 
+	} 
+	else 
+		do_something_else();
+```
+
+`do { ... } while (false)` construct is commonly used in macros to ensure proper behavior in complex statements
+
 ## Namespace
 
 The primary purpose of namespaces is to **avoid naming conflicts**, i.e. with namespaces we can have symbols (classes, functions, variables) with the same signature in different contexts
@@ -2190,7 +2243,44 @@ std::getline(std::cin, input); // to read a whole line (until a newline characte
 std::cout << "You entered: " << input << std::endl;
 ```
 
+## Input file stream
 
+use the `<filesystem>` library to work with file and directory paths, including obtaining the current working directory. 
+
+```c++
+#include <filesystem>
+
+// Get the current working directory 
+std::filesystem::path currentPath = std::filesystem::current_path();
+```
+
+use the `std::ifstream` class from the `<fstream>` header to check if a file exists. Use `getline`(stream, line) to update the current line from the file stream 
+
+
+```c++
+#include <fstream>
+
+// ...
+std::string filename = "example.txt";
+std::ifstream fileStream(filename); // Create an ifstream object
+
+// Check if the file is open, which indicates that it exists
+if (fileStream.is_open()) {
+    std::cout << "File exists." << std::endl;
+    
+    // You can proceed to read from or write to the file here if needed
+    std::string line;
+	while(getline(stream, line)) {
+	    if (line.find("somethingToSearch") != std::string::npos){
+			// somethingToSearch has been found
+		}
+	}    
+   
+    fileStream.close(); // Close the file after using it
+} else { 
+	std::cout << "File does not exist." << std::endl; 
+}
+```
 
 
 
@@ -2251,6 +2341,6 @@ add_executable(main2 anotherMain.cpp)
 
 ### library
 
-ToDo
+ToDo!
 
 
