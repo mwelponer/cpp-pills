@@ -199,6 +199,8 @@ switch(4) {
 std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
 ```
 
+***NB***: if you are asking yourself where a pointer is stored, the answer is anywhere in the memory, as a pointer is just an integer variable holding the memory address of the variable it is pointing to. If you are curious to know the memory address of a pointer `ptr` you can use dereference `&ptr` or the function `std::addressof(ptr);`
+
 
 ## References
 
