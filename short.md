@@ -1,6 +1,6 @@
 C++ in short
 ==========
-Copyright (C) 2024 Michele Welponer
+Copyright (C) 2021 Michele Welponer
 
 - [Pointers](#pointers)
   * [Pointers arithmetic](#pointers-arithmetic)
@@ -20,6 +20,7 @@ Copyright (C) 2024 Michele Welponer
   * [outside class/struct](#outside-class-struct-1)
   * [with pointers](#with-pointers)
   * [in object oriented](#in-object-oriented-1)
+- [Operator overloading](#operator-overloading)
 - [Logical operators](#logical-operators)
 - [Bitwise operators](#bitwise-operators)
 - [Templates](#templates)
@@ -35,33 +36,36 @@ Copyright (C) 2024 Michele Welponer
   * [std array](#std-array)
   * [dynamic arrays std vector](#dynamic-arrays-std-vector)
   * [Bitset](#bitset)
-- [Sorting](#sorting)
 - [Iterators](#iterators)
-  * [searching functions](#searching-functions)
+- [algorithm header](#algorithm-header)
+  * [std sort](#std-sort)
+  * [std lower and upper bound](#std-lower-and-upper-bound)
+  * [std find](#std-find)
+  * [std equal](#std-equal)
 - [Math](#math)
   * [max and min](#max-and-min)
   * [integer division](#integer-division)
-- [Deque](#deque)
-- [Stack std stack](#stack-std-stack)
-- [Queue  std queue](#queue--std-queue)
-- [Set](#set)
-  * [unordered set](#unordered-set)
-  * [set](#set)
-- [Map](#map)
+- [Data structures](#data-structures)
+  * [Deque](#deque)
+  * [Stack std stack](#stack-std-stack)
+  * [Queue  std queue](#queue--std-queue)
+  * [Set](#set)
+    + [unordered set](#unordered-set)
+    + [std set](#std-set)
+  * [Map](#map)
   * [unordered map](#unordered-map)
     + [sorting unordered_map](#sorting-unordered-map)
-  * [map](#map)
-- [Priority queue or maxHeap std queue](#priority-queue-or-maxheap-std-queue)
-- [Linkedlists std list](#linkedlists-std-list)
-- [Tuples std tuple](#tuples-std-tuple)
-- [Pairs std pair](#pairs-std-pair)
-- [Equal std algorithm](#equal-std-algorithm)
-- [Singleton](#singleton)
-- [Binarytree](#binarytree)
-  * [BFS](#bfs)
-  * [stackDFS](#stackdfs)
-  * [recursiveDFS](#recursivedfs)
-- [Trie](#trie)
+    + [std map](#std-map)
+  * [Priority queue or maxHeap std queue](#priority-queue-or-maxheap-std-queue)
+  * [Linkedlists std list](#linkedlists-std-list)
+  * [Tuples std tuple](#tuples-std-tuple)
+  * [Pairs std pair](#pairs-std-pair)
+- [Custom data structures](#custom-data-structures)
+  * [Binarytree](#binarytree)
+    + [BFS](#bfs)
+    + [stackDFS](#stackdfs)
+    + [recursiveDFS](#recursivedfs)
+  * [Trie](#trie)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -425,6 +429,8 @@ struct Entity {
 
 #### singleton
 
+it is basically a single instance of a class that you have around. So in some sense a singleton in c++ acts pretty much like a namespace, as it is a way to organize a bunch of global variables and static functions into a kind of "organized blob".
+
 ```cpp
 class Singleton {
 private:
@@ -454,6 +460,99 @@ const variables become constant, not supposted to be modified, e.g. `const int M
 Declaring an object const ( i.e. when I pass by const reference an object to a function e.g. `func(const Entity& e)`), I will be able to call only its const methods. Const methods promise not to modify fields e.g. Entity `string const getName(){}` will not modify `name`.
 **NB**: const objects cannot call non-const methods, so cannot modfy fields
 **NB**: if I declare a field mutable then I can still modify its value inside a const method
+
+## Operator overloading
+
+``+``  ``-``  ``*``  ``/``  ``%``  ``^``  ``&``  ``|``  ``~``  ``!``  ``=``  ``<``  ``>``  ``+=``  ``-=``  ``*=`` ``/=``  ``%=``  ``^=``  ``&=``  ``|=``  ``<<``  ``>>``  ``>>=``  ``<<=``  ``==``  ``!=``  ``<=``  ``>=``  ``<=>``  ``&&``  ``||``  ``++``  ``--``  ``,``  ``->*``  ``->``  ``( )``  ``[ ]``
+
+Operators are just functions! All these c++ operators can be overloaded, i.e. definer/change the behaviour of the operator in the program.
+To overload an operator, e.g. the operator "@" we just write the word *operator* followed by the operator we want to overload @, then we define the function normally with its parameters.
+
+
+**example** of overloading opertor "**<<**" to print a standard `std::vector<T>` object
+
+```cpp
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+  int size = vec.size();
+
+  stream << "[";
+  for (int i = 0; i < size; i++)
+    i == size-1 ? os << vector[i] : os << vector[i] << ", ";
+  os << "]";
+
+  return os;
+}
+```
+
+**example** of overloading opertor "**<<**" to print a custom `vector2<T>` object
+
+`vector2.h` file:
+
+```cpp
+#pragma once
+#include <iostream>
+
+struct vector2 {
+    float x, y;
+    vector2(float x = 0, float y = 0) : 
+        x(x), y(y) {}
+};
+
+// Declare the operator<< overloading function
+std::ostream& operator<<(std::ostream& os, const vector2& vec);
+```
+
+`vector2.cpp` file:
+
+```cpp
+#include "vector2.h"
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const vector2<T>& vec) {
+    os << "vector2(" << vec.x << ", " << vec.y << ")";
+    return os;
+}
+```
+
+Usage:
+
+```cpp
+#include "vector2.h"
+
+int main() {
+    vector2 v(3.0f, 4.0f);
+    std::cout << v << std::endl;
+}
+```
+
+**example** of overloading operator "**+**" to define how to add two Vector2 objects 
+
+```c++
+struct Vector2 {
+    float x, y;
+    
+    Vector2(float x, float y) : x(x), y(y) {}
+
+    // here is how we overload the + operator
+    Vector2 operator+(const Vector2& other) const {
+        return Vector2(x + other.x, y + other.y);
+    }
+};
+```
+
+**example** of overloading of operator "**new**", to define what to do each time the word new is used: keep track of heap allocation count, show the quantity of heap memory allocated
+
+```cpp
+static uint32_t s_AllocCount = 0;
+void* operator new(size_t size){
+    s_AllocCount++;
+    std::cout << "Allocating " << size << " bytes\n";
+    return malloc(size);
+}
+std::cout << s_AllocCount << " allocations\n";
+```
+
 
 ## Logical operators
 
@@ -923,55 +1022,13 @@ cout << (a|b) << "\n"; // 1011111110
 cout << (a^b) << "\n"; // 1001101110
 ```
 
-## Sorting
-
-ref. en.cppreference.com/w/cpp/algorithm/sort
-
-sorting a simple array
-
-```cpp
-int n = 7; // array size
-int a[] = {4,2,5,3,5,8,3};
-sort(a, a+n);
-```
-
-here we just sort a simple vector of elements
-```cpp
-#include <algorithm>
-std::vector<int> values = {3, 5, 1, 4, 2};
-std::sort(values.begin(), values.end()); // 1 2 3 4 5
-std::sort(values.rbegin(), values.rend()); // 5 4 3 2 1
-```
-
-sorting a string
-
-```cpp
-string s = "monkey";
-sort(s.begin(), s.end());
-```
-
-sorting classes based on some kind of comparison
-```cpp
-bool compare(Man& m1, Man& m2){
-    return m1.age() < m2.age();
-}
-std::vector<Man> v = {mike, alice, bob};
-sort(v.begin(), v.end(), compare);
-```
-if we want to provide some kind of way to sort providing it with a **lambda function**
-
-```cpp
-std::sort(values.begin(), values.end(), std::greater<int>()); // > 5 4 3 2 1
-std::sort(values.begin(), values.end(), [](int a, int b){ return a < b; }); // > 1 2 3 4 5
-std::sort(values.begin(), values.end(), [](int a, int b){ return a > b; }); // > 5 4 3 2 1
-```
-
 ## Iterators
 
 An iterator is a variable that points to an element in a data structure, often the iterators **begin** and **end** define a range that contains all elements in the data structure.  Begin points to the first element in the data structure, End points to the position after the last element.
 
 ```cpp
 #include <algorithm>
+
 std::sort(v.begin(), v.end()); // vector sort
 std::reverse(a, a+n); // array reverse
 std::random_shuffle(a, a+n) array shuffle
@@ -984,30 +1041,109 @@ auto it = s.find(x);
 if (it == s.end()) // x is not found
 ```
 
-### searching functions
+## algorithm header
 
-The C++ standard library contains the following functions that are based on **binary search** and work in logarithmic time:
 
-**lower_bound** returns a pointer to the first array element whose value is at least x.
-**upper_bound** returns a pointer to the first array element whose value is larger than x.
-**equal_range** returns both above pointers as a Pair (p_lo, p_up)
-**find** returns an iterator (pointer) to the searched element. If x is not found, the iterator will be end.
-
-``NB``: If there is no such element, both functions return a pointer that points to the element after the last array element! i.e. end()
+### std sort 
 
 ```cpp
-int arr[] = {1, 2, 3, 5};
-int size = sizeof(arr)/sizeof(int);
-// ptr to the found element - ptr to the start of the array
-auto it = std::lower_bound(arr, arr + size, 3) - arr;
-if (it < size)
-    std::cout << "index: " << it << std::endl;
-    
-std::set<int> se{3, 47, 1, 3};
-auto it = std::find(se.begin(), se.end(), 2);
-if( it != se.end() )
-    std::cout << "found!" << std::endl;
+#include <algorithm>
+
+// sort an array
+int n = 7; // array size
+int a[] = {4,2,5,3,5,8,3};
+std::sort(a, a+n);
+
+// sort a vector of primitives
+std::vector<int> values = {3, 5, 1, 4, 2};
+std::sort(values.begin(), values.end()); // 1 2 3 4 5
+std::sort(values.rbegin(), values.rend()); // 5 4 3 2 1
+
+// using lambda
+std::sort(values.begin(), values.end(), std::greater<int>()); // > 5 4 3 2 1
+std::sort(values.begin(), values.end(), [](int a, int b){ return a < b; }); // > 1 2 3 4 5
+std::sort(values.begin(), values.end(), [](int a, int b){ return a > b; }); // > 5 4 3 2 1
+
+// sort a string
+string s = "monkey";
+sort(s.begin(), s.end());
+
+// sort a vector of custom objects
+bool compare(Man& m1, Man& m2){
+    return m1.age() < m2.age();
+}
+std::vector<Man> v = {mike, alice, bob};
+sort(v.begin(), v.end(), compare);
 ```
+
+
+### std lower and upper bound
+
+the following functions that are based on **binary search** and work in O(logn) time:
+
+- **std::lower_bound** returns an iterator pointing to the first array element whose value is at least x.
+- **std::upper_bound** returns a iterator pointing to the first array element whose value is greater than x.
+- **std::equal_range** returns both l.b. and u.b. as a pair 
+
+**NB**: for each of these functions, if there is no such element, a pointer that points to the element after the last element is returned! i.e. end()
+
+```cpp
+#include <algorithm>
+
+int main() {
+    // Array search with std::lower_bound
+    int arr[] = {1, 2, 3, 5};
+    int size = sizeof(arr) / sizeof(int);
+    auto index = std::lower_bound(arr, arr + size, 3) - arr;
+    if (index < size)
+        std::cout << "index: " << index << std::endl;
+    else
+        std::cout << "Not found" << std::endl;
+}
+```
+
+### std find
+
+**std::find** returns an iterator (pointer) to the searched element if found otherwise end()
+
+```cpp
+#include <algorithm>
+#include <set>
+
+int main() {
+    // Set search with std::find
+    std::set<int> se{3, 47, 1, 3};
+    auto it = std::find(se.begin(), se.end(), 2);
+    if (it != se.end())
+        std::cout << "found!" << std::endl;
+    else
+        std::cout << "Not found" << std::endl;
+}
+```
+
+### std equal
+
+used to check whether the elements in two ranges are equal. It compares the elements in the specified ranges using the equality operator (`==`)
+
+```cpp
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+int main() {
+    std::vector<int> vec1 = {1, 2, 3, 4, 5};
+    std::vector<int> vec2 = {1, 2, 3, 4, 5};
+
+    bool areEqual = std::equal(vec1.begin(), vec1.end(), vec2.begin());
+
+    if (areEqual) {
+        std::cout << "The vectors are equal." << std::endl;
+    } else {
+        std::cout << "The vectors are not equal." << std::endl;
+    }
+}
+```
+
 
 ## Math
 
@@ -1032,7 +1168,9 @@ To solve just cast one of the two operands to float
 printf("1/2 = %f", (float)(1/(float)2)); // now it returns 0.500000
 ```
 
-## Deque
+## Data structures
+
+### Deque
 
 A deque is a dynamic array whose size can be efficiently changed at both ends. Adding and removing elements take O (1) time on average at both ends.
 
@@ -1049,7 +1187,7 @@ std::cout << d.back() << std::endl;
 ```
 
 
-## Stack std stack
+### Stack std stack
 i.e. ``std::stack``
 
 A stack is a data structure that provides two O (1) time operations: adding an element to the top, and removing an element from the top. It is only possible to access the top element of a stack.
@@ -1085,7 +1223,8 @@ s.empty()
 s.swap(stack2)
 ```
 
-## Queue  std queue
+### Queue  std queue
+
 i.e. ``std::queue``
 
 A queue also provides two O (1) time operations: adding an element to the end of the queue, and removing the first element in the queue. It is only possible to access the first and last element of a queue.
@@ -1118,13 +1257,13 @@ q1.swap(q2);
 
 https://www.geeksforgeeks.org/deque-cpp-stl/?ref=lbp
 
-## Set 
+### Set
+
 A data structure that maintains a collection of elements
 
-### unordered set
-i.e. ``std::unordered_set``
+#### unordered set
 
-https://www.geeksforgeeks.org/unordered_set-in-cpp-stl/
+i.e. ``std::unordered_set``
 
 unordered_set use hasing, and its operations work in O (1) time on average
 
@@ -1155,20 +1294,20 @@ hs.size()
 hs.empty() // boolean check if it is empty
 ```
 
-### set 
+#### std set
+
 i.e. ``std::set``
 
 based on a balanced binary tree, its operations work in O(logn) time on average
 
-## Map
+
+### Map
 
 a generalized array that consists of key-value-pairs elements.
 
 ### unordered map
 
 i.e. ``std::unordered_map``
-
-https://www.geeksforgeeks.org/unordered_map-in-cpp-stl/?ref=gcse
 
 unordered_map use hashing, and its operations work in O (1) time on average
 
@@ -1214,20 +1353,19 @@ int cmpV(pair<int, int> a, pair<int, int> b){
 sort(myVec.begin(), myVec.end(), cmpV);
 ```
 
-### map
+#### std map
 
 i.e. ``std::map``
+
 based on a balanced binary tree, its operations work in O(logn) time on average
 
-## Priority queue or maxHeap std queue
+### Priority queue or maxHeap std queue
 i.e. priority queue, ``std::priority_queue`` by default is a maxheap. 
 
 A priority queue maintains a set of elements. The supported operations are insertion and, retrieval and removal of the maximum element. Insertion and removal take O (log n ) time,
 and retrieval takes O (1) time
 
-``NB``: For the minheap push() negative values and negate top().
-
-https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/?ref=lbp
+**NB**: For the minheap push() negative values and negate top().
 
 ```cpp
 #include <queue>
@@ -1257,7 +1395,7 @@ pq.pop()
 pq.size()
 ```
 
-``NB``: nice way to initialize a heap, given an array/vector in $O(n)$ using *heapify*. This is the trick:
+**NB**: nice way to initialize a heap, given an array/vector in O(n) using *heapify*. This is the trick:
 
 ```cpp
 // with an array
@@ -1291,9 +1429,9 @@ public:
 }
 ```
 
-## Linkedlists std list
+### Linkedlists std list
+
 i.e. ``std::list``
-https://www.geeksforgeeks.org/list-cpp-stl/?ref=lbp
 
 is a data structure that consists of a sequence of elements, each connected to the next one through pointers. Unlike arrays, linked lists do not have a fixed size, and elements can be dynamically allocated and deallocated. The basic building block of a linked list is a node, and each node contains data and a pointer/reference to the next node in the sequence
 
@@ -1346,10 +1484,7 @@ myList.sort(); // Sorts the elements in the list in ascending order
 myList1.merge(myList2); // Merges two sorted lists into one sorted list
 ```
 
-
-
-## Tuples std tuple
-https://www.geeksforgeeks.org/tuples-in-c/
+### Tuples std tuple
 
 A tuple is an object that can hold a number of elements. The elements of the same tuple can be at the same time of different data types.
 
@@ -1368,7 +1503,7 @@ tie(i_val, ch_val, f_val) = tu; // without ignore
 tie(i_val,ignore,f_val) = tu; // ignoring char value
 ```
 
-## Pairs std pair
+### Pairs std pair
 
 i.e. ``std::pair``
 
@@ -1391,86 +1526,20 @@ int a, b;
 tie(a, b) = pr;
 ```
 
-## Equal std algorithm
-
-used to check whether the elements in two ranges are equal. It compares the elements in the specified ranges using the equality operator (`==`)
-
-```cpp
-#include <iostream>
-#include <algorithm>
-#include <vector>
-
-int main() {
-    std::vector<int> vec1 = {1, 2, 3, 4, 5};
-    std::vector<int> vec2 = {1, 2, 3, 4, 5};
-
-    bool areEqual = std::equal(vec1.begin(), vec1.end(), vec2.begin());
-
-    if (areEqual) {
-        std::cout << "The vectors are equal." << std::endl;
-    } else {
-        std::cout << "The vectors are not equal." << std::endl;
-    }
-}
-```
-
-## Singleton
-
-it is basically a single instance of a class that you have around. So in some sense a singleton in c++ acts pretty much like a namespace, as it is a way to organize a bunch of global variables and static functions into a kind of "organized blob".
-
-```c++
-class SingletonExample {
-
-public:
-    // the method to retrieve the single instance
-    static SingletonExample& get() {
-        static SingletonExample instance; // first time get() is called instance is created
-        return instance;
-    }
-
-    void setStatus() { this->status = 1; }
-    static int getStatus() { return get().status; }
-
-private:
-    int status; // a variable to prove the instance is unique
-    // declare private constructor to prevent the creation of objects
-    SingletonExample() : status(0) {
-        std::cout << "constr" << std::endl;
-    }
-};
-
-int main() {
-    std::cout << SingletonExample::getStatus() << std::endl;
-
-    // multiple references retrieve the very same instance 
-    SingletonExample& se1 = SingletonExample::get();
-    SingletonExample& se2 = SingletonExample::get();
-    auto& se3 = SingletonExample::get();
-
-    std::cout << "s1 " << se1.getStatus() << std::endl;
-    se1.setStatus();
-
-    std::cout << "s1 " << se1.getStatus() << std::endl;
-    std::cout << "s2 " << se2.getStatus() << std::endl;
-    std::cout << "s3 " << se3.getStatus() << std::endl;
-
-    std::cout << SingletonExample::getStatus() << std::endl;
-}
-```
-
-## Binarytree
+## Custom data structures
+### Binarytree
 
 A tree with max 2 children. 
 
 - **depth**: tree root with no children has depth 1
 - **height**: tree root with no children has height 0
 - **balanced**: 
-	- height of left subt and height of right subt do not differ more then 1
+    - height of left subt and height of right subt do not differ more then 1
      - left subt is balanced and right subt is balanced
 - **Binary Search Tree**:
-	- the left subt contains only nodes with keys  *less than*  the node's key
-	- the right subt contains only nodes with keys  *greater than* the node's key.
-	- both the left and right subt must also be BST
+    - the left subt contains only nodes with keys  *less than*  the node's key
+    - the right subt contains only nodes with keys  *greater than* the node's key.
+    - both the left and right subt must also be BST
 
 ```cpp
 struct TreeNode {
@@ -1492,7 +1561,7 @@ struct TreeNode {
 };
 ```
 
-### BFS
+#### BFS
 visiting in BFS / levelorder
 
 ```cpp
@@ -1518,7 +1587,7 @@ void  printLevelOrder(TreeNode* root) {
 }
 ```
 
-### stackDFS
+#### stackDFS
 visiting in DFS using a stack gives **pre-order**
 
 ```cpp
@@ -1539,7 +1608,7 @@ void  printPreOrder(TreeNode* root) {
 }
 ```
 
-### recursiveDFS
+#### recursiveDFS
 visiting in DFS using recursion can give **(pre/in/post)-order**
 
 ```cpp
@@ -1569,7 +1638,7 @@ void  printPostOrder(TreeNode* root) {
 }
 ```
 
-## Trie
+### Trie
 i.e. prefix tree
 
 ```cpp
