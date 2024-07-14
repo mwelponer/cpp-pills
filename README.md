@@ -81,10 +81,10 @@ Copyright (C) 2021 Michele Welponer
 - [Threads](#threads)
   * [Mutex](#mutex)
   * [Condition variables](#condition-variables)
-    + [std::lock_guard vs std::unique_lock](#std--lock-guard-vs-std--unique-lock)
+  + [std::lock_guard vs std::unique_lock](#std--lock-guard-vs-std--unique-lock)
   * [BOOST library semplification](#boost-library-semplification)
-    + [Lockfree Queue](#lockfree-queue)
-    + [Atomic operations](#atomic-operations)
+  + [Lockfree Queue](#lockfree-queue)
+  + [Atomic operations](#atomic-operations)
 - [Standard input](#standard-input)
 - [Input file stream](#input-file-stream)
 - [CMake](#cmake)
@@ -226,7 +226,7 @@ If we want to write a function that increments a variable, we can pass that vari
 // de-reference the pointer to get the variable and then increment
 void incrementUsingPointer(int* value) {
 	(*value)++; // dereference first then increment
-    std::cout << "value inside function:" << *value << std::endl;
+  std::cout << "value inside function:" << *value << std::endl;
 }
 // more simply, by reference: int& value means create a
 // reference (alias) named value and make it point exactly 
@@ -423,7 +423,7 @@ Example of a **simple class**
 class Entity {
 private:
 	std::string m_name;
-    int m_age;
+  int m_age;
 public:
 	Entity(){} 
 	const std::string& getName() const { return m_name;}
@@ -442,7 +442,7 @@ the *Entity* object will be instantiated and *m_name* and *m_age* fields will be
 class Entity {
 private:
 	std::string m_name;
-    int m_age;
+  int m_age;
 public:
 	/* the constructor */
 	Entity() 
@@ -519,7 +519,7 @@ You are using an interface class when you want to guarantee that the subclasses 
 ```cpp
 class Printable {
 public:
-    virtual std::string getClassName() = 0;
+  virtual std::string getClassName() = 0;
 };
 ```
 ***NB:*** ``= 0`` makes it a pure virtual function! so the method needs to be implemented in the subclasses. *Printable* being an interface, cannot be instantiated.
@@ -592,26 +592,26 @@ example of a class Human that extends from LivingBeing
 ```cpp
 class Human : public LivingBeing {
 private:
-    std::string m_name;
-    int m_age;
-    Human* m_son;
+  std::string m_name;
+  int m_age;
+  Human* m_son;
 public:
-    Human() 
-	    :m_name("unknown"), m_age(0){}
-    Human(const std::string& name, const int age)
-        :m_name(name), m_age(age){}
-    Human(const std::string& name, const int age, Human* son)
-        :m_name(name), m_age(age), m_son(son{}
-    ~Human(){
+  Human() 
+	  :m_name("unknown"), m_age(0){}
+  Human(const std::string& name, const int age)
+    :m_name(name), m_age(age){}
+  Human(const std::string& name, const int age, Human* son)
+    :m_name(name), m_age(age), m_son(son{}
+  ~Human(){
 		if (this->m_son)
 			delete son;
-    }
-        
-    void print(){
-        std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
-    }
+  }
     
-    int age(){ return this->m_age; }
+  void print(){
+    std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
+  }
+  
+  int age(){ return this->m_age; }
 	Human* son(){ return this->m_son; }
 };
 ```
@@ -627,15 +627,15 @@ namespace myNamespace {
 	class Human : public LivingBeing {
 	private:
 		std::string m_name;
-	    int m_age;
-	    Human* m_son;
+	  int m_age;
+	  Human* m_son;
 	public:
-	    Human();
-	    Human(const std::string& name, const int age);
-	    Human(const std::string& name, const int age, Human* son);
+	  Human();
+	  Human(const std::string& name, const int age);
+	  Human(const std::string& name, const int age, Human* son);
 		~Human();
-	    void print();
-	    int age();
+	  void print();
+	  int age();
 	}
 }
 ```
@@ -646,22 +646,22 @@ namespace myNamespace {
 #include "Human.h"
 
 namespace myNamespace {
-    Human::Human()
-	    : m_name("unknown"), m_age(0){}
-    Human::Human(const std::string& name, const int age)
-	    :m_name(name), m_age(age){}
-    Human::Human(const std::string& name, const int age, Human* son)
-	    :m_name(name), m_age(age), m_son(son{}
+  Human::Human()
+	  : m_name("unknown"), m_age(0){}
+  Human::Human(const std::string& name, const int age)
+	  :m_name(name), m_age(age){}
+  Human::Human(const std::string& name, const int age, Human* son)
+	  :m_name(name), m_age(age), m_son(son{}
 	Human::~Human(){
 		if (m_son)
 			delete son;
 	}
-	    	    
-    void print(){
-	    std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
-    }
-    
-    int age(){ return this->m_age; }
+	  	  
+  void print(){
+	  std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
+  }
+  
+  int age(){ return this->m_age; }
 }
 ```
 
@@ -1043,12 +1043,12 @@ example of overloading opertor "**<<**" to print a standard `std::vector<T>` obj
 ```c++
 template<typename T>
 std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vector) {
-    int size = vector.size();
+  int size = vector.size();
 
-    stream << "[";
-    for (int i = 0; i < size; i++)
-        i == size-1 ? stream << vector[i] : stream << vector[i] << ", ";
-    stream << "]";
+  stream << "[";
+  for (int i = 0; i < size; i++)
+    i == size-1 ? stream << vector[i] : stream << vector[i] << ", ";
+  stream << "]";
 
 	return stream;
 }
@@ -1144,13 +1144,13 @@ std::shared_ptr<Entity> s1_ptr = std::make_shared<Entity>(7, 4);
 std::cout << "count: " << s1_ptr.use_count() << std::endl; // let's check s1 count => 1
 
 { // an innner scope
-    // create another shared pointer and assign s1
-    std::shared_ptr<Entity> s2_ptr = s1_ptr;
+  // create another shared pointer and assign s1
+  std::shared_ptr<Entity> s2_ptr = s1_ptr;
 
-    // let's check s1 count
-    std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 2
+  // let's check s1 count
+  std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 2
 
-    // at the inner scope exit ref count gets decremented 
+  // at the inner scope exit ref count gets decremented 
 }
 
 // let's check again 
@@ -1164,18 +1164,18 @@ weak pointer *doesn't increment the reference count* of a shared pointer, so in 
 std::weak_ptr<Entity> w_ptr; // create a weak pointer
 
 { // an innner scope
-    // create a shared pointer to a new Entity
-    std::shared_ptr<Entity> s_ptr = std::make_shared<Entity>(7, 4);
+  // create a shared pointer to a new Entity
+  std::shared_ptr<Entity> s_ptr = std::make_shared<Entity>(7, 4);
 
-    // assign weak pointer the shared pointer
-    w_ptr = s_ptr; // ref count remains 1
+  // assign weak pointer the shared pointer
+  w_ptr = s_ptr; // ref count remains 1
 
-    // let's check if weak pointer is intact
-    std::string state = w_ptr.lock() ? "intact" : "gone";
-    std::cout << "state: " << state << std::endl; // => intact
+  // let's check if weak pointer is intact
+  std::string state = w_ptr.lock() ? "intact" : "gone";
+  std::cout << "state: " << state << std::endl; // => intact
 
-    // at the inner scope exit ref count gets 0, 
-    // Entity object gets freed
+  // at the inner scope exit ref count gets 0, 
+  // Entity object gets freed
 }
 
 // let's check again 
@@ -1395,18 +1395,18 @@ It is common practice to use macros to add custom debugging or validation checks
 
 // Custom assert macro
 #define MY_ASSERT(condition) \
-    do { \
-        if (!(condition)) { \
-            std::cerr << "Assertion failed: " << #condition << " in " << __FILE__ << " at line " << __LINE__ << std::endl; \
-            std::terminate(); \
-        } \
-    } while (false)
+  do { \
+    if (!(condition)) { \
+      std::cerr << "Assertion failed: " << #condition << " in " << __FILE__ << " at line " << __LINE__ << std::endl; \
+      std::terminate(); \
+    } \
+  } while (false)
 
 int main() {
-    int x = 5;
-    MY_ASSERT(x == 5); // Use the custom assert macro
+  int x = 5;
+  MY_ASSERT(x == 5); // Use the custom assert macro
 
-    std::cout << "Program continues after the assertion check." << std::endl;
+  std::cout << "Program continues after the assertion check." << std::endl;
 }
 ```
 
@@ -1676,7 +1676,7 @@ sorting classes based on some kind of comparison
 
 ```cpp
 bool compare(Man& m1, Man& m2){
-    return m1.age() < m2.age();
+  return m1.age() < m2.age();
 }
 std::vector<Man> v = {mike, alice, bob};
 sort(v.begin(), v.end(), compare);
@@ -2083,44 +2083,44 @@ std::queue<int> dataQueue;
 const int MAX_QUEUE_SIZE = 5;
 
 void producer() {
-    for (int i = 0; i < 10; ++i) {
-        std::unique_lock<std::mutex> lock(mutex_);
-        
-        // Wait until there is space in the queue
-        condVar.wait(lock, [] { return dataQueue.size() < MAX_QUEUE_SIZE; });
+  for (int i = 0; i < 10; ++i) {
+    std::unique_lock<std::mutex> lock(mutex_);
+    
+    // Wait until there is space in the queue
+    condVar.wait(lock, [] { return dataQueue.size() < MAX_QUEUE_SIZE; });
 
-        // Produce data and add it to the queue
-        dataQueue.push(i);
-        std::cout << "Produced: " << i << std::endl;
+    // Produce data and add it to the queue
+    dataQueue.push(i);
+    std::cout << "Produced: " << i << std::endl;
 
-        // Notify consumers that data is available
-        condVar.notify_one();
-    }
+    // Notify consumers that data is available
+    condVar.notify_one();
+  }
 }
 
 void consumer() {
-    for (int i = 0; i < 10; ++i) {
-        std::unique_lock<std::mutex> lock(mutex_);
-        
-        // Wait until there is data in the queue
-        condVar.wait(lock, [] { return !dataQueue.empty(); });
+  for (int i = 0; i < 10; ++i) {
+    std::unique_lock<std::mutex> lock(mutex_);
+    
+    // Wait until there is data in the queue
+    condVar.wait(lock, [] { return !dataQueue.empty(); });
 
-        // Consume data from the queue
-        int data = dataQueue.front();
-        dataQueue.pop();
-        std::cout << "Consumed: " << data << std::endl;
+    // Consume data from the queue
+    int data = dataQueue.front();
+    dataQueue.pop();
+    std::cout << "Consumed: " << data << std::endl;
 
-        // Notify producer that space is available
-        condVar.notify_one();
-    }
+    // Notify producer that space is available
+    condVar.notify_one();
+  }
 }
 
 int main() {
-    std::thread producerThread(producer);
-    std::thread consumerThread(consumer);
+  std::thread producerThread(producer);
+  std::thread consumerThread(consumer);
 
-    producerThread.join();
-    consumerThread.join();
+  producerThread.join();
+  consumerThread.join();
 }
 ``` 
 
@@ -2137,29 +2137,29 @@ std::condition_variable condVar;
 bool dataReady = false;
 
 void producer() {
-    std::this_thread::sleep_for(std::chrono::seconds(2)); // Simulate work
-    {
-        std::lock_guard<std::mutex> lock(mutex_);
-        dataReady = true;
-    }
-    condVar.notify_one();
+  std::this_thread::sleep_for(std::chrono::seconds(2)); // Simulate work
+  {
+    std::lock_guard<std::mutex> lock(mutex_);
+    dataReady = true;
+  }
+  condVar.notify_one();
 }
 
 void consumer() {
-    {
-        std::unique_lock<std::mutex> lock(mutex_);
-        condVar.wait(lock, [] { return dataReady; });
-        // Do something with the data
-        std::cout << "Consumed data." << std::endl;
-    }
+  {
+    std::unique_lock<std::mutex> lock(mutex_);
+    condVar.wait(lock, [] { return dataReady; });
+    // Do something with the data
+    std::cout << "Consumed data." << std::endl;
+  }
 }
 
 int main() {
-    std::thread producerThread(producer);
-    std::thread consumerThread(consumer);
+  std::thread producerThread(producer);
+  std::thread consumerThread(consumer);
 
-    producerThread.join();
-    consumerThread.join();
+  producerThread.join();
+  consumerThread.join();
 }
 ```
 
@@ -2167,7 +2167,7 @@ int main() {
 
 -   If you need a simple and concise way to lock and unlock a mutex within a scope, and no manual unlocking is required, use `std::lock_guard`
 -   If you need more flexibility, such as manual unlocking, deferred locking, or using the lock with condition variables, use `std::unique_lock`
-    
+  
 The choice between `std::lock_guard` and `std::unique_lock` depends on the specific requirements of your code and the level of control you need over the associated mutex.
 
 ### BOOST library semplification
@@ -2181,15 +2181,15 @@ boost::mutex myMutex;
 int sharedVariable = 0;
 
 void myThreadFunction() {
-    boost::unique_lock<boost::mutex> lock(myMutex);
-    sharedVariable++; // Modify sharedVariable safely
+  boost::unique_lock<boost::mutex> lock(myMutex);
+  sharedVariable++; // Modify sharedVariable safely
 }
 
 int main() {
-    boost::thread myThread1(myThreadFunction);
-    boost::thread myThread2(myThreadFunction);
-    myThread1.join();
-    myThread2.join();
+  boost::thread myThread1(myThreadFunction);
+  boost::thread myThread2(myThreadFunction);
+  myThread1.join();
+  myThread2.join();
 }
 ```
 
@@ -2208,33 +2208,33 @@ const int MAX_QUEUE_SIZE = 5;
 boost::lockfree::queue<int> dataQueue(MAX_QUEUE_SIZE);
 
 void producer() {
-    for (int i = 0; i < 10; ++i) {
-        while (!dataQueue.push(i)) {
-            // Queue is full, spin-wait or implement backoff strategy
-        }
-        std::cout << "Produced: " << i << std::endl;
+  for (int i = 0; i < 10; ++i) {
+    while (!dataQueue.push(i)) {
+      // Queue is full, spin-wait or implement backoff strategy
     }
+    std::cout << "Produced: " << i << std::endl;
+  }
 }
 
 void consumer() {
-    int data;
-    while (true) {
-        while (dataQueue.pop(data)) {
-            // Process the consumed data
-            std::cout << "Consumed: " << data << std::endl;
-        }
-        // Queue is empty, spin-wait or implement backoff strategy
+  int data;
+  while (true) {
+    while (dataQueue.pop(data)) {
+      // Process the consumed data
+      std::cout << "Consumed: " << data << std::endl;
     }
+    // Queue is empty, spin-wait or implement backoff strategy
+  }
 }
 
 int main() {
-    std::thread producerThread(producer);
-    std::thread consumerThread(consumer);
+  std::thread producerThread(producer);
+  std::thread consumerThread(consumer);
 
-    producerThread.join();
-    consumerThread.join();
+  producerThread.join();
+  consumerThread.join();
 
-    return 0;
+  return 0;
 }
 ```
 
@@ -2251,7 +2251,7 @@ Example **Atomic Operation**
 boost::atomic<int> atomicVariable(0);
 
 void myThreadFunction() {
-    atomicVariable.fetch_add(1);
+  atomicVariable.fetch_add(1);
 }
 ```
 
@@ -2307,17 +2307,17 @@ std::ifstream ifs(filename); // Create an ifstream object
 
 // Check if the file is open, which indicates that it exists
 if (ifs.is_open()) {
-    std::cout << "File exists." << std::endl;
-    
-    // You can proceed to read from or write to the file here if needed
-    std::string line;
+  std::cout << "File exists." << std::endl;
+  
+  // You can proceed to read from or write to the file here if needed
+  std::string line;
 	while(getline(ifs, line)) {
-	    if (line.find("somethingToSearch") != std::string::npos){
+	  if (line.find("somethingToSearch") != std::string::npos){
 			// somethingToSearch has been found
 		}
-	}    
+	}  
    
-    ifs.close(); // Close the file after using it
+  ifs.close(); // Close the file after using it
 } else { 
 	std::cout << "File does not exist." << std::endl; 
 }
