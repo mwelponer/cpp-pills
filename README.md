@@ -86,6 +86,7 @@ Copyright (C) 2021 Michele Welponer
     + [Lockfree Queue](#lockfree-queue)
     + [Atomic operations](#atomic-operations)
 - [Standard input](#standard-input)
+- [Input file stream](#input-file-stream)
 - [CMake](#cmake)
   * [subdirectories](#subdirectories)
   * [include](#include)
@@ -164,36 +165,36 @@ int b[] = {3, 0, 7};
 int* p = b;
 
 switch(4) {
-    case 1:
-        std::cout << *++p << std::endl; // move p, then dereference p -> 0
-        std::cout << *++p << std::endl; // -> 7, [3 0 7]
-        break;
-    case 11:
-        std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
-        std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
-        break;
-    case 2:
-        std::cout << ++*p << std::endl; // dereference p, then increment -> 4
-        std::cout << ++*p << std::endl; // -> 5, [5 0 7]
-        break;
-    case 22:
-        std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
-        std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
-        break;
-    case 3:
-        std::cout << *p++ << std::endl; // dereference p, then move p -> 3
-        std::cout << *p++ << std::endl; // -> 0, [3 0 7]
-        break;
-    case 33:
-        std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
-        std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
-        break;
-    case 4:
-        std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
-        std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
-        break;
-    //default:
-        // code block
+	case 1:
+		std::cout << *++p << std::endl; // move p, then dereference p -> 0
+		std::cout << *++p << std::endl; // -> 7, [3 0 7]
+		break;
+	case 11:
+		std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
+		std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
+		break;
+	case 2:
+		std::cout << ++*p << std::endl; // dereference p, then increment -> 4
+		std::cout << ++*p << std::endl; // -> 5, [5 0 7]
+		break;
+	case 22:
+		std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
+		std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
+		break;
+	case 3:
+		std::cout << *p++ << std::endl; // dereference p, then move p -> 3
+		std::cout << *p++ << std::endl; // -> 0, [3 0 7]
+		break;
+	case 33:
+		std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
+		std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
+		break;
+	case 4:
+		std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
+		std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
+		break;
+	//default:
+		// code block
 }
 
 std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
@@ -224,48 +225,48 @@ If we want to write a function that increments a variable, we can pass that vari
 // so if we want to increment the variable we need to first 
 // de-reference the pointer to get the variable and then increment
 void incrementUsingPointer(int* value) {
-    (*value)++; // dereference first then increment
+	(*value)++; // dereference first then increment
     std::cout << "value inside function:" << *value << std::endl;
 }
 // more simply, by reference: int& value means create a
 // reference (alias) named value and make it point exactly 
 // to the same variable we pass
 void incrementUsingReference(int& value){
-    value++;
-    std::cout << "value inside function:" << value << std::endl;
+	value++;
+	std::cout << "value inside function:" << value << std::endl;
 }
 void increment(int value){
-    value++;
-    std::cout << "value inside function:" << value << std::endl;
+	value++;
+	std::cout << "value inside function:" << value << std::endl;
 }
 
 int main(){
-    int a = 5;
-    int& ref = a;
-    
-    incrementUsingPointer(&a); // value inside function:6
-    std::cout << a << std::endl; // => 6
-    
-    incrementUsingReference(ref); // value inside function:7
-    std::cout << a << ref << std::endl; // => 77
-    
-    incrementUsingReference(a); // value inside function:8
-    std::cout << a << ref << std::endl; // => 88
+	int a = 5;
+	int& ref = a;
+	
+	incrementUsingPointer(&a); // value inside function:6
+	std::cout << a << std::endl; // => 6
+	
+	incrementUsingReference(ref); // value inside function:7
+	std::cout << a << ref << std::endl; // => 77
+	
+	incrementUsingReference(a); // value inside function:8
+	std::cout << a << ref << std::endl; // => 88
 
-    increment(a); // value inside function:9
-    std::cout << a << ref << std::endl; // => 88
+	increment(a); // value inside function:9
+	std::cout << a << ref << std::endl; // => 88
 
-    increment(ref); // value inside function:9
-    std::cout << a << ref << std::endl; // => 88
-    
-    // and with classes
-    Entity e1; // instance on the stack
-    incrementUsingPointer(&e1);
-    incrementUsingReference(e1);
-    
-    Entity* e2 = new Entity(); // instance on the heap
-    incrementUsingPointer(e2);
-    incrementUsingReference(*e2);
+	increment(ref); // value inside function:9
+	std::cout << a << ref << std::endl; // => 88
+	
+	// and with classes
+	Entity e1; // instance on the stack
+	incrementUsingPointer(&e1);
+	incrementUsingReference(e1);
+	
+	Entity* e2 = new Entity(); // instance on the heap
+	incrementUsingPointer(e2);
+	incrementUsingReference(*e2);
 }
 ```
 
@@ -325,8 +326,8 @@ So the moral is: try to **always mark functions and variable static** unless you
 Inside a function for example, but could be inside a for loop or whatever other type of scope
 ```c
 void func() {
-    static int i = 0;
-    std::cout << ++i << std::endl;
+	static int i = 0;
+	std::cout << ++i << std::endl;
 }
 // outside func() i is not accessible
 func() // first time i is declared and incremented => 1
@@ -338,12 +339,11 @@ First time we call *myFunction* `i` is declared, set and incremented. All other 
 
 Declaring a field or a method static inside a class/struct
 ```c
-
 struct Entity {
-    static int x;
-    int y; 
-    void print() { std::cout << x << ", " << y << std::endl;}
-    static void s_print() {std::cout << "x:" x << std::endl;}
+	static int x;
+	int y; 
+	void print() { std::cout << x << ", " << y << std::endl;}
+	static void s_print() {std::cout << "x:" x << std::endl;}
 };
 ```
 *x* will be unique and shared among all the *Entity* instances. 
@@ -357,16 +357,16 @@ let's create a **Singleton**. We declare the private static instance globally, t
 ```c++
 class Singleton {
 private:
-    static Singleton* s_instance; // global declaration
+	static Singleton* s_instance; // global declaration
 public:
-    static Singleton& get() {return *s_instance;}
-    void hello() {}
+	static Singleton& get() {return *s_instance;}
+	void hello() {}
 };
 
 Singleton* Singleton::s_instance = nullptr;
 
 int main() {
-    Singleton::get().hello();
+	Singleton::get().hello();
 }
 ```
 
@@ -375,15 +375,15 @@ we can write a most clean Singleton declaring the instance static inside a scope
 ```c++
 class Singleton {
 public:
-    static Singleton& get() {
-        static Singleton instance; // declaring inside the scope
-        return instance;
-    }
-    void hello() {}
+	static Singleton& get() {
+		static Singleton instance; // declaring inside the scope
+		return instance;
+	}
+	void hello() {}
 }
 
 int main() {
-    Singleton::get().hello();
+	Singleton::get().hello();
 }
 ```
 
@@ -393,26 +393,26 @@ Stands for enumeration, a set of values. It's a way to give a name to an integer
 
 ```cpp
 enum Example /* optionally specify the type of integer */: unsigned char {
-    A, B, C // A will be 0, B and C 1 and 2
-    // A = 4, B, C // B and C will be 5 and 6
-    // A = 5, B = 3, C = 7
+	A, B, C // A will be 0, B 1 and C 2
+	// A = 4, B, C // B and C will be 5 and 6
+	// A = 5, B = 3, C = 7
 };
 
 class Log(){
 public:
-    enum Level {
-        Error, Warning, Info
-    };
+	enum Level {
+		Error, Warning, Info
+	};
 private:
-    Level m_logLevel = Info;
+	Level m_logLevel = Info;
 public:
-    void setLevel(Level level){ m_logLevel = level;}
+	void setLevel(Level level){ m_logLevel = level;}
 };
 
 int main(){
-    Example value = B;
-    Log log;
-    log.setLevel(Log::Error);
+	Example value = B;
+	Log log;
+	log.setLevel(Log::Error);
 }
 ```
 
@@ -422,14 +422,14 @@ Example of a **simple class**
 ```cpp
 class Entity {
 private:
-    std::string m_name;
+	std::string m_name;
     int m_age;
 public:
-    Entity(){} 
-    const std::string& getName() const { return m_name;}
-    void setName(const std::string& name) {
-        this->m_name = name;
-    }
+	Entity(){} 
+	const std::string& getName() const { return m_name;}
+	void setName(const std::string& name) {
+		this->m_name = name;
+	}
 };
 ```
 ``NB``: *this* is the current object pointer, *->* means dereference the pointer and then use the . to access the member method/field.
@@ -441,26 +441,26 @@ the *Entity* object will be instantiated and *m_name* and *m_age* fields will be
 ```cpp
 class Entity {
 private:
-    std::string m_name;
+	std::string m_name;
     int m_age;
 public:
-    /* the constructor */
-    Entity() 
-        : m_name("Unknown"), m_age(0) // initializer list more efficient!
-    {
-        // here we don;t need to un-initialize anything because we didn't allocate anything in the constructor on the heap, m_name and m_age are on the stack memory
-        // standard way to initialize class members (less efficient!)
-        //m_name = "Unknown"; 
-        //m_age = 0;        
-        std::cout << "Entity created" << std::endl;
-    }
-    
-    /* the destructor */
-    ~Entity() {
-        /* deallocate here everything created on the 
-        heap in the constructor */
-        std::cout << "Entity destroyed!" << std::endl;
-    }
+	/* the constructor */
+	Entity() 
+		: m_name("Unknown"), m_age(0) // initializer list more efficient!
+	{
+		// here we don;t need to un-initialize anything because we didn't allocate anything in the constructor on the heap, m_name and m_age are on the stack memory
+		// standard way to initialize class members (less efficient!)
+		//m_name = "Unknown"; 
+		//m_age = 0;		
+		std::cout << "Entity created" << std::endl;
+	}
+	
+	/* the destructor */
+	~Entity() {
+		/* deallocate here everything created on the 
+		heap in the constructor */
+		std::cout << "Entity destroyed!" << std::endl;
+	}
 };
 ```
 the destructor *~Entity* will be automatically called when the *Entity* object gets deleted. Inside the destructor we deallocate everything that was created in the constructor on the heap memory.
@@ -473,7 +473,7 @@ If the Entity object was created **on the stack**, the object gets automatically
 ```cpp
 class Player : public Entity {
 private:
-    int points;
+	int points;
 public:
 };
 ```
@@ -486,27 +486,27 @@ Virtual functions allow us to override methods in sub-classes.
 ```cpp
 class Entity {
 public:
-    virtual std::string getName(){return "Entity";}
+	virtual std::string getName(){return "Entity";}
 };
 
 class Player : public Entity {
 private:
-    std::string m_Name;
+	std::string m_Name;
 public:
-    Player(const std::string& name)
-        : m_Name(name){}
-    std::string getName() override {return m_Name;}
+	Player(const std::string& name)
+		: m_Name(name){}
+	std::string getName() override {return m_Name;}
 };
 
 int main() {
-    Player* p = new Player("Mike");
-    Entity* entity = p;
-    // OR using polimorphism
-    Entity* entity = new Player("Mike"); // polimorphism
-    
-    /* if Entity::getName() 
-    is not virtual, this will output "Entity" */
-    std::cout << entity->getName() << std::endl;
+	Player* p = new Player("Mike");
+	Entity* entity = p;
+	// OR using polimorphism
+	Entity* entity = new Player("Mike"); // polimorphism
+	
+	/* if Entity::getName() 
+	is not virtual, this will output "Entity" */
+	std::cout << entity->getName() << std::endl;
 }
 ```
 If any sub class overwrites a method, it's good to make that method ***virtual*** in the base class. And to mark with ***override***  the method in the derived class. 
@@ -530,11 +530,11 @@ public:
 ```cpp
 class Entity {
 private:
-    int x, y;
+	int x, y;
 protected:
-    std::string name;
+	std::string name;
 public: 
-    getCoordinates(){};
+	getCoordinates(){};
 };
 ```
 
@@ -546,7 +546,7 @@ in general
 ```cpp
 class Entity {
 //private:
-    int x, y; /* private by default */
+	int x, y; /* private by default */
 };
 ```
 in **classes** if I don't specify the visibility, it will be **private by default**, so like to write *private:* before the declaration of the methods/fileds
@@ -554,7 +554,7 @@ in **classes** if I don't specify the visibility, it will be **private by defaul
 ```c
 struct Entity {
 //public:
-    int x, y; /* public by default */
+	int x, y; /* public by default */
 };
 ```
 
@@ -566,19 +566,19 @@ in **structs** if I don't specify the visibility, it will be **public by default
 
 ```c++
 class c_entity {
-    int m_a, m_b;
+	int m_a, m_b;
 public:
-    centity(int a, int b) : m_a(a), m_b(b) {}
+	c_entity(int a, int b) : m_a(a), m_b(b) {}
 };
 
 struct s_entity {
-    int a, b;
-    /* s_entity(int a, int b) : m_a(a), m_b(b) {} // this is optional */
+	int a, b;
+	/* s_entity(int a, int b) : m_a(a), m_b(b) {} // this is optional */
 };
 
 int main() {
-    c_entity c = {3, 4}; // or c_entity(3, 4)
-    s_entity s = {3, 4}; // or s_entity(3, 4) if constructor is defined
+	c_entity c = {3, 4}; // or c_entity(3, 4)
+	s_entity s = {3, 4}; // or s_entity(3, 4) if constructor is defined
 }
 ```
 
@@ -597,14 +597,14 @@ private:
     Human* m_son;
 public:
     Human() 
-        :m_name("unknown"), m_age(0){}
+	    :m_name("unknown"), m_age(0){}
     Human(const std::string& name, const int age)
         :m_name(name), m_age(age){}
     Human(const std::string& name, const int age, Human* son)
         :m_name(name), m_age(age), m_son(son{}
     ~Human(){
-        if (this->m_son)
-            delete son;
+		if (this->m_son)
+			delete son;
     }
         
     void print(){
@@ -612,7 +612,7 @@ public:
     }
     
     int age(){ return this->m_age; }
-    Human* son(){ return this->m_son; }
+	Human* son(){ return this->m_son; }
 };
 ```
 
@@ -624,19 +624,19 @@ If we want to separate the file into .h and .cpp then it becomes:
 #include <string>
 
 namespace myNamespace {
-    class Human : public LivingBeing {
-    private:
-        std::string m_name;
-        int m_age;
-        Human* m_son;
-    public:
-        Human();
-        Human(const std::string& name, const int age);
-        Human(const std::string& name, const int age, Human* son);
-        ~Human();
-        void print();
-        int age();
-    }
+	class Human : public LivingBeing {
+	private:
+		std::string m_name;
+	    int m_age;
+	    Human* m_son;
+	public:
+	    Human();
+	    Human(const std::string& name, const int age);
+	    Human(const std::string& name, const int age, Human* son);
+		~Human();
+	    void print();
+	    int age();
+	}
 }
 ```
 
@@ -647,18 +647,18 @@ namespace myNamespace {
 
 namespace myNamespace {
     Human::Human()
-        : m_name("unknown"), m_age(0){}
+	    : m_name("unknown"), m_age(0){}
     Human::Human(const std::string& name, const int age)
-        :m_name(name), m_age(age){}
+	    :m_name(name), m_age(age){}
     Human::Human(const std::string& name, const int age, Human* son)
-        :m_name(name), m_age(age), m_son(son{}
-    Human::~Human(){
-        if (m_son)
-            delete son;
-    }
-                
+	    :m_name(name), m_age(age), m_son(son{}
+	Human::~Human(){
+		if (m_son)
+			delete son;
+	}
+	    	    
     void print(){
-        std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
+	    std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
     }
     
     int age(){ return this->m_age; }
@@ -670,7 +670,7 @@ namespace myNamespace {
 ### arrays on the stack memory
 ```cpp
 int stackArr[4] // declare: stackArr is now a pointer to the 1st element of the array
-int stackArr[] = {1, 2, 3, 4} // declare and set 
+int stackArr[] = {1, 2, 3, 4} // declare and initialize 
 stackArr[3] = 666
 ```
 ***NB***:  we cannot use increment and decrement (++/--) operator on the array name e.g., ~~stackArr++~~, because the array name is not an lvalue pointer. But we can always write
@@ -698,15 +698,15 @@ In general it is better - whenever possible - to declare the arrays in the stack
 ```cpp
 Entity {
 public:
-    int stackArr[10];
-    /* if instead here I use an array on the heap 
-    int heapArr = new[10]; my Entity will contain 
-    a pointer to the array so to get the data it 
-    will need to jump to another space in memory */
-    Entity {
-        for (int i=0; i<10; i++)
-            stackArr[i] = 0;
-    }
+	int stackArr[10];
+	/* if instead here I use an array on the heap 
+	int heapArr = new[10]; my Entity will contain 
+	a pointer to the array so to get the data it 
+	will need to jump to another space in memory */
+	Entity {
+		for (int i=0; i<10; i++)
+			stackArr[i] = 0;
+	}
 };
 ```
 
@@ -748,15 +748,34 @@ delete[] ha | delete/remove array ha from the heap
 
 ## Strings
 
-### manual declaration
+### C style strings
+
+also known as **null-terminated strings**. 
 A string is just an array of characters. If we want to declare it completely *manually* we need to add the string termination char (``0`` or ``'\0'``) that tells the pointer that the string is terminated.
 
 ```c++
-char mystring[5] = {'M', 'i', 'k', 'e', 0};
+char str[] = "Hello";
+char mystring[5] = {'M', 'i', 'k', 'e', \0};
 std::cout << mystring << std::endl;
 ```
 
+#### C string handling functions
+
+**NB**: `#include <cstring>`
+
+-  `strcpy(destination, source);` copies the source string to the destination string. The destination must be large enough to hold the source string including the null terminator.
+-  `strcat(destination, source);` appends the source string to the destination string. The destination must have enough space to hold the combined string.
+-  `strcmp(str1, str2);` compares two strings lexicographically. It returns 0 if they are equal, a negative value if `str1` is less than `str2`, and a positive value if `str1` is greater than `str2`.
+-  `strlen(str);` returns the length of the string, not counting the null terminator.
+
+**NB**: `#include <cctype>`
+
+- `isalnum(char)` checks if char is alphanumeric 
+check if a char is alphanumeric
+
+
 ### declaration via char pointer
+
 Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout, *strlen* and *strcpy*
 
 ```c++
@@ -776,7 +795,7 @@ Finally if we want to use the *standard string* implementation.
 std::string myString = "ciao";
 myString += "!";
 std::cout << myString << std::endl;
-    
+	
 /* useful string methods */
 myString.size();
 myString.find("ao");
@@ -796,12 +815,12 @@ normal use of const: the 'variable' MAX_AGE becomes basically a constant, it is 
 ### with pointers
 
 const BEFORE the asterix: what the pointer points at can't be modfied
-      
-```c++
+	  
+```cpp
 const int* a = new int; // i.e.: int const* a
 // *a = 5; // I cannot modify what the pointer points at!
-```    
-    
+```	
+	
 const AFTER the asterix: the pointer address can't be modified
 
 ```c
@@ -826,21 +845,21 @@ Why declaring method const? Non-const objects can call either const or non-const
 ```c++
 class Entity {
 private: 
-    int m_X, m_Y;
-    int* age;
+	int m_X, m_Y;
+	int* age;
 public:
-    /* used by a non-const Entity or Entity reference/pointer */
-    int getX() {
-        m_X = 2; // this is allowed        
-        return m_X;
-    }
-    
-    /* This method will be used by a const Entity reference */
-    /* const here means I cannot modify the field inside the method */
-    int getX() const {
-        //m_X = 2; // this is not allowed
-        return m_X;
-    }    
+	/* used by a non-const Entity or Entity reference/pointer */
+	int getX() {
+		m_X = 2; // this is allowed		
+		return m_X;
+	}
+	
+	/* This method will be used by a const Entity reference */
+	/* const here means I cannot modify the field inside the method */
+	int getX() const {
+		//m_X = 2; // this is not allowed
+		return m_X;
+	}	
 };
 ```
 if an Entity is used as parameter in some function, passed by *const reference* (not to copy all the class object) the normal *getX()* will not work. We need to create another method *getX() const* that will work (promising that inside the const method I don't modify the field). 
@@ -850,14 +869,14 @@ if an Entity is used as parameter in some function, passed by *const reference* 
 ```c++
 class Entity {
 private: 
-    int m_X;
-    mutable int m_debugCount = 0;
+	int m_X;
+	mutable int m_debugCount = 0;
 
-    int getX() const {
-        m_debugCount++; // allowed because the filed is mutable!
-        m_X = 3; // not allowed because the method is const!
-        return m_X;
-    }    
+	int getX() const {
+		m_debugCount++; // allowed because the filed is mutable!
+		m_X = 3; // not allowed because the method is const!
+		return m_X;
+	}	
 }
 ```
 
@@ -870,14 +889,14 @@ static int s_level = 1;
 static int s_speed = 2;
 
 void printSpeed() {
-    s_speed = s_level > 3 ? 10 : 5; // speed becomes 10 if lev>3 else 5
-    std::cout << "s_speen: " << s_speed << std::endl;
+	s_speed = s_level > 3 ? 10 : 5; // speed becomes 10 if lev>3 else 5
+	std::cout << "s_speen: " << s_speed << std::endl;
 }
 
-int main() {        
-    printSpeed();
-    s_level = 7;
-    printSpeed();
+int main() {		
+	printSpeed();
+	s_level = 7;
+	printSpeed();
 }
 ```
 
@@ -890,19 +909,19 @@ int main() {
 class Entity 
 {
 private:
-    std::string m_name;
+	std::string m_name;
 public:
-    Entity()
-        : m_name("Unknown"), m_age(-1) {}
-    Entity(const std::string&  name)
-        : m_name(name), m_age(-1) {}
-    Entity(const  int  age)
-        : m_age(age), m_name("Unknown") {}
-        
-    std::string& getName() const { return m_name; }
-    int getAge() const {return  m_age;}    
-    void setName(const std::string& name) {m_name = name;}
-    void setAge(const int age) {m_age = age;}
+	Entity()
+		: m_name("Unknown"), m_age(-1) {}
+	Entity(const std::string&  name)
+		: m_name(name), m_age(-1) {}
+	Entity(const  int  age)
+		: m_age(age), m_name("Unknown") {}
+		
+	std::string& getName() const { return m_name; }
+	int getAge() const {return  m_age;}	
+	void setName(const std::string& name) {m_name = name;}
+	void setAge(const int age) {m_age = age;}
 };
 ```
 
@@ -949,20 +968,20 @@ The last thing that new does is also call the *constructor* on the new allocated
 
 ```c++
 int main(){
-    int* a = new int;
-    int* aArr = new int[50]; // an array of 50 contiguous int on the heap
-    
-    Entity* e = new Entity();
-    
-    // this is the equivalent c version
-    Entity* another_e = (Entity*)malloc(sizeof(Entity));
-    // it will just allocate the memory and not call the constructor!
-    
-    Entity* eArr = new Entity[50];
+	int* a = new int;
+	int* aArr = new int[50]; // an array of 50 contiguous int on the heap
+	
+	Entity* e = new Entity();
+	
+	// this is the equivalent c version
+	Entity* another_e = (Entity*)malloc(sizeof(Entity));
+	// it will just allocate the memory and not call the constructor!
+	
+	Entity* eArr = new Entity[50];
 
-    // remember to free the memory when you are done with it!
-    delete a, e, another_e;
-    delete[] aArr, eArr;
+	// remember to free the memory when you are done with it!
+	delete a, e, another_e;
+	delete[] aArr, eArr;
 }
 ```
 
@@ -976,21 +995,21 @@ void PrintEntity(const Entity& entity) { // cool printing }
 
 int main()
 {
-    Entity a("Mike"); 
-    // we can also write Entity a = std::string("Mike")
-    
-    Entity b(43); // we can also write Entity b = 43
-    
-    // implicit conversion
-    PrintEntity(22); 
-    // 22 was implicitly converted into an Entity with age 22
-    
-    // implicit conversion: "Cherno" is firstly casted from 
-    // const char array to a std::string then implicitly converted 
-    // into an Entity with name Cherno
-    PrintEntity(std::string("Cherno"));
-    // it can be casted also to Entity
-    PrintEntity(Entity("Cherno"));
+	Entity a("Mike"); 
+	// we can also write Entity a = std::string("Mike")
+	
+	Entity b(43); // we can also write Entity b = 43
+	
+	// implicit conversion
+	PrintEntity(22); 
+	// 22 was implicitly converted into an Entity with age 22
+	
+	// implicit conversion: "Cherno" is firstly casted from 
+	// const char array to a std::string then implicitly converted 
+	// into an Entity with name Cherno
+	PrintEntity(std::string("Cherno"));
+	// it can be casted also to Entity
+	PrintEntity(Entity("Cherno"));
 }
 ```
 
@@ -998,14 +1017,14 @@ NB: explicit keyword in front of the contructor disable any form of implicit con
 
 ```c++
 class Entity {
-    Explicit Entity(std::string& name) : m_name(name) {} 
+	Explicit Entity(std::string& name) : m_name(name) {} 
 };
 
 int main {
-    // this will cause a compilation error !!!
-    PrintEntity(std::string("Mike")); 
-    // we need to explicitly say
-    PrintEntity( Entity(std::string("Mike)) );
+	// this will cause a compilation error !!!
+	PrintEntity(std::string("Mike")); 
+	// we need to explicitly say
+	PrintEntity( Entity(std::string("Mike)) );
 }
 ``` 
 
@@ -1018,26 +1037,45 @@ int main {
 Operators are just functions! All these c++ operators can be overloaded, i.e. definer/change the behaviour of the operator in the program.
 To overload an operator, e.g. the operator "@" we just write the word *operator* followed by the operator we want to overload @, then we define the function normally with its parameters.
 
+
+example of overloading opertor "**<<**" to print a standard `std::vector<T>` object
+
+```c++
+template<typename T>
+std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vector) {
+    int size = vector.size();
+
+    stream << "[";
+    for (int i = 0; i < size; i++)
+        i == size-1 ? stream << vector[i] : stream << vector[i] << ", ";
+    stream << "]";
+
+	return stream;
+}
+```
+
+
 example of overloading operator "**+**" to define how to add two Vector2 objects 
+
 ```c++
 struct Vector2 {
-    float x, y;
-    
-    Vector2(float x, float y) : x(x), y(y) {}
+	float x, y;
+	
+	Vector2(float x, float y) : x(x), y(y) {}
 
-    // here is how we overload the + operator
-    Vector2 operator+(const Vector2& other) const {
-        return Vector2(x + other.x, y + other.y);
-    }
+	// here is how we overload the + operator
+	Vector2 operator+(const Vector2& other) const {
+		return Vector2(x + other.x, y + other.y);
+	}
 };
 ```
 
-example of overloading the operator "**<<**", to define how a vector is to be printed in std::cout
+example of overloading the operator "**<<**", to define how a custom Vector2 is to be printed in std::cout
 
 ```cpp
 std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
-    stream << vector.x << ", " << vector.y;
-    return stream;
+	stream << vector.x << ", " << vector.y;
+	return stream;
 }
 ```
 
@@ -1046,9 +1084,9 @@ example of overloading of operator "**new**", to define what to do each time the
 ```cpp
 static uint32_t s_AllocCount = 0;
 void* operator new(size_t size){
-    s_AllocCount++;
-    std::cout << "Allocating " << size << " bytes\n";
-    return malloc(size);
+	s_AllocCount++;
+	std::cout << "Allocating " << size << " bytes\n";
+	return malloc(size);
 }
 std::cout << s_AllocCount << " allocations\n";
 ```
@@ -1061,16 +1099,16 @@ it is just the pointer to the current object instance that the method belongs to
 ```c++
 class Entity {
 private:
-    int x, y;
-public:    
-    Entity(int x, int y) {
-        // this is a pointer so using -> we first dereference 
-        // then we use the Entity object
-        this->x = x; 
-        this->y = y;
-    }
-    // some fancy printing function
-    void print() {};
+	int x, y;
+public:	
+	Entity(int x, int y) {
+		// this is a pointer so using -> we first dereference 
+		// then we use the Entity object
+		this->x = x; 
+		this->y = y;
+	}
+	// some fancy printing function
+	void print() {};
 };
 ```
 
@@ -1132,7 +1170,7 @@ std::weak_ptr<Entity> w_ptr; // create a weak pointer
     // assign weak pointer the shared pointer
     w_ptr = s_ptr; // ref count remains 1
 
-    // let's check if weak pointer is itact
+    // let's check if weak pointer is intact
     std::string state = w_ptr.lock() ? "intact" : "gone";
     std::cout << "state: " << state << std::endl; // => intact
 
@@ -1153,36 +1191,36 @@ Unnecessary copying is to be avoided, but sometimes copying is essential. When w
 ```c++
 class String {
 private:
-    char* m_buffer;
-    unsigned int m_size;
+	char* m_buffer;
+	unsigned int m_size;
 public:
-    String(const char* string) {
-        m_size = strlen(string);
-        m_buffer = new char[m_size + 1];
-        memcpy(m_buffer, string, m_size);
-        m_buffer[m_size] = 0; // null termination char
-    }
+	String(const char* string) {
+		m_size = strlen(string);
+		m_buffer = new char[m_size + 1];
+		memcpy(m_buffer, string, m_size);
+		m_buffer[m_size] = 0; // null termination char
+	}
 
-    /* this is the copy constructor!! that guarantees that 
-    m_buffer of a String object copy will be created on a 
-    new block of memory */
-    String(const String& other)
-        : m_size(other.m_size) {
-        m_buffer = new char[m_size + 1];
-        memcpy(m_buffer, other.m_buffer, m_size + 1);
-    }
+	/* this is the copy constructor!! that guarantees that 
+	m_buffer of a String object copy will be created on a 
+	new block of memory */
+	String(const String& other)
+		: m_size(other.m_size) {
+		m_buffer = new char[m_size + 1];
+		memcpy(m_buffer, other.m_buffer, m_size + 1);
+	}
 
-    /* this is the way to prevent the user to make copies 
-    of the String objects */
-    // String(const String& other) = delete;
+	/* this is the way to prevent the user to make copies 
+	of the String objects */
+	// String(const String& other) = delete;
 
-    ~String() {delete[] m_buffer;}
+	~String() {delete[] m_buffer;}
 }
 
 int main() {
-    String string = "Cherno";
-    String another = string; // copying a String object
-    /*  */
+	String string = "Cherno";
+	String another = string; // copying a String object
+	/*  */
 }
 ```  
 
@@ -1198,19 +1236,19 @@ Therefore, when we use the word ``this`` inside the definition of a class, that 
 ```c++
 
 int main() {
-    Entity e; // create an entity on the stack
-    Entity* ptr = &e; // make ptr point to it
-    
-    /* create a reference and assign it the 
-    the object dereferenced by ptr pointer */ 
-    Entity& entity = *ptr;
-    entity.print();
+	Entity e; // create an entity on the stack
+	Entity* ptr = &e; // make ptr point to it
+	
+	/* create a reference and assign it the 
+	the object dereferenced by ptr pointer */ 
+	Entity& entity = *ptr;
+	entity.print();
 
-    /* the last two lines can be shortcutted like this */
-    (*ptr).print() // dereference first and then use print()
-    /* or even better */
-    ptr->print();
-    ptr->age = 5;
+	/* the last two lines can be shortcutted like this */
+	(*ptr).print() // dereference first and then use print()
+	/* or even better */
+	ptr->print();
+	ptr->age = 5;
 }
 ```
 
@@ -1221,29 +1259,29 @@ You can overload the -> operator in this way. Let's create a scoped pointer  as 
 
 class Entity {
 public:
-    void print() const {..}
+	void print() const {..}
 };
 
 class ScopedPtr {
 private:
-    Entity* m_obj;
+	Entity* m_obj;
 public:
-    ScopedPtr(Entity* entity) : m_obj(entity) {}
-    ~ScopedPtr() {delete m_obj;}
+	ScopedPtr(Entity* entity) : m_obj(entity) {}
+	~ScopedPtr() {delete m_obj;}
 
-    /* that's how we overload the -> operator */
-    const Entity* operator->() const {
-        return m_obj;
-    }
+	/* that's how we overload the -> operator */
+	const Entity* operator->() const {
+		return m_obj;
+	}
 };
 
 int main() {
-    // entity automatically deleted when it goes out of scope
-    ScopedPtr entity = new Entity();
-    
-    /* the overload of the -> operator may allow 
-    this even if entity is not a heap allocated entity */
-    entity->print(); 
+	// entity automatically deleted when it goes out of scope
+	ScopedPtr entity = new Entity();
+	
+	/* the overload of the -> operator may allow 
+	this even if entity is not a heap allocated entity */
+	entity->print(); 
 }
 ```
 
@@ -1254,6 +1292,7 @@ So we declare a dynamic array using:
 
 ```c++
 #include <vector>
+#include <algorithm> // used by for_each
 
 std::vector<int> v {1, 2, 3, 4, 5}; // ver1
 std::vector<int> v = {1, 2, 3, 4, 5}; // ver2
@@ -1311,14 +1350,14 @@ It's kind of generics, but it can do much more, it's not limited by the generic 
 template<typename T, int N>
 class Array {
 private:
-    T m_array[N];
+	T m_array[N];
 public:
-    int getSize() const { return N; }
+	int getSize() const { return N; }
 };
 
 int main() {
-    Array<int, 50> array;
-    array.getSize();
+	Array<int, 50> array;
+	array.getSize();
 }
 ```
 The class *Array* will be compiled if and only when used; type T and size N will be substituted by the type and size we specify when we actually use it (at compile time :P).
@@ -1332,7 +1371,7 @@ A simple example:
 #define WAIT std::cin.get()
 
 int main(){
-    WAIT;
+	WAIT;
 }
 ```
 
@@ -1345,7 +1384,7 @@ A more useful example, using a parameter and a preprocess definition:
 #endif
 
 int main(){
-    LOG("Hello");
+	LOG("Hello");
 }
 ```
 
@@ -1376,28 +1415,28 @@ int main() {
 Example:
 ```c++
 #define MY_ASSERT(condition) \ 
-    if (!(condition)) { \ 
-        std::cerr << "Assertion failed: " << #condition << std::endl; \ 
-        std::terminate(); \ 
-    }
+	if (!(condition)) { \ 
+		std::cerr << "Assertion failed: " << #condition << std::endl; \ 
+		std::terminate(); \ 
+	}
 
 // Use the custom assert macro with multiple statements  
 if (x == 5) 
-    MY_ASSERT(x > 0); 
+	MY_ASSERT(x > 0); 
 else  
-    do_something_else();
+	do_something_else();
 ```
 
 the expanded code would look like this:
 
 ```cpp
 if (x == 5) 
-    if (!(x > 0)) { 
-        std::cerr << "Assertion failed: " << std::endl; 
-        std::terminate(); 
-    } 
-    else 
-        do_something_else();
+	if (!(x > 0)) { 
+		std::cerr << "Assertion failed: " << std::endl; 
+		std::terminate(); 
+	} 
+	else 
+		do_something_else();
 ```
 
 `do { ... } while (false)` construct is commonly used in macros to ensure proper behavior in complex statements
@@ -1408,18 +1447,18 @@ The primary purpose of namespaces is to **avoid naming conflicts**, i.e. with na
 
 ```cpp
 namspace apple {
-    void print(const char* str){//do something}
+	void print(const char* str){//do something}
 }
 
 namspace orange {
-    void print(const char* str){//do something else}
+	void print(const char* str){//do something else}
 }
 
 int main(){
-    orange::print("ciao a tutti");
-    // or
-    using namespace apple;
-    print("ciao a tutti");
+	orange::print("ciao a tutti");
+	// or
+	using namespace apple;
+	print("ciao a tutti");
 }
 ```
 
@@ -1430,23 +1469,23 @@ You can actually assign functions to variables. Starting from that, you can also
 ```cpp
 // a very simple function
 void helloWorld(){
-    std::coutn << "hello" << std::endl;
+	std::coutn << "hello" << std::endl;
 }
 
 int main(){
-    // assign myfunc the memory address of helloWorld function
-    auto myfunc = &helloWorld; // because of implicit conversion we can also omit the ampersand &
+	// assign myfunc the memory address of helloWorld function
+	auto myfunc = &helloWorld; // because of implicit conversion we can also omit the ampersand &
 
-    // the type auto will be void(*myfunc)() so I can also write
-    void(*myfunc)() = helloWorld; 
+	// the type auto will be void(*myfunc)() so I can also write
+	void(*myfunc)() = helloWorld; 
 
-    // even better, I can use typedef like this
-    typedef void(*hworldfunc)() 
-    // and then 
-    hworldfunc myfunc = helloWorld;
+	// even better, I can use typedef like this
+	typedef void(*hworldfunc)() 
+	// and then 
+	hworldfunc myfunc = helloWorld;
 
-    myfunc();
-    myfunc();
+	myfunc();
+	myfunc();
 }
 ```
 
@@ -1454,16 +1493,16 @@ I can also use functions that have parameters so it would become
 
 ```cpp
 void helloWorld(int value){
-    std::coutn << "hello: " << value << std::endl;
+	std::coutn << "hello: " << value << std::endl;
 }
 
 int main(){
-    typedef void(*hwfunc)(int) 
-    hwfunc myfunc = helloWorld;
+	typedef void(*hwfunc)(int) 
+	hwfunc myfunc = helloWorld;
 
-    myfunc(8);
-    myfunc(4);
-    myfunc(9);
+	myfunc(8);
+	myfunc(4);
+	myfunc(9);
 }
 ```
 
@@ -1472,17 +1511,17 @@ a more useful example can be this:
 ```cpp
 // this is the callback function
 void printValue(int value){
-    std::cout << value << std::endl;
+	std::cout << value << std::endl;
 }
 
 void foreach(const std::vector<int>& values, void(*func)(int)){
-    for (int v : values)
-        func(v);
+	for (int v : values)
+		func(v);
 }
 
 int main(){
-    std::vector<int> vector = {1, 2, 3};
-    foreach(vector, printValue);
+	std::vector<int> vector = {1, 2, 3};
+	foreach(vector, printValue);
 }
 ```
 so here I use foreach function to which I pass a vector of elements and a function pointer. The function the pointer points to defines what I want to do with each element of the vector.
@@ -1490,13 +1529,13 @@ Though we can rewrite this in a more simple way, avoiding to write an extra func
 
 ```cpp
 void foreach(const std::vector<int>& values, void(*func)(int)){
-    for (int v : values)
-        func(v);
+	for (int v : values)
+		func(v);
 }
 
 int main(){
-    std::vector<int> vector = {1, 2, 3};
-    foreach(vector, [](int value){std::cout << value << std::endl;});
+	std::vector<int> vector = {1, 2, 3};
+	foreach(vector, [](int value){std::cout << value << std::endl;});
 }
 ```
 
@@ -1574,11 +1613,11 @@ int** a2d = new int*[50];
 
 // now we need to initialize the 50 arrays 
 for (int i = 0; i < 50; i++)
-    a2d[i] = new int[50];
+	a2d[i] = new int[50];
 
 // so to delete we need to delete them one by one
 for (int i = 0; i < 50; i++)
-    delete[] a2d[i];
+	delete[] a2d[i];
 // and finally
 delete[] a2d;
 ```
@@ -1588,9 +1627,9 @@ so for a 3d array it would be
 ```cpp
 int*** a3d = new int**[50];
 for(int i = 0; i < 50; i++){
-    a3d[i] = new int*[50];
-    for(int i = 0; i < 50; i++)
-        a3d[i][j] = new int[50];
+	a3d[i] = new int*[50];
+	for(int i = 0; i < 50; i++)
+		a3d[i][j] = new int[50];
 }
 ```
 
@@ -1600,8 +1639,8 @@ Managing multidimensional arrays this way though is not very convenient, nor ver
 int* fake2darray = new int[3*3];
 
 for(int i = 0; i < 3*3; i++){
-    for(int j = 0; j < 3; j++)
-        fake2darray[j + i * 3] = 0; 
+	for(int j = 0; j < 3; j++)
+		fake2darray[j + i * 3] = 0; 
 }
 ```
 ## Sorting std sort
@@ -1678,13 +1717,13 @@ a more interesting example: let's type punning a struct into an array:
 
 ```cpp
 struct entity {
-    int a, b;
+	int a, b;
 };
 
 int main() {
-    entity e = {5, 8};
-    int* arr = (int*)&e;
-    std::cout << "arr: " << arr[0] << ", " << arr[1] << std::endl;
+	entity e = {5, 8};
+	int* arr = (int*)&e;
+	std::cout << "arr: " << arr[0] << ", " << arr[1] << std::endl;
 }
 ```
 
@@ -1697,8 +1736,8 @@ Imagine we have  a Vector2 and a Vector4 and we want to access Vector4 memory pa
 struct Vector2 { float x, y; };
 // operator overloading to print Vector2
 std::ostream& operator<<(std::ostream& stream, Vector2& vector){
-    stream << vector.x << ", " << vector.y;
-    return stream;
+	stream << vector.x << ", " << vector.y;
+	return stream;
 }
 ```
 
@@ -1706,35 +1745,35 @@ Using **type punning**, we could write getA() and getB() to get respectively x, 
 
 ```cpp
 struct Vector4 {
-    float x, y, z, w;
-    Vector2& getA() { return *(Vector2*)&x; }
-    Vector2& getB() { return *(Vector2*)&z; }
+	float x, y, z, w;
+	Vector2& getA() { return *(Vector2*)&x; }
+	Vector2& getB() { return *(Vector2*)&z; }
 };
 
 int main() {
-    Vector4 v4 = {1, 2, 3, 4};
-    std::cout << v4.getA() << std::endl;
+	Vector4 v4 = {1, 2, 3, 4};
+	std::cout << v4.getA() << std::endl;
 }
 ```
 using **Union** we can instead write something simplier like this:
 
 ```cpp
 struct Vector4 {
-    union {    
-        // an anonymous struct to structure the data
-        struct { float x, y, z, w; }; 
-        struct { Vector2 a, b; };
-        // so now I can access data in two ways: 
-        // 1. using x, y, z, w
-        // 2. using a and b, where a happens to be x, y 
-        // b happens to be z, w
-    };
+	union {	
+		// an anonymous struct to structure the data
+		struct { float x, y, z, w; }; 
+		struct { Vector2 a, b; };
+		// so now I can access data in two ways: 
+		// 1. using x, y, z, w
+		// 2. using a and b, where a happens to be x, y 
+		// b happens to be z, w
+	};
 };
 
 int main(){
-    Vector4 v4 = {1, 2, 3, 4};
-    v4.z = 33;
-    std::cout << v4.b << std::endl;
+	Vector4 v4 = {1, 2, 3, 4};
+	v4.z = 33;
+	std::cout << v4.b << std::endl;
 }
 ```
 
@@ -1745,17 +1784,17 @@ When inheritance and virtual functions come together, then we need to deal with 
 ```cpp
 class Base {
 public:
-    Base(){std::cout << "B constr, ";}
-    ~Base(){std::cout << "B destr, ";}    
+	Base(){std::cout << "B constr, ";}
+	~Base(){std::cout << "B destr, ";}	
 };
 class Derived : public Base {
 public:
-    Derived(){std::cout << "D constr, ";}        
-    ~Derived(){std::cout << "D destr, ";}
+	Derived(){std::cout << "D constr, ";}		
+	~Derived(){std::cout << "D destr, ";}
 };
 int main(){
-    Derived* derived = new Derived();
-    delete derived;
+	Derived* derived = new Derived();
+	delete derived;
 }
 ```
 this will printout ``B constr, D constr, B destr, D destr,`` as we expect!
@@ -1763,8 +1802,8 @@ What will happen when we use a polymorphic like this:
 
 ```cpp
 int main(){
-    Base* poly = new Derived();
-    delete poly;
+	Base* poly = new Derived();
+	delete poly;
 }
 ```
 just the Base destructor will be called, leading to a memory leak!
@@ -1773,8 +1812,8 @@ So to solve this, we need to set destructor of Base class as **virtual**, tellin
 ```cpp
 class Base {
 public:
-    Base(){std::cout << "B constr";}
-    virtual ~Base(){std::cout << "B destr";}    
+	Base(){std::cout << "B constr";}
+	virtual ~Base(){std::cout << "B destr";}	
 }
 ```
 So, *whenever writing a class that you will be extending or might be subclassed, you need to 100% declare destructor as virtual*
@@ -1807,18 +1846,18 @@ We can use **dynamic cast** to check if an object is of a specific type. Suppose
 ```cpp
 class Base {
 public: 
-    Base(){} 
-    virtual ~Base(){}
+	Base(){} 
+	virtual ~Base(){}
 };
 class Derived : public Base {
 public:
-    Derived(){}
-    ~Derived(){}
+	Derived(){}
+	~Derived(){}
 };
 class AnotherClass : public Base {
 public:
-    AnotherClass () {}
-    ~AnotherClass () {}    
+	AnotherClass () {}
+	~AnotherClass () {}	
 };
 ```
 and we want to know if a pointer of type Base specialized to Derived or to AnotherClass
@@ -1848,39 +1887,39 @@ it is basically a single instance of a class that you have around. So in some se
 class SingletonExample {
 
 public:
-    // the method to retrieve the single instance
-    static SingletonExample& get() {
-        static SingletonExample instance;
-        return instance;
-    }
+	// the method to retrieve the single instance
+	static SingletonExample& get() {
+		static SingletonExample instance;
+		return instance;
+	}
 
-    void setStatus() { this->status = 1; }
-    static int getStatus() { return get().status; }
+	void setStatus() { this->status = 1; }
+	static int getStatus() { return get().status; }
 
 private:
-    int status; // a variable to prove the instance is unique
-    // declare private constructor to prevent the creation of objects
-    SingletonExample() : status(0) {
-        std::cout << "constr" << std::endl;
-    }
+	int status; // a variable to prove the instance is unique
+	// declare private constructor to prevent the creation of objects
+	SingletonExample() : status(0) {
+		std::cout << "constr" << std::endl;
+	}
 };
 
 int main() {
-    std::cout << SingletonExample::getStatus() << std::endl;
+	std::cout << SingletonExample::getStatus() << std::endl;
 
-    // multiple references retrieve the very same instance 
-    SingletonExample& se1 = SingletonExample::get();
-    SingletonExample& se2 = SingletonExample::get();
-    auto& se3 = SingletonExample::get();
+	// multiple references retrieve the very same instance 
+	SingletonExample& se1 = SingletonExample::get();
+	SingletonExample& se2 = SingletonExample::get();
+	auto& se3 = SingletonExample::get();
 
-    std::cout << "s1 " << se1.getStatus() << std::endl;
-    se1.setStatus();
+	std::cout << "s1 " << se1.getStatus() << std::endl;
+	se1.setStatus();
 
-    std::cout << "s1 " << se1.getStatus() << std::endl;
-    std::cout << "s2 " << se2.getStatus() << std::endl;
-    std::cout << "s3 " << se3.getStatus() << std::endl;
+	std::cout << "s1 " << se1.getStatus() << std::endl;
+	std::cout << "s2 " << se2.getStatus() << std::endl;
+	std::cout << "s3 " << se3.getStatus() << std::endl;
 
-    std::cout << SingletonExample::getStatus() << std::endl;
+	std::cout << SingletonExample::getStatus() << std::endl;
 }
 ```
 
@@ -1981,21 +2020,21 @@ Once a thread is created, its function or callable object is executed concurrent
 #import <thread>
 
 void myThreadFunction(){
-    // code to be executed on a separate thread
+	// code to be executed on a separate thread
 }
 
 int main(){
-    std::thread myThread(myThreadFunction); // after this line myThread immediately 
-    //starts to run in parallel (with the main thread)
+	std::thread myThread(myThreadFunction); // after this line myThread immediately 
+	//starts to run in parallel (with the main thread)
 
-    // Here we can do other work in the main thread    
+	// Here we can do other work in the main thread	
 
-    myThread.join(); // tells main thread to wait the end of myThread before proceeding
-    
-    // or let it run independently
-    //myThread.detach();
+	myThread.join(); // tells main thread to wait the end of myThread before proceeding
+	
+	// or let it run independently
+	//myThread.detach();
 
-    // do other stuff here (only once myThreadFunction gets out of scope!)
+	// do other stuff here (only once myThreadFunction gets out of scope!)
 }
 ```
 
@@ -2013,15 +2052,15 @@ std::mutex myMutex;
 int sharedVariable = 0; 
 
 void myThreadFunction() { 
-    std::lock_guard<std::mutex> lock(myMutex); // Modify sharedVariable safely 
-    sharedVariable++; 
+	std::lock_guard<std::mutex> lock(myMutex); // Modify sharedVariable safely 
+	sharedVariable++; 
 } 
 int main() { 
-    std::thread myThread1(myThreadFunction); 
-    std::thread myThread2(myThreadFunction); 
-    myThread1.join(); 
-    myThread2.join(); 
-    // sharedVariable is now safely modified by both threads
+	std::thread myThread1(myThreadFunction); 
+	std::thread myThread2(myThreadFunction); 
+	myThread1.join(); 
+	myThread2.join(); 
+	// sharedVariable is now safely modified by both threads
 ```
 
 ### Condition variables
@@ -2264,23 +2303,23 @@ use the `std::ifstream` class from the `<fstream>` header to check if a file exi
 
 // ...
 std::string filename = "example.txt";
-std::ifstream fileStream(filename); // Create an ifstream object
+std::ifstream ifs(filename); // Create an ifstream object
 
 // Check if the file is open, which indicates that it exists
-if (fileStream.is_open()) {
+if (ifs.is_open()) {
     std::cout << "File exists." << std::endl;
     
     // You can proceed to read from or write to the file here if needed
     std::string line;
-    while(getline(stream, line)) {
-        if (line.find("somethingToSearch") != std::string::npos){
-            // somethingToSearch has been found
-        }
-    }    
+	while(getline(ifs, line)) {
+	    if (line.find("somethingToSearch") != std::string::npos){
+			// somethingToSearch has been found
+		}
+	}    
    
-    fileStream.close(); // Close the file after using it
+    ifs.close(); // Close the file after using it
 } else { 
-    std::cout << "File does not exist." << std::endl; 
+	std::cout << "File does not exist." << std::endl; 
 }
 ```
 
@@ -2344,5 +2383,3 @@ add_executable(main2 anotherMain.cpp)
 ### library
 
 ToDo!
-
-
