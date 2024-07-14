@@ -1461,15 +1461,16 @@ int main() {
 ## Binarytree
 
 A tree with max 2 children. 
-**depth**: tree root with no children has depth 1
-**height**: tree root with no children has height 0
-**balanced**: 
-    - height of left subt and height of right subt do not differ more then 1
+
+- **depth**: tree root with no children has depth 1
+- **height**: tree root with no children has height 0
+- **balanced**: 
+	- height of left subt and height of right subt do not differ more then 1
      - left subt is balanced and right subt is balanced
-**Binary Search Tree**:
-    - the left subt contains only nodes with keys  *less than*  the node's key
-    - the right subt contains only nodes with keys  *greater than* the node's key.
-    - both the left and right subt must also be BST
+- **Binary Search Tree**:
+	- the left subt contains only nodes with keys  *less than*  the node's key
+	- the right subt contains only nodes with keys  *greater than* the node's key.
+	- both the left and right subt must also be BST
 
 ```cpp
 struct TreeNode {
