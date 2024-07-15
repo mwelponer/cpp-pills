@@ -1,6 +1,6 @@
 C++ in short
 ==========
-Copyright (C) 2021 Michele Welponer
+Copyright (C) 2024 Michele Welponer
 
 - [Pointers](#pointers)
   * [Pointers arithmetic](#pointers-arithmetic)
@@ -38,10 +38,10 @@ Copyright (C) 2021 Michele Welponer
   * [Bitset](#bitset)
 - [Iterators](#iterators)
 - [algorithm header](#algorithm-header)
+  * [find](#find)
   * [std sort](#std-sort)
-  * [std lower and upper bound](#std-lower-and-upper-bound)
-  * [std find](#std-find)
   * [std equal](#std-equal)
+  * [Other](#other)
 - [Math](#math)
   * [max and min](#max-and-min)
   * [integer division](#integer-division)
@@ -97,36 +97,36 @@ int b[] = {3, 0, 7};
 int* p = b;
 
 switch(4) {
-    case 1:
-        std::cout << *++p << std::endl; // move p, then dereference p -> 0
-        std::cout << *++p << std::endl; // -> 7, [3 0 7]
-        break;
-    case 11:
-        std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
-        std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
-        break;
-    case 2:
-        std::cout << ++*p << std::endl; // dereference p, then increment -> 4
-        std::cout << ++*p << std::endl; // -> 5, [5 0 7]
-        break;
-    case 22:
-        std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
-        std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
-        break;
-    case 3:
-        std::cout << *p++ << std::endl; // dereference p, then move p -> 3
-        std::cout << *p++ << std::endl; // -> 0, [3 0 7]
-        break;
-    case 33:
-        std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
-        std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
-        break;
-    case 4:
-        std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
-        std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
-        break;
-    //default:
-        // code block
+	case 1:
+		std::cout << *++p << std::endl; // move p, then dereference p -> 0
+		std::cout << *++p << std::endl; // -> 7, [3 0 7]
+		break;
+	case 11:
+		std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
+		std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
+		break;
+	case 2:
+		std::cout << ++*p << std::endl; // dereference p, then increment -> 4
+		std::cout << ++*p << std::endl; // -> 5, [5 0 7]
+		break;
+	case 22:
+		std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
+		std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
+		break;
+	case 3:
+		std::cout << *p++ << std::endl; // dereference p, then move p -> 3
+		std::cout << *p++ << std::endl; // -> 0, [3 0 7]
+		break;
+	case 33:
+		std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
+		std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
+		break;
+	case 4:
+		std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
+		std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
+		break;
+	//default:
+		// code block
 }
 
 std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
@@ -208,13 +208,13 @@ example of a class Human that extends from LivingBeing
 // define a parent class 
 class LivingBeing {
 public:
-    virtual ~LivingBeing(){ std::cout << "destr"; } /* declare virtual destructor to 
-    ensure a proper memory cleaning of the derived classes when deleted */
+	virtual ~LivingBeing(){ std::cout << "destr"; } /* declare virtual destructor to 
+	ensure a proper memory cleaning of the derived classes when deleted */
 
-    virtual std::string getName(){return "LivingBeing";}
-    // virtual std::string getName() = 0; /* '= 0' makes it a pure virtual function!
-    the method NEEDS to be implemented in the subclasses. The presence of a 
-    pure virtual function makes also become the class an interface */
+	virtual std::string getName(){return "LivingBeing";}
+	// virtual std::string getName() = 0; /* '= 0' makes it a pure virtual function!
+	the method NEEDS to be implemented in the subclasses. The presence of a 
+	pure virtual function makes also become the class an interface */
 };
 
 // define extending class
@@ -229,8 +229,8 @@ private:
 public:
     // Constructors
     Human() 
-        // m_son pointer needs to be initialized in any case,
-        // wild pointers can lead to unpredictable behviour
+	    // m_son pointer needs to be initialized in any case,
+	    // wild pointers can lead to unpredictable behviour
         : m_name("unknown"), m_age(-1), m_son(nullptr) {} 
     Human(const std::string& name, int age)
         : m_name(name), m_age(age), m_son(nullptr) {}
@@ -246,25 +246,25 @@ public:
     
     // Copy assignment operator: it defines what happens when an object 
     // is assigned to another object using the assignment operator `=`
-    Human& operator=(const Human& other) {
-        if (this == &other)
-            return *this;
+	Human& operator=(const Human& other) {
+	    if (this == &other)
+	        return *this;
 
-        // Free existing resource
-        delete m_son;
+	    // Free existing resource
+	    delete m_son;
 
-        // Copy data
-        m_name = other.m_name;
-        m_age = other.m_age;
+	    // Copy data
+	    m_name = other.m_name;
+	    m_age = other.m_age;
 
-        // Copy the son if it exists
-        if (other.m_son)
-            m_son = new Human(*other.m_son);
-        else
-            m_son = nullptr;
+	    // Copy the son if it exists
+	    if (other.m_son)
+	        m_son = new Human(*other.m_son);
+		else
+	        m_son = nullptr;
 
-        return *this;
-    }
+	    return *this;
+	}
 
     // Destructor
     ~Human() { delete m_son; }
@@ -273,7 +273,7 @@ public:
     std::string getName() const override { return m_name; }
     // Methods
     void print() const { std::cout << "Human " << m_name 
-        << ", age " << m_age << std::endl; }
+	    << ", age " << m_age << std::endl; }
     int age() const { return m_age; }
     Human* son() const { return m_son; }
 };
@@ -298,17 +298,17 @@ If we want to separate the file into .h and .cpp then it becomes:
 #include <iostream>
 
 namespace myNamespace {
-    class Human {
-    private:
-        std::string m_name;
-        int m_age;
-    public:
-        Human();
-        Human(const std::string& name, const int age);
-        // Methods that do not modify the object should be marked as `const`.
-        void print() const;
-        int age() const;
-    };
+	class Human {
+	private:
+		std::string m_name;
+	    int m_age;
+	public:
+	    Human();
+	    Human(const std::string& name, const int age);
+	    // Methods that do not modify the object should be marked as `const`.
+	    void print() const;
+	    int age() const;
+	};
 }
 ```
 
@@ -319,10 +319,10 @@ namespace myNamespace {
 
 namespace myNamespace {
     Human::Human()
-        : m_name("unknown"), m_age(-1){}
+	    : m_name("unknown"), m_age(-1){}
     Human::Human(const std::string& name, const int age)
-        :m_name(name), m_age(age){}
-                
+	    :m_name(name), m_age(age){}
+	    	    
     void Human::print() const { cout << "Human " << m_name << ", age " << m_age << endl; }
     int Human::age() const { return this->m_age; }
 }
@@ -404,8 +404,8 @@ static variable inside a scope/function has the same effect of declaring the var
 
 ```cpp
 void func() {
-    static int v = 0;
-    cout >> ++v >> endl;
+	static int v = 0;
+	cout >> ++v >> endl;
 }
 
 func(); // >>> 1
@@ -419,11 +419,11 @@ static field inside a class are shared among all class entities.
 
 ```cpp
 struct Entity {
-    static int x;
-    int y;
-    
-    static void print() {cout << x << y << endl;}
-    static void s_print() {cout << x << endl;}
+	static int x;
+	int y;
+	
+	static void print() {cout << x << y << endl;}
+	static void s_print() {cout << x << endl;}
 };
 ```
 
@@ -434,9 +434,9 @@ it is basically a single instance of a class that you have around. So in some se
 ```cpp
 class Singleton {
 private:
-    static Singleton* s_instance; // global declaration
+	static Singleton* s_instance; // global declaration
 public:
-    static Singleton& get() {return *s_instance;}
+	static Singleton& get() {return *s_instance;}
 };
 ```
 
@@ -449,10 +449,10 @@ const variables become constant, not supposted to be modified, e.g. `const int M
 ### with pointers
 
 - const before `*` : cannot modify what the pointer points to ~~`*ptr = 5;`~~
-    - `const int* ptr`
-    - `int const* ptr`
+	- `const int* ptr`
+	- `int const* ptr`
 - const after `*` : cannot modify the pointer memory address ~~`ptr = &v;`~~
-    - `int* const ptr`
+	- `int* const ptr`
 
 
 ### in object oriented
@@ -496,7 +496,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 struct vector2 {
     float x, y;
     vector2(float x = 0, float y = 0) : 
-        x(x), y(y) {}
+	    x(x), y(y) {}
 };
 
 // Declare the operator<< overloading function
@@ -530,14 +530,14 @@ int main() {
 
 ```c++
 struct Vector2 {
-    float x, y;
-    
-    Vector2(float x, float y) : x(x), y(y) {}
+	float x, y;
+	
+	Vector2(float x, float y) : x(x), y(y) {}
 
-    // here is how we overload the + operator
-    Vector2 operator+(const Vector2& other) const {
-        return Vector2(x + other.x, y + other.y);
-    }
+	// here is how we overload the + operator
+	Vector2 operator+(const Vector2& other) const {
+		return Vector2(x + other.x, y + other.y);
+	}
 };
 ```
 
@@ -546,9 +546,9 @@ struct Vector2 {
 ```cpp
 static uint32_t s_AllocCount = 0;
 void* operator new(size_t size){
-    s_AllocCount++;
-    std::cout << "Allocating " << size << " bytes\n";
-    return malloc(size);
+	s_AllocCount++;
+	std::cout << "Allocating " << size << " bytes\n";
+	return malloc(size);
 }
 std::cout << s_AllocCount << " allocations\n";
 ```
@@ -606,14 +606,14 @@ Array will be compiled if and only when used; type T and size N will be substitu
 template<typename T, int N>
 class Array {
 private:
-    T m_array[N];
+	T m_array[N];
 public:
-    getSize() const { return N; }
+	getSize() const { return N; }
 };
 
 int main() {
-    Array<int, 50> array;
-    array.getSize();
+	Array<int, 50> array;
+	array.getSize();
 }
 ```
 
@@ -626,7 +626,7 @@ A simple example
 #define WAIT std::cin.get()
 
 int main(){
-    WAIT;
+	WAIT;
 }
 ```
 
@@ -639,7 +639,7 @@ a more useful example, using a parameter and a preprocess definition
 #endif
 
 int main(){
-    LOG("Hello");
+	LOG("Hello");
 }
 ```
 
@@ -649,18 +649,18 @@ The primary purpose of namespaces is to avoid naming conflicts, i.e. with namesp
 
 ```cpp
 namspace apple {
-    void print(const char* str){}
+	void print(const char* str){}
 }
 
 namspace orange {
-    void print(const char* str){}
+	void print(const char* str){}
 }
 
 int main(){
-    orange::print("ciao a tutti");
-    // or
-    using namespace apple;
-    print("ciao a tutti");
+	orange::print("ciao a tutti");
+	// or
+	using namespace apple;
+	print("ciao a tutti");
 }
 ```
 
@@ -685,7 +685,7 @@ and we can both use it as function parameters like this
 
 ```cpp
 void log(const char* ptr){
-    std::cout << ptr << std::endl;
+	std::cout << ptr << std::endl;
 }
 ```
 
@@ -707,7 +707,7 @@ const char* substr = "World";
 // Find the first occurrence of substr in str 
 const char* pos = strstr(str, substr); 
 if (pos != nullptr) 
-    cout << "found at: " << (pos - str) << endl;
+	cout << "found at: " << (pos - str) << endl;
 ```
 
 **NB**: `#include <cctype>`
@@ -745,7 +745,7 @@ char arr[] = "geeks" // substring to search
 size_t found = str.find(arr, 3) // the index of the first occurence of arr starting from 3 -> 6
 
 if (found != std::string::npos)
-    std::cout << found << std::endl
+	std::cout << found << std::endl
 ```
 
 ### std string
@@ -757,15 +757,15 @@ Finally if we want to use the *standard string* implementation. ``#include <stri
 std::string myString = "ciao";
 myString += "!";
 std::cout << myString << std::endl;
-    
+	
 /* useful string methods */
 str.size(); // length of the string 
 str.at(2) // char at pos 2
 str.append() // ???
 str.substr(11, 3); // substring that begins at pos 11, length 3
 stoi(str) // converts string to int
-    stoi("123") // -> int 123
-    stoi("54 fifty four" // -> 54
+	stoi("123") // -> int 123
+	stoi("54 fifty four" // -> 54
 std::to_string(13)  // int to string
 int('a') // char to ascii -> 97
 char(97) // int to ascii value -> 'a'
@@ -781,7 +781,7 @@ mystring(v.begin(), v.end())
 std::vector<std::string> vec = {"ciao", "a", "tutti"};
 std::stringstream ss;
 for (auto e : vec)
-    ss << (e + " ");
+	ss << (e + " ");
 std::string out = ss.str();
 ```
 
@@ -792,7 +792,7 @@ Here is the way to split a string using ``getline(string, token, char delimiter)
 std::string str = "I love to read articles.";
 std::stringstream ss(str);
 while (getline(ss, str, ' '))
-    std::cout << str << std::endl;
+	std::cout << str << std::endl;
 ```
 
 Here is a way to split a string with a string delimiter 
@@ -823,7 +823,7 @@ std::string str1 = "geeks" // substring to find
 size_t found = str.find(str1) // gets the index of the first occurance of substring into string
 
 if (found != string::npos)
-    std::cout << found << std::endl
+	std::cout << found << std::endl
 ```
 
 ## Arrays 
@@ -893,11 +893,11 @@ int** a2d = new int*[50];
 
 // now we need to initialize the 50 arrays 
 for (int i = 0; i < 50; i++)
-    a2d[i] = new int[50];
+	a2d[i] = new int[50];
 
 // so to delete we need to dolete them one by one
 for (int i = 0; i < 50; i++)
-    delete[] a2d[i];
+	delete[] a2d[i];
 // and finally
 delete[] a2d;
 ```
@@ -907,20 +907,20 @@ so for a 3d array it would be
 ```cpp
 int*** a3d = new int**[50];
 for(int i = 0; i < 50; i++){
-    a3d[i] = new int*[50];
-    for(int i = 0; i < 50; i++)
-        a3d[i][j] = new int[50];
+	a3d[i] = new int*[50];
+	for(int i = 0; i < 50; i++)
+		a3d[i][j] = new int[50];
 }
 ```
 
-Managing multidimensional arrays this way though is not very convenient, nor very efficient, because an 2d array ends up to be a buffer of pointers to not contiguous arrays, so we continuously jump from one part to another part of the memory. The more optimized version is a single dimension array
+Managing multidimensional arrays this way though is not very convenient, nor very efficient, because a 2d array ends up to be a buffer of pointers to not contiguous arrays, so we continuously jump from one part to another part of the memory. The more optimized version is a single dimension array
 
 ```cpp
 int* fake2darray = new int[3*3];
 
 for(int i = 0; i < 3*3; i++){
-    for(int j = 0; j < 3; j++)
-        fake2darray[j + i * 3] = 0; 
+	for(int j = 0; j < 3; j++)
+		fake2darray[j + i * 3] = 0; 
 }
 ```
 
@@ -957,11 +957,8 @@ void print(std::vector<int>& v){
     }
 }
 
-void print(std::vector<int>& v){
-    for (auto x : v)
-        std::cout << x << " ";
-    }
-}
+for (auto x : v)
+	cout << x << endl;
 
 // using lambda
 for_each( v.begin(), v.end(), [](int i) { cout << i << endl; } );
@@ -997,7 +994,7 @@ mystring(v.begin(), v.end())
 #include <sstream>
 std::stringstream  ss;
 for (auto e : vec)
-    ss << e;
+	ss << e;
 ss.str()
 ```
 
@@ -1024,35 +1021,105 @@ cout << (a^b) << "\n"; // 1001101110
 
 ## Iterators
 
-An iterator is a variable that points to an element in a data structure, often the iterators **begin** and **end** define a range that contains all elements in the data structure.  Begin points to the first element in the data structure, End points to the position after the last element.
+An iterator is an abstract type that points to an element in a data structure.
+
+**begin()** and **end()**: These are member functions of containers (like `std::vector`, `std::map`, etc.) that return iterators. `begin()` returns an iterator to the first element, and `end()` returns an iterator to one past the last element.
 
 ```cpp
-#include <algorithm>
+#include <iostream>
+#include <vector>
 
-std::sort(v.begin(), v.end()); // vector sort
-std::reverse(a, a+n); // array reverse
-std::random_shuffle(a, a+n) array shuffle
+std::vector<int> v = {1, 2, 3};
 
-set<int>::iterator it = s.begin();
-for (auto it = s.begin(); it != s.end(); it++)
-    cout << *it << "\n";
-    
-auto it = s.find(x);
-if (it == s.end()) // x is not found
+for (auto it = v.begin(); it != v.end(); ++it) 
+    std::cout << *it << "\n";
+```
+
+**std::prev()** and **std::next()**: These are utility functions provided in `<iterator>` to work with iterators:
+`std::prev` returns an iterator to the previous element 
+`std::next` returns an iterator to the next element.
+
+```cpp
+#include <vector>
+#include <iterator>
+
+std::vector<int> v = {1, 2, 3};
+auto it = v.begin();
+auto it_next = std::next(it);
+auto it_prev = std::prev(it_next);
+```
+
+**lower_bound()** and **upper_bound()**: These are both:
+- functions provided in `<algorithm>` or 
+- member functions of associative containers like `std::map` and `std::set`. `lower_bound` returns an iterator to the first element not less than the given value, and `upper_bound` returns an iterator to the first element greater than the given value.
+
+```cpp
+#include <map>
+
+// lower/upper_bound as MAP member function
+std::map<int, std::string> m = {{1, "one"}, {2, "two"}, {3, "three"}};
+auto it_lb = m.lower_bound(2); // Iterator to the element with key 2
+auto it_ub = m.upper_bound(2); // Iterator to the element with key > 2
+
+// lower_bound as STD function
+int arr[] = {1, 2, 3, 5};
+int size = sizeof(arr) / sizeof(int);
+auto index = std::lower_bound(arr, arr+size, 3) - arr;
+if (index < size)
+    std::cout << "index: " << index << std::endl;
+else
+    std::cout << "Not found" << std::endl;
+```
+
+**erase()**: This is a member function of containers that supports erasing elements, such as `std::vector`, `std::map`, and `std::set`. It removes elements at the given position or in the given range and returns an iterator to the element following the last removed element.
+
+```cpp
+#include <vector>
+#include <map>
+
+std::vector<int> v = {1, 2, 3};
+// Erases element at index 1
+auto it_erase = v.erase(v.begin()+1); 
+// Erases element all but last
+auto it_erase = v.erase(v.begin(), v.end()-1);
 ```
 
 ## algorithm header
 
+### find 
 
-### std sort 
+**find()**: This is both 
+- a member function of associative containers like `std::map` and `std::set` and 
+- a non-member function in `<algorithm>`. It returns an iterator to the element if found, otherwise, it returns the end iterator.
+
+```cpp
+#include <map>
+#include <algorithm>
+#include <vector>
+
+// find as MAP member function
+std::map<int, std::string> m = {{1, "one"}, {2, "two"}, {3, "three"}};
+auto it_find = m.find(2);
+if (it_find == m.end()) 
+	cout << "not found" << endl;
+
+// find as STD function
+std::vector<int> v = {1, 2, 3};
+auto it_alg_find = std::find(v.begin(), v.end(), 2);
+```
+
+std::reverse
+std::random_shuffle
+
+### std sort
 
 ```cpp
 #include <algorithm>
 
 // sort an array
-int n = 7; // array size
 int a[] = {4,2,5,3,5,8,3};
-std::sort(a, a+n);
+int size = sizeof(a) / sizeof(a[0]);
+std::sort(a, a+size);
 
 // sort a vector of primitives
 std::vector<int> values = {3, 5, 1, 4, 2};
@@ -1076,74 +1143,116 @@ std::vector<Man> v = {mike, alice, bob};
 sort(v.begin(), v.end(), compare);
 ```
 
-
-### std lower and upper bound
-
-the following functions that are based on **binary search** and work in O(logn) time:
-
-- **std::lower_bound** returns an iterator pointing to the first array element whose value is at least x.
-- **std::upper_bound** returns a iterator pointing to the first array element whose value is greater than x.
-- **std::equal_range** returns both l.b. and u.b. as a pair 
-
-**NB**: for each of these functions, if there is no such element, a pointer that points to the element after the last element is returned! i.e. end()
-
-```cpp
-#include <algorithm>
-
-int main() {
-    // Array search with std::lower_bound
-    int arr[] = {1, 2, 3, 5};
-    int size = sizeof(arr) / sizeof(int);
-    auto index = std::lower_bound(arr, arr + size, 3) - arr;
-    if (index < size)
-        std::cout << "index: " << index << std::endl;
-    else
-        std::cout << "Not found" << std::endl;
-}
-```
-
-### std find
-
-**std::find** returns an iterator (pointer) to the searched element if found otherwise end()
-
-```cpp
-#include <algorithm>
-#include <set>
-
-int main() {
-    // Set search with std::find
-    std::set<int> se{3, 47, 1, 3};
-    auto it = std::find(se.begin(), se.end(), 2);
-    if (it != se.end())
-        std::cout << "found!" << std::endl;
-    else
-        std::cout << "Not found" << std::endl;
-}
-```
-
 ### std equal
 
 used to check whether the elements in two ranges are equal. It compares the elements in the specified ranges using the equality operator (`==`)
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-#include <vector>
-
-int main() {
-    std::vector<int> vec1 = {1, 2, 3, 4, 5};
-    std::vector<int> vec2 = {1, 2, 3, 4, 5};
-
-    bool areEqual = std::equal(vec1.begin(), vec1.end(), vec2.begin());
-
-    if (areEqual) {
-        std::cout << "The vectors are equal." << std::endl;
-    } else {
-        std::cout << "The vectors are not equal." << std::endl;
-    }
-}
+std::vector<int> v1 = {3, 5};
+std::vector<int> v2 = {3, 5};
+bool b = std::equal(v1.begin(), v1.end(), v2.begin());
 ```
 
+### Other
+
+-   **std::find**: Finds the first occurrence of a value in a range.
+```cpp
+auto it = std::find(v.begin(), v.end(), 4);
+```
+
+-   **std::find_if**: Finds the first element satisfying a predicate.
+```cpp
+auto it = std::find_if(v.begin(), v.end(), [](int x) { return x > 3; });
+```
+
+-   **std::binary_search**: Checks if a value exists in a sorted range.
+```cpp    
+bool found = std::binary_search(v.begin(), v.end(), 4);
+```    
+-   **std::lower_bound**: Finds the first position where a value can be inserted without violating order.
+```cpp
+auto it = std::lower_bound(v.begin(), v.end(), 4);
+``` 
+    
+-   **std::upper_bound**: Finds the first position after the last element that is less than a given value.
+```cpp
+auto it = std::upper_bound(v.begin(), v.end(), 4);
+```
+    
+-   **std::equal_range**: Returns a pair of iterators representing the range of elements equal to a given value.
+```cpp    
+auto range = std::equal_range(v.begin(), v.end(), 4);
+``` 
+    
+-   **std::copy**: Copies a range of elements to a new location.
+```cpp    
+std::vector<int> dest(v.size());
+std::copy(v.begin(), v.end(), dest.begin());
+```
+    
+-   **std::copy_if**: Copies elements satisfying a predicate to a new location.
+```cpp
+std::vector<int> even;
+std::copy_if(v.begin(), v.end(), std::back_inserter(even), [](int x) { return x % 2 == 0; });
+```
+    
+-   **std::fill**: Fills a range with a specified value.
+```cpp
+std::fill(v.begin(), v.end(), 0);
+```
+
+-   **std::transform**: Applies a function to each element in a range and stores the result in a new range.
+```cpp
+std::transform(v.begin(), v.end(), v.begin(), [](int x) { return x * 2; });
+```
+
+-   **std::replace**: Replaces all occurrences of a value in a range with another value.
+```cpp
+std::replace(v.begin(), v.end(), 1, 99);
+```
+
+-   **std::remove**: Removes elements equal to a value (without reducing the container size).
+```cpp
+auto new_end = std::remove(v.begin(), v.end(), 99);
+v.erase(new_end, v.end());
+```
+
+-   **std::for_each**: Applies a function to each element in a range.
+```cpp
+std::for_each(v.begin(), v.end(), [](int x) { std::cout << x << " "; });
+```
+
+-   **std::accumulate**: Computes the sum of elements in a range.
+```cpp
+int sum = std::accumulate(v.begin(), v.end(), 0);
+```
+
+-   **std::unique**: Removes consecutive duplicate elements in a range.
+```cpp
+auto new_end = std::unique(v.begin(), v.end());
+v.erase(new_end, v.end());
+```
+
+-   **std::reverse**: Reverses the order of elements in a range.
+```cpp
+std::reverse(v.begin(), v.end());
+```
+
+-   **std::rotate**: Rotates the elements in a range.
+```cpp
+std::rotate(v.begin(), v.begin() + 1, v.end());
+```
+
+-   **std::merge**: Merges two sorted ranges.
+```cpp
+std::vector<int> result(v1.size() + v2.size());
+std::merge(v1.begin(), v1.end(), v2.begin(), v2.end(), result.begin());
+```
+
+- **std::random_shuffle**: Shuffles elements randomly within a range.
+```cpp
+std::random_shuffle(v.begin(), v.end());
+```
 
 ## Math
 
@@ -1235,14 +1344,14 @@ https://www.geeksforgeeks.org/queue-cpp-stl/?ref=lbp
 #include <queue>
 
 void print(std::queue<int> q){
-    std::cout << "(";
-    while(!q.empty()){
-        if (q.size() == 1)
-            std::cout << q.front() << ")\n";
-        else
-            std::cout << q.front() << ", ";
-        q.pop(); 
-    }
+	std::cout << "(";
+	while(!q.empty()){
+		if (q.size() == 1)
+			std::cout << q.front() << ")\n";
+		else
+			std::cout << q.front() << ", ";
+		q.pop(); 
+	}
 }
 
 std::queue<int> q
@@ -1318,8 +1427,8 @@ for (auto it = hm.begin(); it != hm.end(); ++it, i++)
     cout << it->first << ", " << it->second;
 
 for (auto kv : map)
-    cout << kv.first << ", " << kv.second;
-    
+	cout << kv.first << ", " << kv.second;
+	
 std::unordered_map<std::string, int> hm // declare map
 std::unordered_map<std::string, int>::iterator it // map iterator
 hm["one"] = 1 // insert keys:values
@@ -1342,13 +1451,13 @@ std::vector<pair<int, int>> myVec(hm.begin(), hm.end());
 
 // ORDER unsorted_map by key
 int cmpK(pair<int, int> a, pair<int, int> b){
-    return a.first < b.first;
+	return a.first < b.first;
 }
 sort(myVec.begin(), myVec.end(), cmpK);
 
 // ORDER unsorted_map by value
 int cmpV(pair<int, int> a, pair<int, int> b){
-    return a.second < b.second;
+	return a.second < b.second;
 }
 sort(myVec.begin(), myVec.end(), cmpV);
 ```
@@ -1386,11 +1495,11 @@ int arr[6] = { 10, 2, 4, 8, 6, 9 }
 
 std::priority_queue<int> pq
 for (int i = 0; i < 6; i++)
-    pq.push(arr[i])
+	pq.push(arr[i])
 
 pq.empty() // boolean is empty or not
 pq.push(4) // insert element
-pq.top() // get next to be popped    
+pq.top() // get next to be popped	
 pq.pop()
 pq.size()
 ```
@@ -1418,14 +1527,14 @@ priority queue using user-defined type
 ```c++
 class Man {
 prinvate:
-    int m_age;
-    // ...
+	int m_age;
+	// ...
 public:
-    Man(int age) : m_age(age) {}
-    // ...
-    bool operator<(const Man& another) const {
-        return age < another.age;
-    }
+	Man(int age) : m_age(age) {}
+	// ...
+	bool operator<(const Man& another) const {
+		return age < another.age;
+	}
 }
 ```
 
@@ -1534,30 +1643,30 @@ A tree with max 2 children.
 - **depth**: tree root with no children has depth 1
 - **height**: tree root with no children has height 0
 - **balanced**: 
-    - height of left subt and height of right subt do not differ more then 1
+	- height of left subt and height of right subt do not differ more then 1
      - left subt is balanced and right subt is balanced
 - **Binary Search Tree**:
-    - the left subt contains only nodes with keys  *less than*  the node's key
-    - the right subt contains only nodes with keys  *greater than* the node's key.
-    - both the left and right subt must also be BST
+	- the left subt contains only nodes with keys  *less than*  the node's key
+	- the right subt contains only nodes with keys  *greater than* the node's key.
+	- both the left and right subt must also be BST
 
 ```cpp
 struct TreeNode {
-    int val;
-    TreeNode* left;
-    TreeNode* right;
+	int val;
+	TreeNode* left;
+	TreeNode* right;
 
-    TreeNode()
-        : val(0), left(nullptr), right(nullptr){}
-    TreeNode(int val) 
-        : val(val), left(nullptr), right(nullptr){}
-    TreeNode(int val, TreeNode* left, TreeNode* right) 
-        : val(val), left(left), right(right){}
-    ~TreeNode(){
-        // std::cout << "deleting node " << val << std::endl;
-        if (left) delete left;
-        if (right) delete right;
-    }
+	TreeNode()
+	    : val(0), left(nullptr), right(nullptr){}
+	TreeNode(int val) 
+	    : val(val), left(nullptr), right(nullptr){}
+	TreeNode(int val, TreeNode* left, TreeNode* right) 
+	    : val(val), left(left), right(right){}
+	~TreeNode(){
+	    // std::cout << "deleting node " << val << std::endl;
+	    if (left) delete left;
+	    if (right) delete right;
+	}
 };
 ```
 
@@ -1568,22 +1677,22 @@ visiting in BFS / levelorder
 #include <queue>
 
 void  printLevelOrder(TreeNode* root) {
-    std::queue<TreeNode*> q;
-    q.push(root);
-    int levels = 0;
-    while (!q.empty()){
-        int size = q.size();
-        for(int i = 0; i < size; i++){
-            TreeNode* t = q.front();
-            std::cout << t->val << std::endl;
-            if (t->left) q.push(t->left);
-            if (t->right) q.push(t->right);
-            q.pop();
-        }
-        levels++;
-        std::cout << std::endl;
-    }
-    std::cout << "number of levels:" << levels << std::endl;
+	std::queue<TreeNode*> q;
+	q.push(root);
+	int levels = 0;
+	while (!q.empty()){
+	    int size = q.size();
+	    for(int i = 0; i < size; i++){
+	        TreeNode* t = q.front();
+	        std::cout << t->val << std::endl;
+	        if (t->left) q.push(t->left);
+	        if (t->right) q.push(t->right);
+	        q.pop();
+	    }
+	    levels++;
+	    std::cout << std::endl;
+	}
+	std::cout << "number of levels:" << levels << std::endl;
 }
 ```
 
@@ -1594,17 +1703,17 @@ visiting in DFS using a stack gives **pre-order**
 #include <stack>
 
 void  printPreOrder(TreeNode* root) {
-    std::stack<TreeNode*> s;
-    s.push(root);
+	std::stack<TreeNode*> s;
+	s.push(root);
 
-    while (!s.empty()){
-        TreeNode* t = s.top();
-        
-        std::cout << t->val << std::endl;
-        s.pop();
-        if (t->right) s.push(t->right);
-        if (t->left) s.push(t->left);
-    }
+	while (!s.empty()){
+	    TreeNode* t = s.top();
+	    
+	    std::cout << t->val << std::endl;
+	    s.pop();
+	    if (t->right) s.push(t->right);
+	    if (t->left) s.push(t->left);
+	}
 }
 ```
 
@@ -1614,27 +1723,27 @@ visiting in DFS using recursion can give **(pre/in/post)-order**
 ```cpp
 
 void  printPreOrder(TreeNode* root) {
-    while (root){
-        std::cout << root->val << " " << std::endl; 
-        printPreOrder(root->left);
-        printPreOrder(root->right);
-    }
+	while (root){
+		std::cout << root->val << " " << std::endl; 
+		printPreOrder(root->left);
+		printPreOrder(root->right);
+	}
 }
 
 void  printInOrder(TreeNode* root) {
-    while (root){ 
-        printPreOrder(root->left);
-        std::cout << root->val << " " << std::endl;
-        printPreOrder(root->right);
-    }
+	while (root){ 
+		printPreOrder(root->left);
+		std::cout << root->val << " " << std::endl;
+		printPreOrder(root->right);
+	}
 }
 
 void  printPostOrder(TreeNode* root) {
-    while (root){ 
-        printPreOrder(root->left);
-        printPreOrder(root->right);        
-        std::cout << root->val << " " << std::endl;
-    }
+	while (root){ 
+		printPreOrder(root->left);
+		printPreOrder(root->right);		
+		std::cout << root->val << " " << std::endl;
+	}
 }
 ```
 
