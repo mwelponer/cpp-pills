@@ -8,6 +8,7 @@ Copyright (C) 2024 Michele Welponer
   * [this keyword](#this-keyword)
   * [SmartPointers](#smartpointers)
 - [References](#references)
+  * [Pass by value or pass by reference](#pass-by-value-or-pass-by-reference)
 - [Classes](#classes)
   * [Class Header](#class-header)
   * [Stack Heap memory allocation](#stack-heap-memory-allocation)
@@ -27,9 +28,9 @@ Copyright (C) 2024 Michele Welponer
 - [Macros](#macros)
 - [Namespace](#namespace)
 - [Strings](#strings)
-  * [C style strings](#c-style-strings)
+  * [C style manually](#c-style-manually)
+  * [C style via char pointer](#c-style-via-char-pointer)
     + [C string handling functions](#c-string-handling-functions)
-  * [declaration via char pointer](#declaration-via-char-pointer)
   * [std string](#std-string)
 - [Arrays](#arrays)
   * [multidimensional arrays](#multidimensional-arrays)
@@ -66,6 +67,7 @@ Copyright (C) 2024 Michele Welponer
     + [stackDFS](#stackdfs)
     + [recursiveDFS](#recursivedfs)
   * [Trie](#trie)
+  * [Linked list](#linked-list)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -97,36 +99,36 @@ int b[] = {3, 0, 7};
 int* p = b;
 
 switch(4) {
-    case 1:
-        std::cout << *++p << std::endl; // move p, then dereference p -> 0
-        std::cout << *++p << std::endl; // -> 7, [3 0 7]
-        break;
-    case 11:
-        std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
-        std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
-        break;
-    case 2:
-        std::cout << ++*p << std::endl; // dereference p, then increment -> 4
-        std::cout << ++*p << std::endl; // -> 5, [5 0 7]
-        break;
-    case 22:
-        std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
-        std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
-        break;
-    case 3:
-        std::cout << *p++ << std::endl; // dereference p, then move p -> 3
-        std::cout << *p++ << std::endl; // -> 0, [3 0 7]
-        break;
-    case 33:
-        std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
-        std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
-        break;
-    case 4:
-        std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
-        std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
-        break;
-    //default:
-        // code block
+	case 1:
+		std::cout << *++p << std::endl; // move p, then dereference p -> 0
+		std::cout << *++p << std::endl; // -> 7, [3 0 7]
+		break;
+	case 11:
+		std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
+		std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
+		break;
+	case 2:
+		std::cout << ++*p << std::endl; // dereference p, then increment -> 4
+		std::cout << ++*p << std::endl; // -> 5, [5 0 7]
+		break;
+	case 22:
+		std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
+		std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
+		break;
+	case 3:
+		std::cout << *p++ << std::endl; // dereference p, then move p -> 3
+		std::cout << *p++ << std::endl; // -> 0, [3 0 7]
+		break;
+	case 33:
+		std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
+		std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
+		break;
+	case 4:
+		std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
+		std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
+		break;
+	//default:
+		// code block
 }
 
 std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
@@ -156,18 +158,47 @@ In object oriented, it is just the pointer to the current object instance that t
 
 ### SmartPointers
 
+smart pointers in C++ that help manage dynamic memory. “**smart**” because it automatically handles the allocation and deallocation of memory, helping to prevent memory leaks and other errors.
+
+**unique**: does not allow multiple pointers to the same object
+
 ```cpp
 // will create an object that can have just 1 pointer reference
 std::unique_ptr<int> uPtr = std::make_unique<int>();
+```
 
+**shared**: uses reference counting to keep track of how many pointers are pointing to the same object
+
+```cpp
 // it maintains a reference counter. Object will be deleted only when last pointer gets deleted
 std::shared_ptr<int> uPtr = std::shared_ptr<int>();
+```
 
+**weak**: allows multiple pointers to the same object without counting them
+
+```cpp
 // Like shared but it doesn't increment the reference count
 std::weak_ptr<int> uPtr = std::make_weak<int>();
+	
 // check if weak pointer is intact
 string state = w_ptr.lock() ? "intact" : "gone"; cout << "state: " << state << endl;
 ```
+
+**Example**
+
+```cpp
+// Using std::unique_ptr
+std::unique_ptr<MyClass> p1(new MyClass());
+std::unique_ptr<MyClass> p2 = std::move(p1);
+
+// Using std::shared_ptr
+std::shared_ptr<MyClass> p3(new MyClass());
+std::shared_ptr<MyClass> p4 = p3;
+```
+
+In this example, we create two instances of  `MyClass`  using  `std::unique_ptr`  and  `std::shared_ptr`. 
+- With  `std::unique_ptr`, we can transfer ownership of the object from  `p1`  to  `p2`  using  `std::move`. This ensures that there is only one pointer to the object at any given time. 
+- With  `std::shared_ptr`, we can create multiple pointers to the same object, which is useful when we need to share ownership of the object among multiple parts of our program.
 
 ## References
 References are like Pointers but less powerful. Reference are just syntax sugar, whatever you can do with references you can also do it using pointers.
@@ -197,6 +228,41 @@ incrementUsingRef(ref) // we pass a reference, i.e. an alias of a variable
 ```
 **NB**: the external variable we pass by reference will actually be incremented. If we don't use a reference but simply a variable, a new variable will be created, incremented inside the function, then destroyed as soon as the program goes out of the function scope.
 
+### Pass by value or pass by reference
+
+**Pass by Value**
+
+- Best for small and simple types.
+- When you need a copy of the object without affecting the original
+
+*Example*:
+```cpp
+void printValue(int n) {
+    std::cout << n << std::endl;
+}
+
+void modifyCopy(MyClass obj) {}
+```
+
+**Pass by Reference**
+
+- Best for large or complex objects.
+- When you want to avoid copying.
+- When the function needs to modify the object.
+
+*Example*:
+```cpp
+void printLargeVector(const std::vector<int>& vec) {
+    for (const auto& val : vec) {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+}
+
+void modifyVector(std::vector<int>& vec) {
+    vec.push_back(10);
+}
+```
 
 ## Classes
 
@@ -208,13 +274,13 @@ example of a class Human that extends from LivingBeing
 // define a parent class 
 class LivingBeing {
 public:
-    virtual ~LivingBeing(){ std::cout << "destr"; } /* declare virtual destructor to 
-    ensure a proper memory cleaning of the derived classes when deleted */
+	virtual ~LivingBeing(){ std::cout << "destr"; } /* declare virtual destructor to 
+	ensure a proper memory cleaning of the derived classes when deleted */
 
-    virtual std::string getName(){return "LivingBeing";}
-    // virtual std::string getName() = 0; /* '= 0' makes it a pure virtual function!
-    the method NEEDS to be implemented in the subclasses. The presence of a 
-    pure virtual function makes also become the class an interface */
+	virtual std::string getName(){return "LivingBeing";}
+	// virtual std::string getName() = 0; /* '= 0' makes it a pure virtual function!
+	the method NEEDS to be implemented in the subclasses. The presence of a 
+	pure virtual function makes also become the class an interface */
 };
 
 // define extending class
@@ -229,8 +295,8 @@ private:
 public:
     // Constructors
     Human() 
-        // m_son pointer needs to be initialized in any case,
-        // wild pointers can lead to unpredictable behviour
+	    // m_son pointer needs to be initialized in any case,
+	    // wild pointers can lead to unpredictable behviour
         : m_name("unknown"), m_age(-1), m_son(nullptr) {} 
     Human(const std::string& name, int age)
         : m_name(name), m_age(age), m_son(nullptr) {}
@@ -246,25 +312,25 @@ public:
     
     // Copy assignment operator: it defines what happens when an object 
     // is assigned to another object using the assignment operator `=`
-    Human& operator=(const Human& other) {
-        if (this == &other)
-            return *this;
+	Human& operator=(const Human& other) {
+	    if (this == &other)
+	        return *this;
 
-        // Free existing resource
-        delete m_son;
+	    // Free existing resource
+	    delete m_son;
 
-        // Copy data
-        m_name = other.m_name;
-        m_age = other.m_age;
+	    // Copy data
+	    m_name = other.m_name;
+	    m_age = other.m_age;
 
-        // Copy the son if it exists
-        if (other.m_son)
-            m_son = new Human(*other.m_son);
-        else
-            m_son = nullptr;
+	    // Copy the son if it exists
+	    if (other.m_son)
+	        m_son = new Human(*other.m_son);
+		else
+	        m_son = nullptr;
 
-        return *this;
-    }
+	    return *this;
+	}
 
     // Destructor
     ~Human() { delete m_son; }
@@ -273,13 +339,13 @@ public:
     std::string getName() const override { return m_name; }
     // Methods
     void print() const { std::cout << "Human " << m_name 
-        << ", age " << m_age << std::endl; }
+	    << ", age " << m_age << std::endl; }
     int age() const { return m_age; }
     Human* son() const { return m_son; }
 };
 
 int main() {
-    Human parent("John", 40);
+    Human parent("John", 40); // also Human parent = {"John", 40};
     Human child("Chris", 10);
 
     parent.print();
@@ -298,17 +364,17 @@ If we want to separate the file into .h and .cpp then it becomes:
 #include <iostream>
 
 namespace myNamespace {
-    class Human {
-    private:
-        std::string m_name;
-        int m_age;
-    public:
-        Human();
-        Human(const std::string& name, const int age);
-        // Methods that do not modify the object should be marked as `const`.
-        void print() const;
-        int age() const;
-    };
+	class Human {
+	private:
+		std::string m_name;
+	    int m_age;
+	public:
+	    Human();
+	    Human(const std::string& name, const int age);
+	    // Methods that do not modify the object should be marked as `const`.
+	    void print() const;
+	    int age() const;
+	};
 }
 ```
 
@@ -319,10 +385,10 @@ namespace myNamespace {
 
 namespace myNamespace {
     Human::Human()
-        : m_name("unknown"), m_age(-1){}
+	    : m_name("unknown"), m_age(-1){}
     Human::Human(const std::string& name, const int age)
-        :m_name(name), m_age(age){}
-                
+	    :m_name(name), m_age(age){}
+	    	    
     void Human::print() const { cout << "Human " << m_name << ", age " << m_age << endl; }
     int Human::age() const { return this->m_age; }
 }
@@ -393,7 +459,7 @@ int v = 6;
 
 ```cpp
 // translation unit 2
-external int v; // way to accecc v defined in t.u.1
+external int v; // way to access v defined in t.u.1
 ```
 
 ..so **always mark functions and variable static** unless you actually need them to be linked across different translation units.
@@ -404,8 +470,8 @@ static variable inside a scope/function has the same effect of declaring the var
 
 ```cpp
 void func() {
-    static int v = 0;
-    cout >> ++v >> endl;
+	static int v = 0;
+	cout >> ++v >> endl;
 }
 
 func(); // >>> 1
@@ -419,11 +485,11 @@ static field inside a class are shared among all class entities.
 
 ```cpp
 struct Entity {
-    static int x;
-    int y;
-    
-    static void print() {cout << x << y << endl;}
-    static void s_print() {cout << x << endl;}
+	static int x;
+	int y;
+	
+	void print() {cout << x << y << endl;}
+	static void s_print() {cout << x << endl;}
 };
 ```
 
@@ -433,11 +499,17 @@ it is basically a single instance of a class that you have around. So in some se
 
 ```cpp
 class Singleton {
-private:
-    static Singleton* s_instance; // global declaration
 public:
-    static Singleton& get() {return *s_instance;}
-};
+	static Singleton& get() {
+		static Singleton instance;
+		return instance;
+	}
+	void hello() {}
+}
+
+int main() {
+	Singleton::get().hello();
+}
 ```
 
 ## const
@@ -449,16 +521,33 @@ const variables become constant, not supposted to be modified, e.g. `const int M
 ### with pointers
 
 - const before `*` : cannot modify what the pointer points to ~~`*ptr = 5;`~~
-    - `const int* ptr`
-    - `int const* ptr`
+	- `const int* ptr`
+	- `int const* ptr`
 - const after `*` : cannot modify the pointer memory address ~~`ptr = &v;`~~
-    - `int* const ptr`
+	- `int* const ptr`
 
 
 ### in object oriented
 
-Declaring an object const ( i.e. when I pass by const reference an object to a function e.g. `func(const Entity& e)`), I will be able to call only its const methods. Const methods promise not to modify fields e.g. Entity `string const getName(){}` will not modify `name`.
-**NB**: const objects cannot call non-const methods, so cannot modfy fields
+Declaring an **object** const, i.e. when I pass by const reference an object to a function, e.g. :
+
+`void func(const Entity& e)`
+
+I will be able to call only its const methods. 
+
+Declaring a **method** const I promise not to modify any member variable of the class, e.g. :
+
+```cpp
+class Entity {
+	string name;
+	int age;
+public:
+	string getName() const {}
+};
+```
+`getName` will not modify `name` or `age`.
+
+**NB**: const objects cannot call non-const methods, so cannot modify fields
 **NB**: if I declare a field mutable then I can still modify its value inside a const method
 
 ## Operator overloading
@@ -474,10 +563,8 @@ To overload an operator, e.g. the operator "@" we just write the word *operator*
 ```cpp
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
-  int size = vec.size();
-
-  stream << "[";
-  for (int i = 0; i < size; i++)
+  os << "[";
+  for (int i = 0; i < vec.size(); i++)
     i == size-1 ? os << vector[i] : os << vector[i] << ", ";
   os << "]";
 
@@ -496,7 +583,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 struct vector2 {
     float x, y;
     vector2(float x = 0, float y = 0) : 
-        x(x), y(y) {}
+	    x(x), y(y) {}
 };
 
 // Declare the operator<< overloading function
@@ -530,14 +617,14 @@ int main() {
 
 ```c++
 struct Vector2 {
-    float x, y;
-    
-    Vector2(float x, float y) : x(x), y(y) {}
+	float x, y;
+	
+	Vector2(float x, float y) : x(x), y(y) {}
 
-    // here is how we overload the + operator
-    Vector2 operator+(const Vector2& other) const {
-        return Vector2(x + other.x, y + other.y);
-    }
+	// here is how we overload the + operator
+	Vector2 operator+(const Vector2& other) const {
+		return Vector2(x + other.x, y + other.y);
+	}
 };
 ```
 
@@ -546,9 +633,9 @@ struct Vector2 {
 ```cpp
 static uint32_t s_AllocCount = 0;
 void* operator new(size_t size){
-    s_AllocCount++;
-    std::cout << "Allocating " << size << " bytes\n";
-    return malloc(size);
+	s_AllocCount++;
+	std::cout << "Allocating " << size << " bytes\n";
+	return malloc(size);
 }
 std::cout << s_AllocCount << " allocations\n";
 ```
@@ -606,14 +693,14 @@ Array will be compiled if and only when used; type T and size N will be substitu
 template<typename T, int N>
 class Array {
 private:
-    T m_array[N];
+	T m_array[N];
 public:
-    getSize() const { return N; }
+	getSize() const { return N; }
 };
 
 int main() {
-    Array<int, 50> array;
-    array.getSize();
+	Array<int, 50> array;
+	array.getSize();
 }
 ```
 
@@ -626,7 +713,7 @@ A simple example
 #define WAIT std::cin.get()
 
 int main(){
-    WAIT;
+	WAIT;
 }
 ```
 
@@ -639,7 +726,7 @@ a more useful example, using a parameter and a preprocess definition
 #endif
 
 int main(){
-    LOG("Hello");
+	LOG("Hello");
 }
 ```
 
@@ -649,24 +736,24 @@ The primary purpose of namespaces is to avoid naming conflicts, i.e. with namesp
 
 ```cpp
 namspace apple {
-    void print(const char* str){}
+	void print(const char* str){}
 }
 
 namspace orange {
-    void print(const char* str){}
+	void print(const char* str){}
 }
 
 int main(){
-    orange::print("ciao a tutti");
-    // or
-    using namespace apple;
-    print("ciao a tutti");
+	orange::print("ciao a tutti");
+	// or
+	using namespace apple;
+	print("ciao a tutti");
 }
 ```
 
 ## Strings
 
-### C style strings
+### C style manually
 
 also known as **null-terminated strings**. 
 A string is just an array of characters. If we want to declare it completely *manually* we need to add the string termination char (``0`` or ``'\0'``) that tells the pointer that the string is terminated.
@@ -674,19 +761,26 @@ A string is just an array of characters. If we want to declare it completely *ma
 ```cpp
 char str[5] = {'M', 'i', 'k', 'e', \0};
 std::cout << str << std::endl;
-```
-we can also do 
 
-```cpp
+// alternatively
 char str[] = "John is from USA.";
+
+void log(const char* ptr){
+	std::cout << ptr << std::endl;
+}
 ```
 
-and we can both use it as function parameters like this
+### C style via char pointer
+
+Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``
 
 ```cpp
-void log(const char* ptr){
-    std::cout << ptr << std::endl;
-}
+const char* name = "Mike";
+std::cout << name << ", " << strlen(name) << std::endl;
+
+char* str1 = "Ciao";
+char str2[40];
+strcpy(str2, str1); // copy str1 into str2 
 ```
 
 #### C string handling functions
@@ -700,38 +794,11 @@ void log(const char* ptr){
 - `strstr(str, substr);` find the first occurrence of substr in str
 - `strchr(str, char);` find the first occurrence of ch in str
 
-```cpp
-const char* str = "Hello, World!"; 
-const char* substr = "World"; 
-
-// Find the first occurrence of substr in str 
-const char* pos = strstr(str, substr); 
-if (pos != nullptr) 
-    cout << "found at: " << (pos - str) << endl;
-```
-
 **NB**: `#include <cctype>`
 
 - `isalnum(char)` checks if char is alphanumeric 
 check if a char is alphanumeric
 
-
-```cpp
-example
-```
-
-### declaration via char pointer
-
-Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``
-
-```cpp
-const char* name = "Mike";
-std::cout << name << ", " << strlen(name) << std::endl;
-
-char* str1 = "Ciao";
-char str2[40];
-strcpy(str2, str1); // copy str1 into str2 
-```
 
 ***Find***
 ``size_t find(const char* s, size_t pos = 0)``
@@ -745,33 +812,38 @@ char arr[] = "geeks" // substring to search
 size_t found = str.find(arr, 3) // the index of the first occurence of arr starting from 3 -> 6
 
 if (found != std::string::npos)
-    std::cout << found << std::endl
+	std::cout << found << std::endl
 ```
 
 ### std string
 i.e. ``std::string``
 
-Finally if we want to use the *standard string* implementation. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout 
+**NB** :`#include <string.h>`  
+(used just to overload the ``<<`` operator for the cout)
+
+**NB**: std::string is **mutable**. In C++, when you modify a character of a `std::string` e.g., using the `[]` operator, you operate on the specific string directly. Unlike in Python or Java, where strings are immutable and any modification results in the creation of a new string.
 
 ```cpp
 std::string myString = "ciao";
 myString += "!";
 std::cout << myString << std::endl;
-    
+	
 /* useful string methods */
 str.size(); // length of the string 
 str.at(2) // char at pos 2
 str.append() // ???
 str.substr(11, 3); // substring that begins at pos 11, length 3
+str.replace(pos, n, s); // replaces n characters starting at index pos with the string s
 stoi(str) // converts string to int
-    stoi("123") // -> int 123
-    stoi("54 fifty four" // -> 54
+	stoi("123") // -> int 123
+	stoi("54 fifty four" // -> 54
 std::to_string(13)  // int to string
 int('a') // char to ascii -> 97
 char(97) // int to ascii value -> 'a'
 toupper('a') // char to upper-case
 tolower('A') // char to lower-case
 std::string mystring(1, mychar) // converts mychar to string
+
 
 // converts vector of chars to string
 mystring(v.begin(), v.end()) 
@@ -781,7 +853,7 @@ mystring(v.begin(), v.end())
 std::vector<std::string> vec = {"ciao", "a", "tutti"};
 std::stringstream ss;
 for (auto e : vec)
-    ss << (e + " ");
+	ss << (e + " ");
 std::string out = ss.str();
 ```
 
@@ -792,7 +864,7 @@ Here is the way to split a string using ``getline(string, token, char delimiter)
 std::string str = "I love to read articles.";
 std::stringstream ss(str);
 while (getline(ss, str, ' '))
-    std::cout << str << std::endl;
+	std::cout << str << std::endl;
 ```
 
 Here is a way to split a string with a string delimiter 
@@ -823,7 +895,7 @@ std::string str1 = "geeks" // substring to find
 size_t found = str.find(str1) // gets the index of the first occurance of substring into string
 
 if (found != string::npos)
-    std::cout << found << std::endl
+	std::cout << found << std::endl
 ```
 
 ## Arrays 
@@ -893,11 +965,11 @@ int** a2d = new int*[50];
 
 // now we need to initialize the 50 arrays 
 for (int i = 0; i < 50; i++)
-    a2d[i] = new int[50];
+	a2d[i] = new int[50];
 
 // so to delete we need to dolete them one by one
 for (int i = 0; i < 50; i++)
-    delete[] a2d[i];
+	delete[] a2d[i];
 // and finally
 delete[] a2d;
 ```
@@ -907,9 +979,9 @@ so for a 3d array it would be
 ```cpp
 int*** a3d = new int**[50];
 for(int i = 0; i < 50; i++){
-    a3d[i] = new int*[50];
-    for(int i = 0; i < 50; i++)
-        a3d[i][j] = new int[50];
+	a3d[i] = new int*[50];
+	for(int i = 0; i < 50; i++)
+		a3d[i][j] = new int[50];
 }
 ```
 
@@ -919,8 +991,8 @@ Managing multidimensional arrays this way though is not very convenient, nor ver
 int* fake2darray = new int[3*3];
 
 for(int i = 0; i < 3*3; i++){
-    for(int j = 0; j < 3; j++)
-        fake2darray[j + i * 3] = 0; 
+	for(int j = 0; j < 3; j++)
+		fake2darray[j + i * 3] = 0; 
 }
 ```
 
@@ -958,7 +1030,7 @@ void print(std::vector<int>& v){
 }
 
 for (auto x : v)
-    cout << x << endl;
+	cout << x << endl;
 
 // using lambda
 for_each( v.begin(), v.end(), [](int i) { cout << i << endl; } );
@@ -994,7 +1066,7 @@ mystring(v.begin(), v.end())
 #include <sstream>
 std::stringstream  ss;
 for (auto e : vec)
-    ss << e;
+	ss << e;
 ss.str()
 ```
 
@@ -1088,9 +1160,9 @@ auto it_erase = v.erase(v.begin(), v.end()-1);
 
 ### find 
 
-**find()**: This is both 
+This is both:
 - a member function of associative containers like `std::map` and `std::set` and 
-- a non-member function in `<algorithm>`. It returns an iterator to the element if found, otherwise, it returns the end iterator.
+- a `std::find` non-member function in `<algorithm>`. It returns an iterator to the element if found, otherwise, it returns the end iterator.
 
 ```cpp
 #include <map>
@@ -1101,35 +1173,47 @@ auto it_erase = v.erase(v.begin(), v.end()-1);
 std::map<int, std::string> m = {{1, "one"}, {2, "two"}, {3, "three"}};
 auto it_find = m.find(2);
 if (it_find == m.end()) 
-    cout << "not found" << endl;
+	cout << "not found" << endl;
 
 // find as STD function
 std::vector<int> v = {1, 2, 3};
 auto it_alg_find = std::find(v.begin(), v.end(), 2);
 ```
 
-std::reverse
-std::random_shuffle
-
 ### std sort
 
 ```cpp
 #include <algorithm>
 
-// sort an array
+// sort an ARRAY
 int a[] = {4,2,5,3,5,8,3};
 int size = sizeof(a) / sizeof(a[0]);
 std::sort(a, a+size);
 
-// sort a vector of primitives
+// sort a VECTOR of primitives
 std::vector<int> values = {3, 5, 1, 4, 2};
 std::sort(values.begin(), values.end()); // 1 2 3 4 5
 std::sort(values.rbegin(), values.rend()); // 5 4 3 2 1
 
-// using lambda
+// using LAMBDA
 std::sort(values.begin(), values.end(), std::greater<int>()); // > 5 4 3 2 1
-std::sort(values.begin(), values.end(), [](int a, int b){ return a < b; }); // > 1 2 3 4 5
-std::sort(values.begin(), values.end(), [](int a, int b){ return a > b; }); // > 5 4 3 2 1
+
+std::sort(values.begin(), values.end(), [](int a, int b){ 
+	return a < b; 
+}); // > 1 2 3 4 5
+
+std::sort(values.begin(), values.end(), [](int a, int b){ 
+	return a > b; 
+}); // > 5 4 3 2 1
+
+vector<int> ts = {15, -7, 9, 14, 7, 12}; // temperatures
+// order by closest to 0, if -n and n, then n comes first
+std::sort(ts.begin(), ts.end(), [](int a, int b){ 
+	if (abs(a) == abs(b))
+		return a > b; // first greater n
+	return abs(a) < abs(b); // first smaller abs(n) 
+}); // >>>  7, -7, 9, 12, 14, 15
+
 
 // sort a string
 string s = "monkey";
@@ -1344,14 +1428,14 @@ https://www.geeksforgeeks.org/queue-cpp-stl/?ref=lbp
 #include <queue>
 
 void print(std::queue<int> q){
-    std::cout << "(";
-    while(!q.empty()){
-        if (q.size() == 1)
-            std::cout << q.front() << ")\n";
-        else
-            std::cout << q.front() << ", ";
-        q.pop(); 
-    }
+	std::cout << "(";
+	while(!q.empty()){
+		if (q.size() == 1)
+			std::cout << q.front() << ")\n";
+		else
+			std::cout << q.front() << ", ";
+		q.pop(); 
+	}
 }
 
 std::queue<int> q
@@ -1427,8 +1511,8 @@ for (auto it = hm.begin(); it != hm.end(); ++it, i++)
     cout << it->first << ", " << it->second;
 
 for (auto kv : map)
-    cout << kv.first << ", " << kv.second;
-    
+	cout << kv.first << ", " << kv.second;
+	
 std::unordered_map<std::string, int> hm // declare map
 std::unordered_map<std::string, int>::iterator it // map iterator
 hm["one"] = 1 // insert keys:values
@@ -1451,13 +1535,13 @@ std::vector<pair<int, int>> myVec(hm.begin(), hm.end());
 
 // ORDER unsorted_map by key
 int cmpK(pair<int, int> a, pair<int, int> b){
-    return a.first < b.first;
+	return a.first < b.first;
 }
 sort(myVec.begin(), myVec.end(), cmpK);
 
 // ORDER unsorted_map by value
 int cmpV(pair<int, int> a, pair<int, int> b){
-    return a.second < b.second;
+	return a.second < b.second;
 }
 sort(myVec.begin(), myVec.end(), cmpV);
 ```
@@ -1495,11 +1579,11 @@ int arr[6] = { 10, 2, 4, 8, 6, 9 }
 
 std::priority_queue<int> pq
 for (int i = 0; i < 6; i++)
-    pq.push(arr[i])
+	pq.push(arr[i])
 
 pq.empty() // boolean is empty or not
 pq.push(4) // insert element
-pq.top() // get next to be popped    
+pq.top() // get next to be popped	
 pq.pop()
 pq.size()
 ```
@@ -1527,14 +1611,14 @@ priority queue using user-defined type
 ```c++
 class Man {
 prinvate:
-    int m_age;
-    // ...
+	int m_age;
+	// ...
 public:
-    Man(int age) : m_age(age) {}
-    // ...
-    bool operator<(const Man& another) const {
-        return age < another.age;
-    }
+	Man(int age) : m_age(age) {}
+	// ...
+	bool operator<(const Man& another) const {
+		return age < another.age;
+	}
 }
 ```
 
@@ -1636,6 +1720,7 @@ tie(a, b) = pr;
 ```
 
 ## Custom data structures
+
 ### Binarytree
 
 A tree with max 2 children. 
@@ -1643,30 +1728,30 @@ A tree with max 2 children.
 - **depth**: tree root with no children has depth 1
 - **height**: tree root with no children has height 0
 - **balanced**: 
-    - height of left subt and height of right subt do not differ more then 1
-     - left subt is balanced and right subt is balanced
+	- height of left subt and height of right subt do not differ more then 1
+    - left subt is balanced and right subt is balanced
 - **Binary Search Tree**:
-    - the left subt contains only nodes with keys  *less than*  the node's key
-    - the right subt contains only nodes with keys  *greater than* the node's key.
-    - both the left and right subt must also be BST
+	- the left subt contains only nodes with keys  *less than*  the node's key
+	- the right subt contains only nodes with keys  *greater than* the node's key.
+	- both the left and right subt must also be BST
 
 ```cpp
 struct TreeNode {
-    int val;
-    TreeNode* left;
-    TreeNode* right;
+	int val;
+	TreeNode* left;
+	TreeNode* right;
 
-    TreeNode()
-        : val(0), left(nullptr), right(nullptr){}
-    TreeNode(int val) 
-        : val(val), left(nullptr), right(nullptr){}
-    TreeNode(int val, TreeNode* left, TreeNode* right) 
-        : val(val), left(left), right(right){}
-    ~TreeNode(){
-        // std::cout << "deleting node " << val << std::endl;
-        if (left) delete left;
-        if (right) delete right;
-    }
+	TreeNode()
+	    : val(0), left(nullptr), right(nullptr){}
+	TreeNode(int val) 
+	    : val(val), left(nullptr), right(nullptr){}
+	TreeNode(int val, TreeNode* left, TreeNode* right) 
+	    : val(val), left(left), right(right){}
+	~TreeNode(){
+	    // std::cout << "deleting node " << val << std::endl;
+	    if (left) delete left;
+	    if (right) delete right;
+	}
 };
 ```
 
@@ -1677,22 +1762,22 @@ visiting in BFS / levelorder
 #include <queue>
 
 void  printLevelOrder(TreeNode* root) {
-    std::queue<TreeNode*> q;
-    q.push(root);
-    int levels = 0;
-    while (!q.empty()){
-        int size = q.size();
-        for(int i = 0; i < size; i++){
-            TreeNode* t = q.front();
-            std::cout << t->val << std::endl;
-            if (t->left) q.push(t->left);
-            if (t->right) q.push(t->right);
-            q.pop();
-        }
-        levels++;
-        std::cout << std::endl;
-    }
-    std::cout << "number of levels:" << levels << std::endl;
+	std::queue<TreeNode*> q;
+	q.push(root);
+	int levels = 0;
+	while (!q.empty()){
+	    int size = q.size();
+	    for(int i = 0; i < size; i++){
+	        TreeNode* t = q.front();
+	        std::cout << t->val << std::endl;
+	        if (t->left) q.push(t->left);
+	        if (t->right) q.push(t->right);
+	        q.pop();
+	    }
+	    levels++;
+	    std::cout << std::endl;
+	}
+	std::cout << "number of levels:" << levels << std::endl;
 }
 ```
 
@@ -1703,17 +1788,17 @@ visiting in DFS using a stack gives **pre-order**
 #include <stack>
 
 void  printPreOrder(TreeNode* root) {
-    std::stack<TreeNode*> s;
-    s.push(root);
+	std::stack<TreeNode*> s;
+	s.push(root);
 
-    while (!s.empty()){
-        TreeNode* t = s.top();
-        
-        std::cout << t->val << std::endl;
-        s.pop();
-        if (t->right) s.push(t->right);
-        if (t->left) s.push(t->left);
-    }
+	while (!s.empty()){
+	    TreeNode* t = s.top();
+	    
+	    std::cout << t->val << std::endl;
+	    s.pop();
+	    if (t->right) s.push(t->right);
+	    if (t->left) s.push(t->left);
+	}
 }
 ```
 
@@ -1723,27 +1808,27 @@ visiting in DFS using recursion can give **(pre/in/post)-order**
 ```cpp
 
 void  printPreOrder(TreeNode* root) {
-    while (root){
-        std::cout << root->val << " " << std::endl; 
-        printPreOrder(root->left);
-        printPreOrder(root->right);
-    }
+	while (root){
+		std::cout << root->val << " " << std::endl; 
+		printPreOrder(root->left);
+		printPreOrder(root->right);
+	}
 }
 
 void  printInOrder(TreeNode* root) {
-    while (root){ 
-        printPreOrder(root->left);
-        std::cout << root->val << " " << std::endl;
-        printPreOrder(root->right);
-    }
+	while (root){ 
+		printPreOrder(root->left);
+		std::cout << root->val << " " << std::endl;
+		printPreOrder(root->right);
+	}
 }
 
 void  printPostOrder(TreeNode* root) {
-    while (root){ 
-        printPreOrder(root->left);
-        printPreOrder(root->right);        
-        std::cout << root->val << " " << std::endl;
-    }
+	while (root){ 
+		printPreOrder(root->left);
+		printPreOrder(root->right);		
+		std::cout << root->val << " " << std::endl;
+	}
 }
 ```
 
@@ -1818,4 +1903,57 @@ private:
         delete node;
     }
 };
+```
+
+### Linked list
+
+```cpp
+template<typename T>
+struct Node {
+  T m_value;
+  Node* m_next;
+
+  Node(T value) : m_value(value), m_next(nullptr) {}
+  Node(T value, Node* next) : m_value(value), m_next(next) {}
+
+  ~Node() {
+    // Only delete the next node; don't enter into recursive deletion
+    if (m_next) {
+      delete m_next;
+      m_next = nullptr;
+    }
+  }
+
+  void push_back(T value){
+    Node* current = this;
+    while (current->m_next)
+      current = current->m_next;
+
+    current->m_next = new Node(value);
+  }
+};
+
+template<typename T>
+ostream& operator<<(ostream& os, Node<T>& node) {
+  Node<T>* current = &node;
+  while (current){
+    os << current->m_value;
+    if (current->m_next)
+      os << " -> ";
+    current = current->m_next;
+  }
+
+  return os;
+}
+
+int main() {
+  Node<int>* node = new Node<int>(1, new Node<int>(2, new Node<int>(3)));
+  cout << *node << endl;
+
+  node->push_back(4);
+  cout << *node << endl;
+
+  // Deleting the head node will clean up the entire list
+  delete node;
+}
 ```

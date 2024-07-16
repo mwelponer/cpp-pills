@@ -7,6 +7,9 @@
 #include <set>
 #include <unordered_map>
 
+using namespace std;
+
+/*
 int search(std::vector<int>& nums, int target) 
 {
   int l = 0;
@@ -79,9 +82,47 @@ public:
 	void setName(const std::string& name) {m_name = name;}
 	void setAge(const int& age) {m_age = age;}  
 };
+*/
+
+ostream& operator<<(ostream& os, const vector<int>& v){
+  os << "[";
+  for (int i = 0; i < v.size(); i++)
+    i == v.size()-1 ? os << v[i] : os << v[i] << ", ";
+  os << "]";
+
+  return os;
+}
 
 int main()
 {
+
+  vector<int> ts = {15, -7, 9, 14, 7, 12};
+  /*
+  std::sort(ts.begin(), ts.end(), [](int a, int b){ 
+    if (abs(a) == abs(b))
+      return a > b;
+    return abs(a) < abs(b);
+  });
+  */
+
+  sort(ts.begin(), ts.end(), [](int a, int b){
+    if (abs(a) == abs(b))
+      return a > b;
+    
+    return (abs(a) < abs(b));
+  });
+
+
+  cout << ts << endl;
+
+
+
+
+
+
+
+
+
   // std::vector<int> nums = {-1, 0, 3, 5, 9, 12};
   // int target = 9;
   // std::cout << "res: " << search(nums, target) << std::endl;
@@ -148,5 +189,5 @@ int main()
   std::cout << d.back() << std::endl;
   */
 
-  search(0, 3);
+  //search(0, 3);
 }
