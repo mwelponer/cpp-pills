@@ -2,113 +2,142 @@ C++ pills
 ===
 Copyright (C) 2021 Michele Welponer
 
+  * [Pointers](#pointers)
+    + [Retrieving the Memory Address of a Variable](#retrieving-the-memory-address-of-a-variable)
+    + [Declaring a Pointer](#declaring-a-pointer)
+    + [Assigning a Pointer](#assigning-a-pointer)
+    + [Dereferencing a Pointer](#dereferencing-a-pointer)
+    + [Pointer Arithmetic](#pointer-arithmetic)
+    + [Pointers and Arrays](#pointers-and-arrays)
+    + [Complex Pointer Syntax](#complex-pointer-syntax)
+    + [Practical Example with Switch Cases](#practical-example-with-switch-cases)
+  * [References](#references)
+    + [Declaring and Assigning References](#declaring-and-assigning-references)
+    + [Passing by Reference](#passing-by-reference)
+    + [Key Note on Passing by Value](#key-note-on-passing-by-value)
+    + [Recap](#recap)
+    + [Examples](#examples)
+  * [Static Keyword](#static-keyword)
+    + [General Use](#general-use)
+    + [Static Variables Inside Local Scope](#static-variables-inside-local-scope)
+    + [Static in Object-Oriented Programming](#static-in-object-oriented-programming)
+    + [Static in Singleton Pattern](#static-in-singleton-pattern)
+    + [Summary of Static Usage](#summary-of-static-usage)
+  * [Enums](#enums)
+    + [Syntax and Basic Usage](#syntax-and-basic-usage)
+    + [Enums in Classes](#enums-in-classes)
+    + [Example Usage](#example-usage)
+    + [Key Points About Enums:](#key-points-about-enums-)
+    + [Scoped Enums (C++11)](#scoped-enums--c--11-)
+  * [Objects and Classes](#objects-and-classes)
+    + [Example of a Simple Class](#example-of-a-simple-class)
+    + [Constructor and Destructor](#constructor-and-destructor)
+    + [Class Inheritance](#class-inheritance)
+    + [Virtual Functions for Overriding](#virtual-functions-for-overriding)
+    + [Interfaces (Abstract Classes)](#interfaces--abstract-classes-)
+    + [Visibility (Access Specifiers)](#visibility--access-specifiers-)
+    + [Classes vs. Structs](#classes-vs-structs)
+    + [Class Headers and Source Files](#class-headers-and-source-files)
+  * [Arrays](#arrays)
+    + [Arrays on the Stack Memory](#arrays-on-the-stack-memory)
+    + [Arrays on the Heap Memory](#arrays-on-the-heap-memory)
+    + [Array Limitations](#array-limitations)
+    + [Array Standard Library (`std::array`)](#array-standard-library---std--array--)
+    + [Summary Table](#summary-table)
+  * [Strings](#strings)
+    + [C-Style Strings](#c-style-strings)
+    + [C String Handling Functions](#c-string-handling-functions)
+    + [Declaring Strings via `char*`](#declaring-strings-via--char--)
+    + [Standard Library Strings](#standard-library-strings)
+  * [Const](#const)
+    + [Normal Use](#normal-use)
+    + [With Pointers](#with-pointers)
+    + [With Classes](#with-classes)
+    + [Mutable Keyword](#mutable-keyword)
+    + [Summary of `const` Usage](#summary-of--const--usage)
+  * [The ternary operator](#the-ternary-operator)
+  * [Memory management](#memory-management)
+    + [Stack and Heap Memory Allocation](#stack-and-heap-memory-allocation)
+    + [Differences Between Stack and Heap](#differences-between-stack-and-heap)
+    + [The `new` Keyword](#the--new--keyword)
+  * [Implicit Conversion](#implicit-conversion)
+    + [Note on the `explicit` Keyword](#note-on-the--explicit--keyword)
+  * [Operator Overloading](#operator-overloading)
+    + [Example 1: print std::vector](#example-1--print-std--vector)
+    + [Example 2: print custom vec2](#example-2--print-custom-vec2)
+    + [Example 3: add custom vec2](#example-3--add-custom-vec2)
+    + [Example 4: track memory allocations](#example-4--track-memory-allocations)
+    + [Key Notes:](#key-notes-)
+  * [The this keyword](#the-this-keyword)
+  * [Smart Pointers](#smart-pointers)
+    + [Unique Pointers](#unique-pointers)
+    + [Shared Pointers](#shared-pointers)
+    + [Weak Pointers](#weak-pointers)
+  * [The Rule of Five in C++](#the-rule-of-five-in-c--)
+    + [1. Destructor](#1-destructor)
+    + [2. Copy Constructor](#2-copy-constructor)
+    + [3. Copy Assignment Operator](#3-copy-assignment-operator)
+    + [4. Move Constructor](#4-move-constructor)
+    + [5. Move Assignment Operator](#5-move-assignment-operator)
+    + [Why the Rule of Five Matters](#why-the-rule-of-five-matters)
+    + [Example: A Complete Rule of Five Implementation](#example--a-complete-rule-of-five-implementation)
+  * [The Arrow Operator](#the-arrow-operator)
+    + [Stack vs. Heap Access](#stack-vs-heap-access)
+    + [Example](#example)
+    + [Using with `this`](#using-with--this-)
+    + [Overloading the Arrow Operator](#overloading-the-arrow-operator)
+  * [Dynamic Arrays](#dynamic-arrays)
+    + [Optimizations](#optimizations)
+    + [Example: Using a Dynamic Array](#example--using-a-dynamic-array)
+  * [Static and Dynamic Libraries](#static-and-dynamic-libraries)
+    + [Static Linking](#static-linking)
+    + [Dynamic Linking](#dynamic-linking)
+  * [Templates](#templates)
+    + [Example: Template Class](#example--template-class)
+    + [Template Functions](#template-functions)
+    + [Advantages of Templates](#advantages-of-templates)
+  * [Macros](#macros)
+  * [Namespace](#namespace)
+    + [Key Concepts](#key-concepts)
+    + [Namespace Nesting](#namespace-nesting)
+  * [Function pointers](#function-pointers)
+  * [Lambdas](#lambdas)
+    + [Components of a Lambda](#components-of-a-lambda)
+    + [Examples](#examples-1)
+    + [Other Examples](#other-examples)
 
-- [Pointers](#pointers)
-  * [Retrieving the Memory Address of a Variable](#retrieving-the-memory-address-of-a-variable)
-  * [Declaring a Pointer](#declaring-a-pointer)
-  * [Assigning a Pointer](#assigning-a-pointer)
-  * [Dereferencing a Pointer](#dereferencing-a-pointer)
-  * [Pointer Arithmetic](#pointer-arithmetic)
-  * [Pointers and Arrays](#pointers-and-arrays)
-  * [Complex Pointer Syntax](#complex-pointer-syntax)
-  * [Practical Example with Switch Cases](#practical-example-with-switch-cases)
-- [References](#references)
-  * [Declaring and Assigning References](#declaring-and-assigning-references)
-  * [Passing by Reference](#passing-by-reference)
-  * [Key Note on Passing by Value](#key-note-on-passing-by-value)
-  * [Recap](#recap)
-  * [Examples](#examples)
-- [Static Keyword](#static-keyword)
-  * [General Use](#general-use)
-  * [Static Variables Inside Local Scope](#static-variables-inside-local-scope)
-  * [Static in Object-Oriented Programming](#static-in-object-oriented-programming)
-  * [Static in Singleton Pattern](#static-in-singleton-pattern)
-  * [Summary of Static Usage](#summary-of-static-usage)
-- [Enums](#enums)
-  * [Syntax and Basic Usage](#syntax-and-basic-usage)
-  * [Enums in Classes](#enums-in-classes)
-  * [Example Usage](#example-usage)
-  * [Key Points About Enums:](#key-points-about-enums-)
-  * [Scoped Enums (C++11)](#scoped-enums--c--11-)
-- [Objects and Classes](#objects-and-classes)
-  * [Example of a Simple Class](#example-of-a-simple-class)
-  * [Constructor and Destructor](#constructor-and-destructor)
-  * [Class Inheritance](#class-inheritance)
-  * [Virtual Functions for Overriding](#virtual-functions-for-overriding)
-  * [Interfaces (Abstract Classes)](#interfaces--abstract-classes-)
-  * [Visibility (Access Specifiers)](#visibility--access-specifiers-)
-  * [Classes vs. Structs](#classes-vs-structs)
-  * [Class Headers and Source Files](#class-headers-and-source-files)
-- [Arrays](#arrays)
-  * [Arrays on the Stack Memory](#arrays-on-the-stack-memory)
-  * [Arrays on the Heap Memory](#arrays-on-the-heap-memory)
-  * [Array Limitations](#array-limitations)
-  * [Array Standard Library (`std::array`)](#array-standard-library---std--array--)
-  * [Summary Table](#summary-table)
-- [Strings](#strings)
-  * [C-Style Strings](#c-style-strings)
-  * [C String Handling Functions](#c-string-handling-functions)
-  * [Declaring Strings via `char*`](#declaring-strings-via--char--)
-  * [Standard Library Strings](#standard-library-strings)
-- [Const](#const)
-  * [Normal Use](#normal-use)
-  * [With Pointers](#with-pointers)
-  * [With Classes](#with-classes)
-  * [Mutable Keyword](#mutable-keyword)
-  * [Summary of `const` Usage](#summary-of--const--usage)
-- [The ternary operator](#the-ternary-operator)
-- [Memory management](#memory-management)
-  * [Stack and Heap Memory Allocation](#stack-and-heap-memory-allocation)
-  * [Differences Between Stack and Heap](#differences-between-stack-and-heap)
-  * [The `new` Keyword](#the--new--keyword)
-- [Implicit Conversion](#implicit-conversion)
-  * [Note on the `explicit` Keyword](#note-on-the--explicit--keyword)
-- [Operator Overloading](#operator-overloading)
-  * [Example 1: print std::vector](#example-1--print-std--vector)
-  * [Example 2: print custom vec2](#example-2--print-custom-vec2)
-  * [Example 3: add custom vec2](#example-3--add-custom-vec2)
-  * [Example 4: track memory allocations](#example-4--track-memory-allocations)
-  * [Key Notes:](#key-notes-)
-- [The this keyword](#the-this-keyword)
-- [Smart Pointers](#smart-pointers)
-  * [Unique Pointers](#unique-pointers)
-  * [Shared Pointers](#shared-pointers)
-  * [Weak Pointers](#weak-pointers)
-- [The Rule of Five in C++](#the-rule-of-five-in-c--)
-  * [1. Destructor](#1-destructor)
-  * [2. Copy Constructor](#2-copy-constructor)
-  * [3. Copy Assignment Operator](#3-copy-assignment-operator)
-  * [4. Move Constructor](#4-move-constructor)
-  * [5. Move Assignment Operator](#5-move-assignment-operator)
-  * [Why the Rule of Five Matters](#why-the-rule-of-five-matters)
-  * [Example: A Complete Rule of Five Implementation](#example--a-complete-rule-of-five-implementation)
-- [The Arrow Operator](#the-arrow-operator)
-  * [Stack vs. Heap Access](#stack-vs-heap-access)
-  * [Example](#example)
-  * [Using with `this`](#using-with--this-)
-  * [Overloading the Arrow Operator](#overloading-the-arrow-operator)
-- [Dynamic Arrays](#dynamic-arrays)
-  * [Optimizations](#optimizations)
-  * [Example: Using a Dynamic Array](#example--using-a-dynamic-array)
-- [Static and Dynamic Libraries](#static-and-dynamic-libraries)
-  * [Static Linking](#static-linking)
-  * [Dynamic Linking](#dynamic-linking)
-- [Templates](#templates)
-  * [Example: Template Class](#example--template-class)
-  * [Template Functions](#template-functions)
-  * [Advantages of Templates](#advantages-of-templates)
-- [Macros](#macros)
-- [Namespace](#namespace)
-  * [Key Concepts](#key-concepts)
-  * [Namespace Nesting](#namespace-nesting)
-- [Function pointers](#function-pointers)
-- [Lambdas](#lambdas)
-  * [Components of a Lambda](#components-of-a-lambda)
-  * [Examples](#examples-1)
-  * [Other Examples](#other-examples)
+  * [Multidimensional arrays](#multidimensional-arrays)
+  * [Sorting std sort](#sorting-std-sort)
+  * [type Punning](#type-punning)
+  * [Union](#union)
+  * [Virtual Destructors](#virtual-destructors)
+  * [Casting](#casting)
+    + [static cast](#static-cast)
+    + [dynamic cast](#dynamic-cast)
+    + [reinterpret cast](#reinterpret-cast)
+    + [const cast](#const-cast)
+  * [Singleton](#singleton)
+  * [lvalues and rvalues](#lvalues-and-rvalues)
+    + [lvalue](#lvalue)
+    + [rvalue](#rvalue)
+  * [Logical operators](#logical-operators)
+  * [Bitwise operators](#bitwise-operators)
+  * [Threads](#threads)
+    + [Mutex](#mutex)
+    + [Condition variables](#condition-variables)
+      - [std::lock_guard vs std::unique_lock](#std--lock-guard-vs-std--unique-lock)
+    + [BOOST library semplification](#boost-library-semplification)
+      - [Lockfree Queue](#lockfree-queue)
+      - [Atomic operations](#atomic-operations)
+  * [Standard input](#standard-input)
+  * [Input file stream](#input-file-stream)
+  * [CMake](#cmake)
+    + [subdirectories](#subdirectories)
+    + [include](#include)
+    + [multiple translation units / main entry points](#multiple-translation-units---main-entry-points)
+    + [library](#library)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 
 
@@ -2948,498 +2977,756 @@ auto it = std::find_if(begin(vec), end(vec), lambda);
 : std::cout << "all element are > max." << std::endl;
 ```
 
----
----
----
 
 
-## Multidimensional arrays
+## Multidimensional Arrays
 
-A simple array is a pointer to the first element of the array
+A **simple (1D) array** in C++ is essentially a contiguous block of memory, and can be accessed using a pointer to its first element:
 
 ```cpp
-// on the stack
+// Stack-allocated array
 int a[50];
-int* ptr = a;
+int* ptr = a; // 'ptr' points to the first element of 'a'
 
-// on the heap 
+// Heap-allocated array
 char* buffer = new char[8];
 ```
 
-A 2d array in C++ is an array of pointers, each one pointing to another array
+
+### 2D Arrays (Stack Allocation)
+
+A **2D array** is an array of arrays. You can initialize it directly:
 
 ```cpp
-int x[3][4] = {{0,1,2,3}, {4,5,6,7}, {8,9,10,11}}
-// OR
-int x[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11}
+int x[3][4] = {
+  {0, 1, 2, 3}, 
+  {4, 5, 6, 7}, 
+  {8, 9, 10, 11}
+};
+
+// Equivalent flat initialization
+int x2[3][4] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 ```
 
-On the heap a 2d array in is still a buffer of pointers that points to arrays stored somewhere in the memory.
+### 2D Arrays (Heap Allocation)
+
+A dynamically allocated 2D array is created using pointers. Conceptually, this is an array of pointers, each pointing to a 1D array.
 
 ```cpp
-// a pointer to a pointer to an integer
-int** a2d = new int*[50];
+int** a2d = new int*[50]; // 50 rows (pointers to int arrays)
 // with this we just have allocated memory
 // specifically 50 integer pointers, so
 // 4bytes * 50 = 200 bytes of memory
 
-// now we need to initialize the 50 arrays 
-for (int i = 0; i < 50; i++)
-  a2d[i] = new int[50];
-
-// so to delete we need to delete them one by one
-for (int i = 0; i < 50; i++)
-  delete[] a2d[i];
-// and finally
-delete[] a2d;
+// now we need to initialize the 50 arrays
+for (int i = 0; i < 50; i++) {
+    a2d[i] = new int[50]; // Each row has 50 columns
+}
 ```
 
-so for a 3d array it would be
+#### Cleanup (Deallocation):
+
+```cpp
+for (int i = 0; i < 50; i++) {
+    delete[] a2d[i]; // Free each row
+}
+delete[] a2d; // Free the row pointer array
+```
+
+### 3D Arrays (Heap Allocation)
+
+A **3D array** is an array of 2D arrays, requiring nested loops for allocation:
 
 ```cpp
 int*** a3d = new int**[50];
-for(int i = 0; i < 50; i++){
-  a3d[i] = new int*[50];
-  for(int i = 0; i < 50; i++)
-    a3d[i][j] = new int[50];
+for (int i = 0; i < 50; i++) {
+    a3d[i] = new int*[50];
+    for (int j = 0; j < 50; j++) {
+        a3d[i][j] = new int[50];
+    }
 }
 ```
 
-Managing multidimensional arrays this way though is not very convenient, nor very efficient, because an 2d array ends up to be a buffer of pointers to not contiguous arrays, so we continuously jump from one part to another part of the memory. The more optimized version is a single dimension array
+> **Note:** Remember to deallocate all levels in reverse order to prevent memory leaks.
+
+### Efficient Alternative: Flattened Arrays
+
+Dynamically allocated multidimensional arrays are **not contiguous in memory**, which leads to **poor cache performance**. A better approach is to simulate a 2D or 3D array using a single flat array.
 
 ```cpp
-int* fake2darray = new int[3*3];
+int* flat2d = new int[3 * 3];
 
-for(int i = 0; i < 3*3; i++){
-  for(int j = 0; j < 3; j++)
-    fake2darray[j + i * 3] = 0; 
+// Simulate 2D access: [row][col]
+for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+        flat2d[i * 3 + j] = 0;
+    }
 }
 ```
-## Sorting std sort
 
-ref. en.cppreference.com/w/cpp/algorithm/sort
+This layout ensures **contiguous memory**, which improves performance due to better **spatial locality** and **cache usage**.
 
-sorting a simple array
 
-```cpp
-#include <algorithm>
-int n = 7; // array size
-int a[] = {4,2,5,3,5,8,3};
-sort(a, a+n);
-```
 
-here we just sort a simple vector of elements
-```cpp
-#include <algorithm>
-std::vector<int> values = {3, 5, 1, 4, 2};
-std::sort(values.begin(), values.end()); // 1 2 3 4 5
-std::sort(values.rbegin(), values.rend()); // 5 4 3 2 1
-```
 
-sorting a string
+
+
+## Sorting with `std::sort`
+
+Reference: [cppreference.com - std::sort](https://en.cppreference.com/w/cpp/algorithm/sort)
+
+### Sorting a Plain Array
 
 ```cpp
 #include <algorithm>
-string s = "monkey";
-sort(s.begin(), s.end());
-```
 
-sorting classes based on some kind of comparison
-
-```cpp
-bool compare(Man& m1, Man& m2){
-  return m1.age() < m2.age();
+int main() {
+    int n = 7;
+    int a[] = {4, 2, 5, 3, 5, 8, 3};
+    std::sort(a, a + n); // Sorts the array in ascending order
 }
-std::vector<Man> v = {mike, alice, bob};
-sort(v.begin(), v.end(), compare);
 ```
-if we want to provide some kind of way to sort providing it with a lambda function
+
+
+### Sorting a `std::vector`
 
 ```cpp
-#include <functional> // to use std::greater
+#include <vector>
+#include <algorithm>
 
-std::sort(values.begin(), values.end(), std::greater<int>()); // > 5 4 3 2 1
-std::sort(values.begin(), values.end(), [](int a, int b){ return a < b; }); // > 1 2 3 4 5
-std::sort(values.begin(), values.end(), [](int a, int b){ return a > b; }); // > 5 4 3 2 1
+int main() {
+    std::vector<int> values = {3, 5, 1, 4, 2};
+
+    std::sort(values.begin(), values.end());      // Sorts ascending: 1 2 3 4 5
+    std::sort(values.rbegin(), values.rend());    // Sorts descending: 5 4 3 2 1
+}
 ```
 
-## type Punning
 
-Type punning means treat a memory of a specific type as another type
+### Sorting a `std::string`
+
+```cpp
+#include <algorithm>
+#include <string>
+#include <iostream>
+
+int main() {
+    std::string s = "monkey";
+    std::sort(s.begin(), s.end()); // Result: "ekmnoy"
+    std::cout << s << std::endl;
+}
+```
+
+### Sorting Custom Types with a Comparator
+
+```cpp
+#include <algorithm>
+#include <vector>
+
+class Man {
+public:
+    Man(std::string name, int age) : m_name(name), m_age(age) {}
+    int age() const { return m_age; }
+
+private:
+    std::string m_name;
+    int m_age;
+};
+
+bool compareByAge(const Man& m1, const Man& m2) {
+    return m1.age() < m2.age();
+}
+
+int main() {
+    std::vector<Man> men = {{"Mike", 30}, {"Alice", 25}, {"Bob", 27}};
+    std::sort(men.begin(), men.end(), compareByAge);
+}
+```
+
+
+### Using Lambdas for Custom Sorting
+
+```cpp
+#include <vector>
+#include <algorithm>
+#include <functional>
+
+int main() {
+    std::vector<int> values = {3, 5, 1, 4, 2};
+
+    std::sort(values.begin(), values.end(), std::greater<int>());       // Descending: 5 4 3 2 1
+
+    std::sort(values.begin(), values.end(), [](int a, int b) {
+        return a < b;
+    }); // Ascending: 1 2 3 4 5
+
+    std::sort(values.begin(), values.end(), [](int a, int b) {
+        return a > b;
+    }); // Descending: 5 4 3 2 1
+}
+```
+
+
+
+## Type Punning
+
+**Type punning** refers to treating a block of memory of one type as if it were a different type.
+
+### Implicit Conversion (Not Type Punning)
 
 ```cpp
 int a = 5;
-std::cout << "a:" << a << std::endl;
-double value = a; // this one here is an implicit conversion, so the compiler implicitly did
-// double value = (double)a;
-// what was actually done was a conversion from int to double 
-// so we will find different things into the memory
-std::cout << "value:" << value << std::endl;
+std::cout << "a: " << a << std::endl;
+
+double value = a; // Implicit conversion from int to double
+std::cout << "value: " << value << std::endl; // value: 5
 ```
 
-what instead if we want to take that exsisting original int memory and treat it as a double? (type punning)
+In this case, `a` is converted to a new `double` value. The original memory of `a` is **not reused** — a proper type conversion happens, and the memory layout changes accordingly.
+
+
+
+### Actual Type Punning
+
+If we want to reinterpret the memory of one type as another (without conversion), we can cast its address:
 
 ```cpp
+int a = 5;
+
+// Reinterpret the memory of 'a' as a double
+double value = *(double*)&a;
 // we take memory address of 'a', cast it to double pointer, then dereference to get back the value 
-value = *(double*)&a;
-std::cout << "value:" << value << std::endl;
+
+
+std::cout << "value: " << value << std::endl; // value: some garbage, e.g., 7.75152e+230
 ```
 
-a more interesting example: let's type punning a struct into an array:
+This is type punning: we're treating the memory of `a` (which holds an `int`) **as if** it were a `double`. This is **dangerous**, as it results in undefined behavior — the value read is likely garbage due to different type sizes and memory layouts.
+
+
+### Struct Punned into an Array
+
+A more illustrative example is punning a struct into an array:
 
 ```cpp
-struct entity {
-  int a, b;
+#include <iostream>
+
+struct Entity {
+    int a, b;
 };
 
 int main() {
-  entity e = {5, 8};
-  int* arr = (int*)&e;
-  std::cout << "arr: " << arr[0] << ", " << arr[1] << std::endl;
+    Entity e = {5, 8};
+
+    // Reinterpret the memory of the struct as an array of ints
+    int* arr = (int*)&e;
+
+    std::cout << "arr[0]: " << arr[0] << ", arr[1]: " << arr[1] << std::endl;
+    // Output: arr[0]: 5, arr[1]: 8
 }
 ```
+
+Here, the struct `Entity` consists of two `int`s. Since the struct’s memory layout is just two consecutive `int`s, reinterpreting it as an array of `int` works correctly — though it still technically relies on compiler behavior and alignment.
+
+---
+
+### Warning
+
+Type punning may lead to **undefined behavior** and should be used with **extreme caution**. In modern C++, safer alternatives include:
+
+- `std::memcpy` (for copying memory between types)
+- `std::bit_cast` (C++20)
+- `union` (in legacy code)
+- `reinterpret_cast` (with care)
+
+
+
 
 ## Union
 
-A [union](https://en.cppreference.com/w/cpp/language/union) is a special class type that can hold only one of its non-static data members at a time.
-Imagine we have  a Vector2 and a Vector4 and we want to access Vector4 memory parts using Vector2, i.e. treating a Vec4 as a couple of Vec2. 
+A [**union**](https://en.cppreference.com/w/cpp/language/union) is a special class type that can hold **only one** of its non-static data members at a time. All members share the same memory space. This is useful when you want to reinterpret memory without type conversion — in a safer and more structured way than raw pointer casting (type punning).
+
+### Motivation Example
+
+Suppose we have a `Vector2` and a `Vector4`, and we want to access the `Vector4` as **two** `Vector2` instances — for example, treating it like a pair: `a = (x, y)` and `b = (z, w)`.
+
+First, let’s define a simple `Vector2` struct with an overloaded output operator:
 
 ```cpp
-struct Vector2 { float x, y; };
-// operator overloading to print Vector2
-std::ostream& operator<<(std::ostream& stream, Vector2& vector){
-  stream << vector.x << ", " << vector.y;
-  return stream;
+struct Vector2 {
+    float x, y;
+};
+
+// Overload operator<< for Vector2
+std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
+    stream << vector.x << ", " << vector.y;
+    return stream;
 }
 ```
 
-Using **type punning**, we could write getA() and getB() to get respectively x, y and z, w
+
+### Using Type Punning (Unsafe)
+
+We can manually reinterpret the memory using pointer casting — this is **type punning** and is error-prone:
 
 ```cpp
 struct Vector4 {
-  float x, y, z, w;
-  Vector2& getA() { return *(Vector2*)&x; }
-  Vector2& getB() { return *(Vector2*)&z; }
+    float x, y, z, w;
+
+    Vector2& getA() { return *(Vector2*)&x; } // Treat x and y as Vector2
+    Vector2& getB() { return *(Vector2*)&z; } // Treat z and w as Vector2
 };
 
 int main() {
-  Vector4 v4 = {1, 2, 3, 4};
-  std::cout << v4.getA() << std::endl;
+    Vector4 v4 = {1, 2, 3, 4};
+    std::cout << v4.getA() << std::endl; // Output: 1, 2
 }
 ```
-using **Union** we can instead write something simplier like this:
+
+While this works in practice, it relies on assumptions about memory layout and aliasing that could lead to undefined behavior.
+
+
+### Using a Union (Safer)
+
+We can achieve the same result more safely and cleanly using an anonymous union inside the `Vector4` struct:
 
 ```cpp
 struct Vector4 {
-  union {  
-    // an anonymous struct to structure the data
-    struct { float x, y, z, w; }; 
-    struct { Vector2 a, b; };
-    // so now I can access data in two ways: 
-    // 1. using x, y, z, w
-    // 2. using a and b, where a happens to be x, y 
-    // b happens to be z, w
-  };
+    union {
+        struct { float x, y, z, w; }; // Layout of the full vector
+        struct { Vector2 a, b; };     // Alternative access: two Vector2s
+		// so now I can access data in two ways: 
+		// 1. using x, y, z, w
+		// 2. using a and b, where a happens to be x, y 
+		// b happens to be z, w
+    };
 };
 
-int main(){
-  Vector4 v4 = {1, 2, 3, 4};
-  v4.z = 33;
-  std::cout << v4.b << std::endl;
+int main() {
+    Vector4 v4 = {1, 2, 3, 4};
+    v4.z = 33; // Modify an individual component
+
+    std::cout << v4.b << std::endl; // Output: 33, 4
 }
 ```
+
+### Key Points:
+- Unions allow different views of the **same memory**.
+- Anonymous structs/unions let you access fields directly (without `.a.x` syntax).
+- You must ensure the members don’t conflict or lead to misaligned access.
+- Safer and more readable than pointer casting.
+
+
+
+
 
 ## Virtual Destructors
 
-When inheritance and virtual functions come together, then we need to deal with virtual destructors too.
+When working with **inheritance** and **virtual functions**, it’s crucial to understand the importance of virtual destructors.
+
+### Basic Example
 
 ```cpp
 class Base {
 public:
-  Base(){std::cout << "B constr, ";}
-  ~Base(){std::cout << "B destr, ";}  
+    Base() { std::cout << "B constr, "; }
+    ~Base() { std::cout << "B destr, "; }
 };
+
 class Derived : public Base {
 public:
-  Derived(){std::cout << "D constr, ";}    
-  ~Derived(){std::cout << "D destr, ";}
+    Derived() { std::cout << "D constr, "; }
+    ~Derived() { std::cout << "D destr, "; }
 };
-int main(){
-  Derived* derived = new Derived();
-  delete derived;
+
+int main() {
+    Derived* derived = new Derived();
+    delete derived;
 }
 ```
-this will printout ``B constr, D constr, B destr, D destr,`` as we expect!
-What will happen when we use a polymorphic like this:
+
+**Output:**
+
+```
+B constr, D constr, D destr, B destr,
+```
+
+This behaves as expected — both constructors and destructors are called in the proper order.
+
+
+### Polymorphism Issue
+
+Now let’s see what happens when using polymorphism:
 
 ```cpp
-int main(){
-  Base* poly = new Derived();
-  delete poly;
+int main() {
+    Base* poly = new Derived();
+    delete poly;
 }
 ```
-just the Base destructor will be called, leading to a memory leak!
-So to solve this, we need to set destructor of Base class as **virtual**, telling this way that the class may be extended, so call the derived destructors if present
+
+**Output:**
+
+```
+B constr, D constr, B destr,
+```
+
+Oops! The **`Derived` destructor is never called**, leading to a potential **memory/resource leak**.
+
+
+### The Solution: Virtual Destructor
+
+To fix this, declare the **base class destructor as virtual**:
 
 ```cpp
 class Base {
 public:
-  Base(){std::cout << "B constr";}
-  virtual ~Base(){std::cout << "B destr";}  
-}
+    Base() { std::cout << "B constr, "; }
+    virtual ~Base() { std::cout << "B destr, "; }
+};
 ```
-So, *whenever writing a class that you will be extending or might be subclassed, you need to 100% declare destructor as virtual*
 
-## Casting
+With this change, `delete poly` will properly invoke both destructors:
 
-### static cast 
+```
+B constr, D constr, D destr, B destr,
+```
 
-Type casting, means conversion within the type system that C++ provide us with. If I declare a variable of a specific type, I need to stick with that type unless either there is an **implicit conversion** (C/C++ knows how to convert from one type to another) or we write an **explicit conversion**, so we tell C/C++ how to convert from one type to another.
+### Rule of Thumb
 
-C style cast:
+> Whenever a class is intended to be **inherited from**, always declare its **destructor as `virtual`**.
+
+This ensures that the **entire object hierarchy is properly destroyed**, even when accessed via a base class pointer.
+
+
+
+
+
+
+
+## Casting in C++
+
+Type casting means converting a value from one type to another. In C++, this can happen either:
+
+- **Implicitly**, when the compiler knows how to do the conversion safely.
+- **Explicitly**, when you tell the compiler exactly how to convert a value.
+
+### `static_cast`
+
+Used for standard conversions between related types at compile-time. It's type-safe and preferred over C-style casts.
+
+**C-style cast:**
 
 ```cpp
 double value = 5.32;
-int a = (int)value + 5.4; // explicit conversion
+int a = (int)value + 5.4;  // explicit C-style cast
 ```
 
-C++ style cast (static cast):
+**C++-style cast:**
 
 ```cpp
 double value = 5.32;
 int a = static_cast<int>(value) + 5.4;
 ```
-the good thing about C++ style of casting is that if something goes wrong with my compilation and I get some compile check messages and I can search for casting in my code easily trying to figure out the problem
 
-### dynamic cast
+`NOTE`: `static_cast` is better because it's easier to locate in code and allows better compile-time checks.
 
-We can use **dynamic cast** to check if an object is of a specific type. Suppose we have *Base* class, *Derived* and *Another* classes that both extend from *Base*.
+### `dynamic_cast`
+
+Used for **safe downcasting** in inheritance hierarchies (requires at least one **virtual function** in the base class). It performs **runtime type checking**, returning `nullptr` if the cast fails (when dealing with pointers).
 
 ```cpp
 class Base {
-public: 
-  Base(){} 
-  virtual ~Base(){}
-};
-class Derived : public Base {
 public:
-  Derived(){}
-  ~Derived(){}
+    virtual ~Base() {}
 };
-class AnotherClass : public Base {
-public:
-  AnotherClass () {}
-  ~AnotherClass () {}  
-};
+
+class Derived : public Base {};
+class AnotherClass : public Base {};
+
+int main() {
+    Base* base = new Derived(); // suppose we don't know that base is specialized to Derived
+
+    AnotherClass* ac1 = static_cast<AnotherClass*>(base); // Unsafe: no runtime check!
+    AnotherClass* ac2 = dynamic_cast<AnotherClass*>(base); // Safe: returns nullptr if cast fails
+
+    if (ac2) {
+        std::cout << "Cast successful.\n";
+    } else {
+        std::cout << "Cast failed.\n";
+    }
+
+    delete base;
+}
 ```
-and we want to know if a pointer of type Base specialized to Derived or to AnotherClass
+
+`NOTE`: Use `dynamic_cast` when you're not sure of the actual type at runtime and need type checking.
+
+### `reinterpret_cast`
+
+Used for **low-level type punning** — interpreting the raw memory of one type as another. It's **dangerous** and should be used with extreme caution.
 
 ```cpp
-Derived* derived = new Derived()
-Base* base = derived // suppose we don't know that base specialized to Derived
-
-AnotherClass* ac = static_cast<AnotherClass*>(base); // will do the conversion
-AnotherClass* ac = dynamic_cast<AnotherClass*>(base); // will check if base specialized to AnotherClass, if not it will return NULL, so we can check the type by writing if (!ac) {} or if (ac) {}
+int a = 5;
+double* ptr = reinterpret_cast<double*>(&a);
+std::cout << *ptr << std::endl; // undefined behavior
 ```
 
-### reinterpret cast
+`NOTE`: This cast tells the compiler: "Trust me, I know what I'm doing." Often used in embedded or performance-critical code, but not type-safe.
 
-type punning :P
 
-### const cast
+### `const_cast`
 
-removes or add const :P
+Used to **add or remove `const`** or `volatile` qualifiers from a variable. Useful in rare cases, e.g., legacy APIs or when you know modifying a const object is safe (e.g., internal caching).
+
+```cpp
+const int a = 42;
+int& b = const_cast<int&>(a);
+b = 10;
+std::cout << a << " " << b << std::endl; // undefined behavior!
+```
+
+`NOTE`: Modifying a `const` object after casting away its constness leads to **undefined behavior**.
+
+
+
+
 
 
 ## Singleton
 
-it is basically a single instance of a class that you have around. So in some sense a singleton in c++ acts pretty much like a namespace, as it is a way to organize a bunch of global variables and static functions into a kind of "organized blob".
+A **singleton** is a design pattern that ensures a class has **only one instance** and provides a **global point of access** to it.
 
-```c++
+In C++, a singleton acts somewhat like a namespace—it organizes global data and behavior into a single, centralized instance. It’s commonly used for managers, configuration handlers, loggers, etc.
+
+### Example:
+
+```cpp
+#include <iostream>
+
 class SingletonExample {
-
 public:
-  // the method to retrieve the single instance
-  static SingletonExample& get() {
-    static SingletonExample instance;
-    return instance;
-  }
+    // The method to retrieve the single instance
+    static SingletonExample& get() {
+        static SingletonExample instance; // created once, on first use
+        return instance;
+    }
 
-  void setStatus() { this->status = 1; }
-  static int getStatus() { return get().status; }
+    void setStatus() { this->status = 1; }
+    static int getStatus() { return get().status; }
 
 private:
-  int status; // a variable to prove the instance is unique
-  // declare private constructor to prevent the creation of objects
-  SingletonExample() : status(0) {
-    std::cout << "constr" << std::endl;
-  }
+    int status; // a variable to demonstrate uniqueness
+
+    // Private constructor to prevent external instantiation
+    SingletonExample() : status(0) {
+        std::cout << "Constructor called" << std::endl;
+    }
+
+    // Delete copy constructor and assignment operator
+    SingletonExample(const SingletonExample&) = delete;
+    SingletonExample& operator=(const SingletonExample&) = delete;
 };
 
 int main() {
-  std::cout << SingletonExample::getStatus() << std::endl;
+    std::cout << SingletonExample::getStatus() << std::endl;
 
-  // multiple references retrieve the very same instance 
-  SingletonExample& se1 = SingletonExample::get();
-  SingletonExample& se2 = SingletonExample::get();
-  auto& se3 = SingletonExample::get();
+    // All references point to the same instance
+    SingletonExample& se1 = SingletonExample::get();
+    SingletonExample& se2 = SingletonExample::get();
+    auto& se3 = SingletonExample::get();
 
-  std::cout << "s1 " << se1.getStatus() << std::endl;
-  se1.setStatus();
+    std::cout << "se1: " << se1.getStatus() << std::endl;
+    se1.setStatus();
 
-  std::cout << "s1 " << se1.getStatus() << std::endl;
-  std::cout << "s2 " << se2.getStatus() << std::endl;
-  std::cout << "s3 " << se3.getStatus() << std::endl;
+    std::cout << "se1: " << se1.getStatus() << std::endl;
+    std::cout << "se2: " << se2.getStatus() << std::endl;
+    std::cout << "se3: " << se3.getStatus() << std::endl;
 
-  std::cout << SingletonExample::getStatus() << std::endl;
+    std::cout << SingletonExample::getStatus() << std::endl;
 }
 ```
+
+### Notes:
+- The instance is created **lazily** and is **thread-safe** (guaranteed by C++11 and later).
+- The constructor is private to prevent direct instantiation.
+- Copying and assigning the singleton are explicitly disabled.
+
+
+
+
 
 ## lvalues and rvalues
 
-### lvalue 
-simply means an object that has an identifiable location in memory (i.e. having an address).
+### lvalue
 
-```c++
-int a; // declare an object of type int: a variable that has a location in memory
-a = 1; // a is therefore an l-value expression
-int b = a; // here a l-value can appear on right
+An **lvalue** (locator value) refers to an object that has an identifiable location in memory. In other words, it can appear on the **left-hand side** of an assignment because it has an address.
 
-9 = a; // Error! 9 is an r-value because it is a value, and doesn't have a location in memory, therefore cannot be on the left of the operator =
+```cpp
+int a;       // 'a' is a variable stored in memory — it is an lvalue
+a = 1;       // valid: 'a' appears on the left-hand side
+int b = a;   // valid: 'a' is used on the right-hand side, but it is still an lvalue
+
+9 = a;       // Error: '9' is a literal (an rvalue) and cannot appear on the left-hand side
 ```
 
-### rvalue 
+### rvalue
 
-A r-value is an expression, that can’t have a value assigned to it, which means r-value can appear on right but not on left hand side of an assignment operator(=)
+An **rvalue** (read value) is a temporary value that does not persist in memory and cannot be assigned to. It can only appear on the **right-hand side** of an assignment.
 
-```c++
-// declare 'a', 'b'
-int a = 1, b;  // objects of type 'int'
-a + 1 = b; // Error! left expression is not a l-value
- 
-// declare pointer variable 'p', and 'q'
-int *p, *q; // *p, *q are lvalue
-*p = 1; // valid l-value assignment
-p + 2 = 18; // Error! "p + 2" is not an l-value
-q = p + 5; // q is l-value, "p + 5" is an r-value
-*(p + 2) = 18; // dereferencing pointer: expression gives an l-value
+```cpp
+int a = 1, b;
+a + 1 = b;       // Error: 'a + 1' is an rvalue and cannot be assigned to
 
- 
-p = &b; // assign pointer p the mem addrs of b
-int arr[20]; // arr[12] is an l-value; equivalent to *(arr+12) Note: arr itself is also an l-value
-&a = p; // Error! &a is an r-value`
- 
+int* p, *q;
+*p = 1;          // Valid: '*p' is an lvalue because it refers to a memory location
+p + 2 = 18;      // Error: 'p + 2' is the result of pointer arithmetic — it is an rvalue
+q = p + 5;       // Valid: 'q' is an lvalue, 'p + 5' is an rvalue
+
+*(p + 2) = 18;   // Valid: dereferencing the result gives an lvalue
+
+p = &b;          // Valid: assigning the address of 'b' to pointer 'p'
+
+int arr[20];     
+arr[12] = 5;     // Valid: 'arr[12]' is equivalent to '*(arr + 12)' — an lvalue
+
+&a = p;          // Error: '&a' produces a temporary value (an rvalue)
+
 struct S { int m; };
-struct S obj; // obj and obj.m are l-values
+S obj;           // 'obj' is an lvalue
+obj.m = 10;      // 'obj.m' is also an lvalue
 
-// ptr-> is an l-value; equivalent to (*ptr).m
-// Note: ptr and *ptr are also l-values
-struct S* ptr = &obj;
+S* ptr = &obj;
+ptr->m = 20;     // 'ptr->m' is an lvalue, equivalent to '(*ptr).m'
 ```
 
-## Logical operators
+### Summary
 
-used to perform logical operations on boolean expressions. Combine multiple conditions and evaluate the result as either true or false. Conditions are evaluated from left to right
-The logical **AND** operator (&&) returns true if *both of its operands are true*.
-The logical **OR** operator (||) returns true if *at least one of its operands is true*. 
-The logical **NOT** operator (!) is a unary operator that *negates the value of its operand*
+| Expression Type | Can appear on left of `=` | Has memory address | Examples              |
+|-----------------|---------------------------|---------------------|------------------------|
+| lvalue          | Yes                       | Yes                 | `a`, `*p`, `arr[5]`    |
+| rvalue          | No                        | No (typically)      | `42`, `a + 1`, `p + 2` |
 
-```c++
+
+
+
+
+## Logical Operators
+
+Logical operators are used to perform logical operations on boolean expressions. They combine multiple conditions and evaluate the result as either `true` or `false`. Conditions are evaluated from left to right.
+
+- The logical **AND** operator (`&&`) returns `true` if **both** of its operands are `true`.
+- The logical **OR** operator (`||`) returns `true` if **at least one** of its operands is `true`.
+- The logical **NOT** operator (`!`) is a unary operator that **negates** the value of its operand.
+
+```cpp
 bool a = true;
 bool b = false;
-bool result = a && b;  // result false (immediately if a is false)
-bool result = a || b;  // result is true (immediately if a is true)
-bool result = !a;  // result is false
+bool result = a && b;  // result is false (evaluates false immediately if a is false)
+result = a || b;       // result is true (evaluates true immediately if a is true)
+result = !a;           // result is false (negates the value of a)
 ```
 
-## Bitwise operators
 
-Bitwise operators are used to perform operations on individual bits of binary numbers. These operators allow you to manipulate the binary representation of integers at a bit level. There are six bitwise operators in C++:
 
-The bitwise **AND** (&) operator compares the corresponding bits of two operands and returns 1 if *both bits* are 1, otherwise it returns 0
-The bitwise **OR** (|) operator compares the corresponding bits of two operands and returns 1 if *at least one* of the bits is 1, otherwise it returns 0
-The bitwise **XOR** (^) operator compares the corresponding bits of two operands and returns 1 if *the bits are different*, otherwise it returns 0
-The bitwise **NOT** (~) operator is a unary operator that flips the bits of its operand. It returns *the one's complement* of the operand. For example:
 
-```c++
+
+## Bitwise Operators
+
+Bitwise operators are used to perform operations on individual bits of binary numbers. These operators allow manipulation of the binary representation of integers at a bit level. There are six bitwise operators in C++:
+
+- The bitwise **AND** (`&`) operator compares the corresponding bits of two operands and returns `1` if **both bits** are `1`, otherwise it returns `0`.
+- The bitwise **OR** (`|`) operator compares the corresponding bits of two operands and returns `1` if **at least one** of the bits is `1`, otherwise it returns `0`.
+- The bitwise **XOR** (`^`) operator compares the corresponding bits of two operands and returns `1` if **the bits are different**, otherwise it returns `0`.
+- The bitwise **NOT** (`~`) operator is a unary operator that flips the bits of its operand. It returns the **one's complement** of the operand. For example:
+
+```cpp
 int a = 5; // binary representation: 0101
 int b = 3; // binary representation: 0011
-int result = a & b; // binary representation: 0001 (1 in decimal)
-int result = a | b; // binary representation: 0111 (7 in decimal)
-int result = a ^ b; // binary representation: 0110 (6 in decimal)
-int result = ~a; // binary representation: 1010 (-6 in decimal)
+int result = a & b; // binary result: 0001 (1 in decimal)
+int result = a | b; // binary result: 0111 (7 in decimal)
+int result = a ^ b; // binary result: 0110 (6 in decimal)
+int result = ~a;    // binary result: 1010 (-6 in decimal, two's complement)
 ```
 
-The left shift **<<** operator shifts the bits of the left operand to the left by a specified number of positions. The vacant positions are filled with zeros.  
-***NB***: left shift multiplies the original number by 2
+- The **left shift** (`<<`) operator shifts the bits of the left operand to the left by a specified number of positions. The vacant positions are filled with zeros.  
+  **Note**: A left shift multiplies the original number by `2`.
 
-The right shift **>>** operator shifts the bits of the left operand to the right by a specified number of positions. The vacant positions are filled with the sign bit (for signed types) or with zeros (for unsigned types). ***NB***:  right shifts are equivalent to dividing a number by 2
+- The **right shift** (`>>`) operator shifts the bits of the left operand to the right by a specified number of positions. The vacant positions are filled with the sign bit (for signed types) or with zeros (for unsigned types).  
+  **Note**: A right shift is equivalent to dividing a number by `2`.
 
-```c++
+```cpp
 int a = 5; // binary representation: 0101
-int result = a << 2; // binary representation: 010100 (20 in decimal)
-int result = a >> 2; // binary representation: 0001 (1 in decimal)
+int result = a << 2; // binary result: 010100 (20 in decimal)
+result = a >> 2;     // binary result: 0001 (1 in decimal)
 ```
+
+
+
+
+
+
 
 ## Threads
 
-A thread is the smallest unit of execution in a process.
-Multithreading involves the execution of multiple threads concurrently within a single program. It allows multiple threads to run independently, sharing the same resources (memory) but having their own execution contexts (stack and registers).
-Once a thread is created, its function or callable object is executed concurrently with other threads. 
+A thread is the smallest unit of execution in a process.  
+Multithreading involves the execution of multiple threads concurrently within a single program. It allows multiple threads to run independently, sharing the same resources (e.g., memory) but having their own execution contexts (stack and registers).  
+Once a thread is created, its function or callable object is executed concurrently with other threads.
 
-```c++
+```cpp
+#include <thread>
 
-#import <thread>
-
-void myThreadFunction(){
-  // code to be executed on a separate thread
+void myThreadFunction() {
+  // Code to be executed on a separate thread
 }
 
-int main(){
-  std::thread myThread(myThreadFunction); // after this line myThread immediately 
-  //starts to run in parallel (with the main thread)
+int main() {
+  std::thread myThread(myThreadFunction); // myThread starts running immediately in parallel (with the main thread)
 
-  // Here we can do other work in the main thread  
+  // The main thread can continue working here
 
-  myThread.join(); // tells main thread to wait the end of myThread before proceeding
-  
-  // or let it run independently
-  //myThread.detach();
+  myThread.join(); // Main thread waits for myThread to finish before proceeding
 
-  // do other stuff here (only once myThreadFunction gets out of scope!)
+  // Alternatively, myThread can run independently
+  // myThread.detach();
+
+  // Do other work here (only after myThreadFunction finishes executing)
 }
 ```
 
 When multiple threads access shared data concurrently, synchronization mechanisms are necessary to avoid data races. Mutexes, condition variables, and atomic operations are commonly used for synchronization.
 
 ### Mutex
-A mutex is a synchronization primitive used in C++ to protect shared resources from concurrent access by multiple threads. It ensures that only one thread can access the protected resource at a time, preventing data races and maintaining data integrity.
 
-```c++
-#include <iostream>  
-#include <thread>  
-#include <mutex> 
+A **mutex** is a synchronization primitive in C++ used to protect shared resources from concurrent access by multiple threads. It ensures that only one thread can access the protected resource at a time, preventing data races and maintaining data integrity.
 
-std::mutex myMutex; 
-int sharedVariable = 0; 
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
 
-void myThreadFunction() { 
-  std::lock_guard<std::mutex> lock(myMutex); // Modify sharedVariable safely 
-  sharedVariable++; 
-} 
-int main() { 
-  std::thread myThread1(myThreadFunction); 
-  std::thread myThread2(myThreadFunction); 
-  myThread1.join(); 
-  myThread2.join(); 
+std::mutex myMutex;
+int sharedVariable = 0;
+
+void myThreadFunction() {
+  std::lock_guard<std::mutex> lock(myMutex); // Safely modify sharedVariable
+  sharedVariable++;
+}
+
+int main() {
+  std::thread myThread1(myThreadFunction);
+  std::thread myThread2(myThreadFunction);
+  myThread1.join();
+  myThread2.join();
   // sharedVariable is now safely modified by both threads
+}
 ```
 
-### Condition variables
+### Condition Variables
 
-`std::condition_variable` is a synchronization primitive in C++ that provides a way for threads to wait for a particular condition to be satisfied. It is often used in conjunction with a `std::mutex` to protect shared data and coordinate the execution of multiple threads
+`std::condition_variable` is a synchronization primitive in C++ that allows threads to wait for a particular condition to be satisfied. It is often used in conjunction with a `std::mutex` to protect shared data and coordinate the execution of multiple threads.
 
-example **Producer/Consumer**:
+#### Example: Producer/Consumer
 
 ```cpp
 #include <iostream>
@@ -3494,9 +3781,9 @@ int main() {
   producerThread.join();
   consumerThread.join();
 }
-``` 
+```
 
-example **Thread Synchronization**
+#### Example: Thread Synchronization
 
 ```cpp
 #include <iostream>
@@ -3535,18 +3822,18 @@ int main() {
 }
 ```
 
-#### std::lock_guard vs std::unique_lock
+#### `std::lock_guard` vs `std::unique_lock`
 
--   If you need a simple and concise way to lock and unlock a mutex within a scope, and no manual unlocking is required, use `std::lock_guard`
--   If you need more flexibility, such as manual unlocking, deferred locking, or using the lock with condition variables, use `std::unique_lock`
-  
+- Use **`std::lock_guard`** when you need a simple and concise way to lock and unlock a mutex within a scope, and no manual unlocking is required.
+- Use **`std::unique_lock`** when you need more flexibility, such as manual unlocking, deferred locking, or using the lock with condition variables.
+
 The choice between `std::lock_guard` and `std::unique_lock` depends on the specific requirements of your code and the level of control you need over the associated mutex.
 
-### BOOST library semplification
+### Boost Library Simplification
 
-Example **Mutex**
+#### Example: Mutex with Boost
 
-```c++
+```cpp
 #include <boost/thread.hpp>
 
 boost::mutex myMutex;
@@ -3554,7 +3841,7 @@ int sharedVariable = 0;
 
 void myThreadFunction() {
   boost::unique_lock<boost::mutex> lock(myMutex);
-  sharedVariable++; // Modify sharedVariable safely
+  sharedVariable++; // Safely modify sharedVariable
 }
 
 int main() {
@@ -3565,9 +3852,7 @@ int main() {
 }
 ```
 
-#### Lockfree Queue 
-
-Example **Producer/Consumer**
+#### Lock-Free Queue (Producer/Consumer)
 
 Boost provides a lock-free queue implementation, removing the need for explicit locking and unlocking when accessing the shared data structure.
 
@@ -3610,12 +3895,12 @@ int main() {
 }
 ```
 
-#### Atomic operations
+#### Atomic Operations with Boost
 
 The `boost::atomic` library provides atomic operations, which can be used to perform operations on variables in a way that is guaranteed to be atomic and avoid data races.  Atomic operations are guaranteed to be executed as a single uninterruptable operation and are often implemented in a lock-free manner, making them suitable for scenarios where lock contention might be a concern. 
 Atomic operations are typically used for simple, low-level operations on shared variables without the need for explicit locking.
 
-Example **Atomic Operation** 
+Example: **Atomic Operation**
 
 ```cpp
 #include <boost/atomic.hpp>
@@ -3623,54 +3908,60 @@ Example **Atomic Operation**
 boost::atomic<int> atomicVariable(0);
 
 void myThreadFunction() {
-  atomicVariable.fetch_add(1);
+  atomicVariable.fetch_add(1); // Atomically increment the variable
 }
 ```
 
-## Standard input
 
-`std::cin.get()` is a member function of the `cin` object, which is an instance of the `istream` class. This function is used to read a single character from the standard input 
 
-```c++
-#include  <iostream>
+
+
+
+## Standard Input
+
+`std::cin.get()` is a member function of the `cin` object, which is an instance of the `istream` class. This function is used to read a single character from the standard input.
+
+```cpp
+#include <iostream>
 //...
 char ch;
 std::cout << "Enter a character: "; 
 
-ch = std::cin.get(); // to read any char (including spaces and new line chars)
-ch = std::cin << std::ws >> ch // read char (ignoring leading whitespace)
+ch = std::cin.get(); // Reads any character (including spaces and new line characters)
+std::cin >> std::ws;  // Ignore leading whitespace before reading the character
+std::cin >> ch; // Read the character after skipping any whitespace
 
-"You entered: " << ch << std::endl;
+std::cout << "You entered: " << ch << std::endl;
 //...
 ```
 
-`std::cin`  is also used to read words and strings 
+`std::cin` is also used to read words and strings.
 
-```c++
+```cpp
 std::string input; 
 std::cout << "Enter a word: "; 
 
-std::cin >> input; // to read a single word (sequence of chars without spaces)
-std::getline(std::cin, input); // to read a whole line (until a newline character is encountered. It discards the newline character and stores the entire line)
+std::cin >> input; // To read a single word (sequence of characters without spaces)
+std::getline(std::cin, input); // To read a whole line (until a newline character is encountered. It discards the newline character and stores the entire line)
 
 std::cout << "You entered: " << input << std::endl;
 ```
 
-## Input file stream
 
-use the `<filesystem>` library to work with file and directory paths, including obtaining the current working directory. 
+## Input File Stream
 
-```c++
+Use the `<filesystem>` library to work with file and directory paths, including obtaining the current working directory.
+
+```cpp
 #include <filesystem>
 
 // Get the current working directory 
 std::filesystem::path currentPath = std::filesystem::current_path();
 ```
 
-use the `std::ifstream` class from the `<fstream>` header to check if a file exists. Use `getline`(stream, line) to update the current line from the file stream 
+Use the `std::ifstream` class from the `<fstream>` header to open and read from a file. Use `std::getline()` to read a line from the file stream.
 
-
-```c++
+```cpp
 #include <fstream>
 
 // ...
@@ -3681,11 +3972,11 @@ std::ifstream ifs(filename); // Create an ifstream object
 if (ifs.is_open()) {
   std::cout << "File exists." << std::endl;
   
-  // You can proceed to read from or write to the file here if needed
+  // You can proceed to read from the file here if needed
   std::string line;
-  while(getline(ifs, line)) {
-    if (line.find("somethingToSearch") != std::string::npos){
-      // somethingToSearch has been found
+  while (std::getline(ifs, line)) {
+    if (line.find("somethingToSearch") != std::string::npos) {
+      // "somethingToSearch" has been found
     }
   }  
    
@@ -3697,61 +3988,124 @@ if (ifs.is_open()) {
 
 
 
-
-
-
-
 ## CMake
 
-see https://stackoverflow.com/questions/49996260/how-to-use-target-sources-command-with-interface-library
+CMake is a widely-used build system generator that simplifies the process of managing complex software builds. It allows you to define the structure and requirements of your project in a `CMakeLists.txt` file, which CMake then uses to generate platform-specific build files (e.g., Makefiles, Visual Studio project files, Xcode project files). It is especially useful for cross-platform development and large projects with multiple components.
 
-### subdirectories
+### Key Concepts
+
+When working with CMake, you'll often encounter the following concepts:
+
+- **CMakeLists.txt**: The main configuration file where you define how your project is built. Each directory in your project should contain a `CMakeLists.txt` file.
+- **Targets**: Targets represent executables or libraries that are built by CMake. Targets are created using commands like `add_executable()` or `add_library()`.
+- **Subdirectories**: Large projects are often divided into subdirectories, and CMake allows you to manage these with `add_subdirectory()`. This is essential for handling multi-component projects.
+- **Include Directories**: Directories containing header files that need to be included during compilation. These are added with `target_include_directories()`.
+- **Sources**: The actual source files that will be compiled to create the targets. These are specified with `target_sources()` or directly in the `add_executable()`/`add_library()` commands.
+- **Variables**: CMake allows you to define variables (e.g., paths, flags) that can be used throughout the `CMakeLists.txt` files.
+- **Commands**: CMake has a set of predefined commands (e.g., `cmake_minimum_required()`, `project()`, `set()`, `add_subdirectory()`) used to configure and control the build process.
+
+### Basic Structure of a CMake Project
+
+A typical project structure using CMake might look like this:
+
 ```
-root/CMakeLists.txt
-root/Graphs
-root/include
+root/
+  CMakeLists.txt
+  Graphs/
+    CMakeLists.txt
+    include/
+  include/
 ```
-CMakeLists.txt in *root* folder
-```c++
+
+### `CMakeLists.txt` in the Root Directory
+
+This file is the entry point for your CMake configuration. It typically contains project-wide settings and includes for subdirectories. Here’s an example of what the root `CMakeLists.txt` might look like:
+
+```cmake
 cmake_minimum_required(VERSION 3.0.0)
 project(thecherno VERSION 0.1.0)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17")
 
+# Set C++17 standard for the project
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+
+# Add subdirectory for the Graphs component
 add_subdirectory(Graphs)
 ```
 
-### include 
-```
-Graphs/CMakeLists.txt
-Grphs/include
-```
-CMakeLists.txt in subdir *Graphs*
-```c++
+- **cmake_minimum_required()**: Specifies the minimum version of CMake required for the project.
+- **project()**: Defines the project’s name and version.
+- **set()**: Used to define project-wide variables like compiler flags (`CMAKE_CXX_FLAGS`).
+- **add_subdirectory()**: Adds subdirectories to the build, in this case, `Graphs`.
+
+### `CMakeLists.txt` in the `Graphs` Subdirectory
+
+This file is specific to the `Graphs` submodule and contains the instructions for how to build the `Graphs` executable or library. Here's an example:
+
+```cmake
 cmake_minimum_required(VERSION 3.0.0)
 project(Graphs VERSION 0.1.0)
 
+# Add executable target called 'Graphs' using the Graphs.cpp source file
 add_executable(Graphs Graphs.cpp)
 
-#target_sources(Graphs PRIVATE log.cpp)
+# Optionally, add additional source files using target_sources()
+# target_sources(Graphs PRIVATE log.cpp)
 
+# Set up include directories for the Graphs target
 target_include_directories(Graphs PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(Graphs PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 ```
 
-### multiple translation units / main entry points
-Graphs/CMakeLists.txt
-Grphs/include
-```c++
+- **add_executable()**: Defines an executable target (in this case, `Graphs`), and specifies the source files (`Graphs.cpp`).
+- **target_include_directories()**: Specifies directories that contain header files to be included during compilation.
+
+### Handling Multiple Translation Units / Main Entry Points
+
+If you have multiple translation units (source files) or multiple entry points (main functions), you can define separate executables. Here’s an example:
+
+```cmake
 cmake_minimum_required(VERSION 3.0.0)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 project(miketests VERSION 0.1.0)
+
+# Define two executables, each with different source files
 add_executable(main1 main.cpp anotherTransUnit.cpp)
 add_executable(main2 anotherMain.cpp)
 ```
 
-### library
+In this example:
+- **add_executable()**: Defines two separate executables (`main1` and `main2`), each with its own set of source files.
 
-ToDo!
+### Useful CMake Features
+
+Here are a few more tools and concepts that you’ll often encounter when writing `CMakeLists.txt` files:
+
+- **`target_sources()`**: Adds sources to an existing target after it’s been created. This is useful when you want to separate different source files into different parts of your project.
+  
+  ```cmake
+  target_sources(Graphs PRIVATE log.cpp)
+  ```
+
+- **`target_link_libraries()`**: Links external libraries to your target. This is important for linking third-party libraries or other targets in your project.
+  
+  ```cmake
+  target_link_libraries(Graphs PRIVATE SomeLibrary)
+  ```
+
+- **`find_package()`**: Finds and configures external packages or libraries, such as Boost, OpenGL, etc.
+  
+  ```cmake
+  find_package(Boost REQUIRED)
+  ```
+
+- **`install()`**: Specifies how to install your built project, including where to place binaries, libraries, and headers.
+  
+  ```cmake
+  install(TARGETS Graphs DESTINATION /usr/local/bin)
+  ```
+
+- **Variables and CMake Cache**: You can define variables to control various aspects of your project build process. CMake also caches these values, allowing you to configure and modify them between builds.
+
