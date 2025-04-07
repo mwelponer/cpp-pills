@@ -4,1092 +4,1726 @@ Copyright (C) 2021 Michele Welponer
 
 
 - [Pointers](#pointers)
-  * [dereference a variable](#dereference-a-variable)
-  * [declare a pointer](#declare-a-pointer)
-  * [set a pointer](#set-a-pointer)
-  * [dereference a pointer](#dereference-a-pointer)
-  * [pointer arithmetic](#pointer-arithmetic)
+  * [Retrieving the Memory Address of a Variable](#retrieving-the-memory-address-of-a-variable)
+  * [Declaring a Pointer](#declaring-a-pointer)
+  * [Assigning a Pointer](#assigning-a-pointer)
+  * [Dereferencing a Pointer](#dereferencing-a-pointer)
+  * [Pointer Arithmetic](#pointer-arithmetic)
+  * [Pointers and Arrays](#pointers-and-arrays)
+  * [Complex Pointer Syntax](#complex-pointer-syntax)
+  * [Practical Example with Switch Cases](#practical-example-with-switch-cases)
 - [References](#references)
-  * [Passing by reference](#passing-by-reference)
-  * [reasuming](#reasuming)
-- [Static keyword](#static-keyword)
-  * [general use](#general-use)
-  * [inside a local scope](#inside-a-local-scope)
-  * [use in object oriented](#use-in-object-oriented)
-  * [another good example of static inside a scope](#another-good-example-of-static-inside-a-scope)
+  * [Declaring and Assigning References](#declaring-and-assigning-references)
+  * [Passing by Reference](#passing-by-reference)
+  * [Key Note on Passing by Value](#key-note-on-passing-by-value)
+  * [Recap](#recap)
+  * [Examples](#examples)
+- [Static Keyword](#static-keyword)
+  * [General Use](#general-use)
+  * [Static Variables Inside Local Scope](#static-variables-inside-local-scope)
+  * [Static in Object-Oriented Programming](#static-in-object-oriented-programming)
+  * [Static in Singleton Pattern](#static-in-singleton-pattern)
+  * [Summary of Static Usage](#summary-of-static-usage)
 - [Enums](#enums)
+  * [Syntax and Basic Usage](#syntax-and-basic-usage)
+  * [Enums in Classes](#enums-in-classes)
+  * [Example Usage](#example-usage)
+  * [Key Points About Enums:](#key-points-about-enums-)
+  * [Scoped Enums (C++11)](#scoped-enums--c--11-)
 - [Objects and Classes](#objects-and-classes)
-  * [constructor and destructor](#constructor-and-destructor)
-  * [class inheritance](#class-inheritance)
-  * [virtual functions for methods overriding](#virtual-functions-for-methods-overriding)
-  * [interfaces](#interfaces)
-  * [visibility](#visibility)
-  * [struct](#struct)
-  * [class header](#class-header)
+  * [Example of a Simple Class](#example-of-a-simple-class)
+  * [Constructor and Destructor](#constructor-and-destructor)
+  * [Class Inheritance](#class-inheritance)
+  * [Virtual Functions for Overriding](#virtual-functions-for-overriding)
+  * [Interfaces (Abstract Classes)](#interfaces--abstract-classes-)
+  * [Visibility (Access Specifiers)](#visibility--access-specifiers-)
+  * [Classes vs. Structs](#classes-vs-structs)
+  * [Class Headers and Source Files](#class-headers-and-source-files)
 - [Arrays](#arrays)
-  * [arrays on the stack memory](#arrays-on-the-stack-memory)
-  * [arrays on the heap memory](#arrays-on-the-heap-memory)
-  * [array standard library](#array-standard-library)
-  * [reasuming](#reasuming-1)
+  * [Arrays on the Stack Memory](#arrays-on-the-stack-memory)
+  * [Arrays on the Heap Memory](#arrays-on-the-heap-memory)
+  * [Array Limitations](#array-limitations)
+  * [Array Standard Library (`std::array`)](#array-standard-library---std--array--)
+  * [Summary Table](#summary-table)
 - [Strings](#strings)
-  * [manual declaration](#manual-declaration)
-  * [declaration via char pointer](#declaration-via-char-pointer)
-  * [string standard library](#string-standard-library)
+  * [C-Style Strings](#c-style-strings)
+  * [C String Handling Functions](#c-string-handling-functions)
+  * [Declaring Strings via `char*`](#declaring-strings-via--char--)
+  * [Standard Library Strings](#standard-library-strings)
 - [Const](#const)
-  * [normal use](#normal-use)
-  * [with pointers](#with-pointers)
-  * [with classes](#with-classes)
+  * [Normal Use](#normal-use)
+  * [With Pointers](#with-pointers)
+  * [With Classes](#with-classes)
+  * [Mutable Keyword](#mutable-keyword)
+  * [Summary of `const` Usage](#summary-of--const--usage)
 - [The ternary operator](#the-ternary-operator)
-- [Instantiate classes and objects](#instantiate-classes-and-objects)
-  * [Stack Heap memory allocation](#stack-heap-memory-allocation)
-  * [the new keyword](#the-new-keyword)
-- [Implicit conversion](#implicit-conversion)
-- [Operator overloading](#operator-overloading)
+- [Memory management](#memory-management)
+  * [Stack and Heap Memory Allocation](#stack-and-heap-memory-allocation)
+  * [Differences Between Stack and Heap](#differences-between-stack-and-heap)
+  * [The `new` Keyword](#the--new--keyword)
+- [Implicit Conversion](#implicit-conversion)
+  * [Note on the `explicit` Keyword](#note-on-the--explicit--keyword)
+- [Operator Overloading](#operator-overloading)
+  * [Example 1: print std::vector](#example-1--print-std--vector)
+  * [Example 2: print custom vec2](#example-2--print-custom-vec2)
+  * [Example 3: add custom vec2](#example-3--add-custom-vec2)
+  * [Example 4: track memory allocations](#example-4--track-memory-allocations)
+  * [Key Notes:](#key-notes-)
 - [The this keyword](#the-this-keyword)
-- [Smartpointers](#smartpointers)
-  * [unique pointers](#unique-pointers)
-  * [shared pointers](#shared-pointers)
-  * [weak pointers](#weak-pointers)
-- [The copy constructor](#the-copy-constructor)
-- [The arrow operator](#the-arrow-operator)
-- [Dynamic arrays](#dynamic-arrays)
+- [Smart Pointers](#smart-pointers)
+  * [Unique Pointers](#unique-pointers)
+  * [Shared Pointers](#shared-pointers)
+  * [Weak Pointers](#weak-pointers)
+- [The Rule of Five in C++](#the-rule-of-five-in-c--)
+  * [1. Destructor](#1-destructor)
+  * [2. Copy Constructor](#2-copy-constructor)
+  * [3. Copy Assignment Operator](#3-copy-assignment-operator)
+  * [4. Move Constructor](#4-move-constructor)
+  * [5. Move Assignment Operator](#5-move-assignment-operator)
+  * [Why the Rule of Five Matters](#why-the-rule-of-five-matters)
+  * [Example: A Complete Rule of Five Implementation](#example--a-complete-rule-of-five-implementation)
+- [The Arrow Operator](#the-arrow-operator)
+  * [Stack vs. Heap Access](#stack-vs-heap-access)
+  * [Example](#example)
+  * [Using with `this`](#using-with--this-)
+  * [Overloading the Arrow Operator](#overloading-the-arrow-operator)
+- [Dynamic Arrays](#dynamic-arrays)
   * [Optimizations](#optimizations)
-- [Static and Dynamic libraries](#static-and-dynamic-libraries)
-  * [static linking](#static-linking)
-  * [dynamic libraries](#dynamic-libraries)
+  * [Example: Using a Dynamic Array](#example--using-a-dynamic-array)
+- [Static and Dynamic Libraries](#static-and-dynamic-libraries)
+  * [Static Linking](#static-linking)
+  * [Dynamic Linking](#dynamic-linking)
 - [Templates](#templates)
+  * [Example: Template Class](#example--template-class)
+  * [Template Functions](#template-functions)
+  * [Advantages of Templates](#advantages-of-templates)
 - [Macros](#macros)
 - [Namespace](#namespace)
+  * [Key Concepts](#key-concepts)
+  * [Namespace Nesting](#namespace-nesting)
 - [Function pointers](#function-pointers)
 - [Lambdas](#lambdas)
-- [Multidimensional arrays](#multidimensional-arrays)
-- [Sorting std sort](#sorting-std-sort)
-- [type Punning](#type-punning)
-- [Union](#union)
-- [Virtual Destructors](#virtual-destructors)
-- [Casting](#casting)
-  * [static cast](#static-cast)
-  * [dynamic cast](#dynamic-cast)
-  * [reinterpret cast](#reinterpret-cast)
-  * [const cast](#const-cast)
-- [Singleton](#singleton)
-- [lvalues and rvalues](#lvalues-and-rvalues)
-  * [lvalue](#lvalue)
-  * [rvalue](#rvalue)
-- [Logical operators](#logical-operators)
-- [Bitwise operators](#bitwise-operators)
-- [Threads](#threads)
-  * [Mutex](#mutex)
-  * [Condition variables](#condition-variables)
-  + [std::lock_guard vs std::unique_lock](#std--lock-guard-vs-std--unique-lock)
-  * [BOOST library semplification](#boost-library-semplification)
-  + [Lockfree Queue](#lockfree-queue)
-  + [Atomic operations](#atomic-operations)
-- [Standard input](#standard-input)
-- [Input file stream](#input-file-stream)
-- [CMake](#cmake)
-  * [subdirectories](#subdirectories)
-  * [include](#include)
-  * [multiple translation units / main entry points](#multiple-translation-units---main-entry-points)
-  * [library](#library)
+  * [Components of a Lambda](#components-of-a-lambda)
+  * [Examples](#examples-1)
+  * [Other Examples](#other-examples)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
 
+
+
 ## Pointers
 
-Pointers hold an integer that is a memory address! We say then a pointer points to a location in memory: that location is the starting location of a memory space (whose lenght is defined by the type).
-How to retrieve the memory address of a variable?
-Retrieve the **memory address** corresponding to the start of *myVariable* dereferencing that variable using & in front of the variable name.
+Pointers are variables that hold the **memory address** of another variable. A pointer "points" to a specific location in memory, which is the starting location of a memory block (its size depends on the type of data stored).
 
-### dereference a variable
 
-dereferencing a variable gives you the **memory address** at which that variable is stored. It is done by putting a **&** in front of the variable
+### Retrieving the Memory Address of a Variable
 
-```c
-std::cout << "myVariable mem address: " << &myVariable; 
-``` 
+To retrieve the **memory address** of a variable, use the **`&` (address-of operator)** in front of the variable name.
 
-### declare a pointer
-
-Declare a **pointer** using * right after its type:
-```c
-int* myPointer;
+```cpp
+std::cout << "myVar addr: " << &myVar << std::endl;
 ```
 
-### set a pointer
 
-```c
+### Declaring a Pointer
+
+A pointer is declared using an asterisk (`*`) after the type of the variable it will point to:
+
+```cpp
+int* myPointer; // or
+int* myPointer = nullptr;
+```
+
+**`NOTE`**: `nullptr` is safer than `NULL` or `0`
+
+
+### Assigning a Pointer
+
+A pointer can be assigned the memory address of a variable using the `&` operator:
+
+```cpp
 int a = 3;
-myPointer = &a;
+int* myPointer = &a;
 ```
-now *myPointer* points to *a* and holds the memory address of *a*
 
-### dereference a pointer
+Now, `myPointer` points to `a` and holds its memory address.
 
-dereferencing a pointer gives you the value contained at the memory address pointed by the pointer. It is done by putting a * in front of the pointer
 
-**Dereference** the pointer (***reading***)
-```c
-b = *myPointer;
+### Dereferencing a Pointer
+
+Dereferencing a pointer means accessing the value stored at the memory address it points to. This is done using the asterisk (`*`) operator in front of the pointer.
+
+**Reading the Value**
+
+```cpp
+int b = *myPtr; // b is assigned the value stored at the address pointed to by myPtr (3)
 ```
-this will assign/writes 3 (the value pointed by *myPointer*) to *b*
 
-**Dereference** the pointer (***writing***)
-```c
-*myPointer = 6;
+**Writing to the Value**
+
+```cpp
+*myPtr = 6; // Assigns 6 to the variable 'a', which is pointed to by myPtr
 ```
-this will assign/writes 6 to the variable pointed by *myPointer* i.e. *a*.
 
-Increment the value held by the variable pointed by *myPointer*
+**Incrementing the Value via the Pointer**
 
-``++(*myPointer)`` or ``(*myPointer)++;``
+You can increment the value of the variable pointed to by a pointer:
 
-first dereference using the *, then increment. The difference here is the same between ``++i`` and ``i++``
+```cpp
+++(*myPtr);  // Pre-increment: increments the value before using it
+(*myPtr)++;  // Post-increment: increments the value after using it
+```
 
 
-### pointer arithmetic
+### Pointer Arithmetic
 
-```c++
-// the [] array operator is secretly a pointer, so it's somehow like to write
-// char* str = "Hello", but sintattically it's not correct, so we write
-char str[] = "Hello"; // and then, once we have an array we can 
+Pointers support arithmetic operations. For example, incrementing a pointer moves it to the next memory location for the type it points to:
+
+```cpp
+int arr[] = {10, 20, 30};
+int* ptr = arr;
+
+std::cout << *ptr << std::endl;   // 10
+ptr++;
+std::cout << *ptr << std::endl;   // 20
+```
+
+
+### Pointers and Arrays
+
+The array subscript operator (`[]`) is essentially syntactic sugar for pointer arithmetic. 
+
+```cpp
+char str[] = "Hello";
 char* ptr = str;
+
+std::cout << str << std::endl; // Hello
+std::cout << str[1] << std::endl; // 'e'
+
+std::cout << ptr << std::endl; // Hello
+std::cout << *ptr << std::endl; // H
+std::cout << ptr[1] << std::endl;  // 'e', equivalent to *(ptr + 1)
 ```
 
-``p*++``,  ``p++*`` and ``++p*`` are all **syntax errors**
+**`NOTE`**: The array subscript operator `[]` in `char str[]` is secretly a pointer, so it's somehow like to write something like ~~`char* str`~~ but sintattically it is not correct
+
+
+### Complex Pointer Syntax
+
+Certain pointer expressions can seem confusing, but understanding the order of operations clarifies them:
+
+**Syntax Examples:**
+
+1.  **Pre-increment Pointer, Then Dereference**:
+    
+    ```cpp
+    *++ptr;  // Increment the pointer, then dereference the new address
+    ```
+    
+2.  **Dereference, Then Pre-increment the Value**:
+    
+    ```cpp
+    ++*ptr;  // Increment the value stored at the address pointed to by ptr
+    ```
+    
+3.  **Dereference, Then Post-increment the Pointer**:
+    
+    ```cpp
+    *ptr++;  // Dereference the current pointer, then increment the pointer
+    ```
+`p*++`, `p++*` and `++p*` are all **syntax errors**.
+
+**`NOTE`**: if you are asking yourself where a pointer is stored, the answer is anywhere in the memory, as a pointer is just an integer variable holding the memory address of the variable it is pointing to. If you are curious to know the memory address of a pointer, use the address-of operator `&` or the `std::addressof()` function:
+
+```cpp
+int* ptr = nullptr;
+std::cout << "Address of ptr: " << &ptr << std::endl;
+```
+
+
+### Practical Example with Switch Cases
+
+The following example demonstrates various pointer operations:
 
 ```cpp
 int b[] = {3, 0, 7};
 int* p = b;
 
-switch(4) {
-  case 1:
-    std::cout << *++p << std::endl; // move p, then dereference p -> 0
-    std::cout << *++p << std::endl; // -> 7, [3 0 7]
-    break;
-  case 11:
-    std::cout << *(++p) << std::endl; // move p, then dereference p -> 0
-    std::cout << *(++p) << std::endl; // -> 7, [3 0 7]
-    break;
-  case 2:
-    std::cout << ++*p << std::endl; // dereference p, then increment -> 4
-    std::cout << ++*p << std::endl; // -> 5, [5 0 7]
-    break;
-  case 22:
-    std::cout << ++(*p) << std::endl; // dereference p, then increment -> 4
-    std::cout << ++(*p) << std::endl; // -> 5, [5 0 7]
-    break;
-  case 3:
-    std::cout << *p++ << std::endl; // dereference p, then move p -> 3
-    std::cout << *p++ << std::endl; // -> 0, [3 0 7]
-    break;
-  case 33:
-    std::cout << *(p++) << std::endl; // dereference p, then move p -> 3
-    std::cout << *(p++) << std::endl; // -> 0, [3 0 7]
-    break;
-  case 4:
-    std::cout << (*p)++ << std::endl; // dereference p, then print, then increment -> 3
-    std::cout << (*p)++ << std::endl; // -> 4, [5 0 7]
-    break;
-  //default:
-    // code block
+switch (4) {
+    case 1:
+        std::cout << *++p << std::endl; // Increment p, then dereference -> 0
+        std::cout << *++p << std::endl; // -> 7
+        break;
+
+    case 2:
+        std::cout << ++*p << std::endl; // Increment the value at p -> 4
+        std::cout << ++*p << std::endl; // -> 5
+        break;
+
+    case 3:
+        std::cout << *p++ << std::endl; // Dereference p, then increment -> 3
+        std::cout << *p++ << std::endl; // -> 0
+        break;
+
+    case 4:
+        std::cout << (*p)++ << std::endl; // Dereference p, print, then increment -> 3
+        std::cout << (*p)++ << std::endl; // -> 4
+        break;
+
+    default:
+        break;
 }
 
 std::cout << b[0] << " " << b[1] << " " << b[2] << std::endl;
 ```
 
-***NB***: if you are asking yourself where a pointer is stored, the answer is anywhere in the memory, as a pointer is just an integer variable holding the memory address of the variable it is pointing to. If you are curious to know the memory address of a pointer `ptr` you can use dereference `&ptr` or the function `std::addressof(ptr);`
+
+
+
 
 
 ## References
 
-References are like Pointers but less powerful. Reference are just syntax sugar, whatever you can do with references you can also do it using pointers.
-Declare and set a **reference** using &, is part of the type. When we declare a reference we need to assign reference immediately.
+References in C++ are less flexible but more convenient than pointers. They serve as **aliases** for other variables, providing an alternative way to access them. References are essentially syntax sugar for pointers, and anything you can achieve with references can also be achieved using pointers.
 
-```c
-int& myRef1 = myVar; // myRef1 now is an alias of myVar
-int& myRef2 = *myPtr; // myRef2 now is an alias of the variable pointed by myPtr*
-myRef2 = 3; // assigns/writes 3 to the variable referenced by myPtr
+
+### Declaring and Assigning References
+
+A reference is declared using the `&` symbol (as part of the type). When declaring a reference, it must be initialized immediately to bind it to a variable.
+
+```cpp
+int& myRef1 = myVar;   // myRef1 is now an alias for myVar
+int& myRef2 = *myPtr;  // myRef2 is an alias for the variable pointed to by myPtr
+myRef2 = 3;            // Assigns 3 to the variable referenced by myPtr
 ```
 
 
-### Passing by reference
+### Passing by Reference
 
-If we want to write a function that increments a variable, we can pass that variable inside the function using a pointer, or more concisely using a reference (i.e. **by reference**)
+References are often used to pass variables to functions "by reference," allowing the function to modify the original variable. This is a more concise alternative to passing pointers.
 
-```c++
-// using a pointer: int* value means create a new pointer named
-// value which points to the memory address we pass as argument
-// so if we want to increment the variable we need to first 
-// de-reference the pointer to get the variable and then increment
+**Example: Passing by Pointer vs. Passing by Reference**
+
+Using pointers:
+
+```cpp
 void incrementUsingPointer(int* value) {
-  (*value)++; // dereference first then increment
-  std::cout << "value inside function:" << *value << std::endl;
-}
-// more simply, by reference: int& value means create a
-// reference (alias) named value and make it point exactly 
-// to the same variable we pass
-void incrementUsingReference(int& value){
-  value++;
-  std::cout << "value inside function:" << value << std::endl;
-}
-void increment(int value){
-  value++;
-  std::cout << "value inside function:" << value << std::endl;
-}
-
-int main(){
-  int a = 5;
-  int& ref = a;
-  
-  incrementUsingPointer(&a); // value inside function:6
-  std::cout << a << std::endl; // => 6
-  
-  incrementUsingReference(ref); // value inside function:7
-  std::cout << a << ref << std::endl; // => 77
-  
-  incrementUsingReference(a); // value inside function:8
-  std::cout << a << ref << std::endl; // => 88
-
-  increment(a); // value inside function:9
-  std::cout << a << ref << std::endl; // => 88
-
-  increment(ref); // value inside function:9
-  std::cout << a << ref << std::endl; // => 88
-  
-  // and with classes
-  Entity e1; // instance on the stack
-  incrementUsingPointer(&e1);
-  incrementUsingReference(e1);
-  
-  Entity* e2 = new Entity(); // instance on the heap
-  incrementUsingPointer(e2);
-  incrementUsingReference(*e2);
+    (*value)++;  // Dereference the pointer first to modify the value
+    std::cout << "Value in function: " << *value << std::endl;
 }
 ```
 
-***NB***: if we don't pass the variable by reference or by pointer to the function and we simply use ``increment(int value)`` a new ``int value`` variable will be created, initialized and incremented inside the function, but the external variable (the one we pass to the function won't be modified!)
+Using references:
 
-### reasuming
-
-code | meaning
--|-
-T* p = nullptr; | declare a pointer p of type T, p holds a memory address, for now set to null
-T& r = v; | declare reference r of type T to the variable v, r is now an alias of v
-*p | dereference pointer p i.e. get the data/variable/object pointed by p
-&v | dereference variable v i.e. get the memory address of v, this address can be assigned to a pointer
-
-
-Examples:
-```c
-int a = 3; // declare a variable
-int* ptr = nullptr; // declare a pointer
-ptr = &a; // dereference variable a to get its address and assign it to pointer ptr
-std::cout << *ptr << std::endl; // dereference the pointer to get the data, => 3
-
-int& ref = a; // create a reference i.e. alias of variable a
-std::cout << ref << std::endl; // => 3
-
-int& ref = *ptr; // create a reference i.e. alias of what the pointer points, i.e. variable a
-std::cout << ref << std::endl; // => 3
-
-ref++; // increment using the reference
-std::cout << a << *ptr << ref << std::endl; // 444
-
-a++; // increment the variable a
-std::cout << a << *ptr << ref << std::endl; // 555
-
-(*ptr)++; // dereference first to get the data, then increment it 
-std::cout << a << *ptr << ref << std::endl; // 666
+```cpp
+void incrementUsingReference(int& value) {
+    value++;  // Directly modify the referenced variable
+    std::cout << "Value in function: " << value << std::endl;
+}
 ```
 
-## Static keyword
+By value (no modification to the original variable): 
 
-### general use
+```cpp
+void increment(int value) {
+    value++;
+    std::cout << "Value in function: " << value << std::endl;
+}
+```
 
-**Declare** a variable or a function static (outside of a class/struct)
+`NOTE`: if we don't use by reference or by pointer and we simply use `increment(int value)` a new `int value` variable will be created, initialized and incremented inside the function, but the external variable (the one we pass to the function won't be modified!)
 
-```c
+**Main Function Example:**
+
+```cpp
+int main() {
+    int a = 5;
+    int& ref = a;  // Create a reference to a
+
+    incrementUsingPointer(&a); // '6', a is incremented
+    std::cout << a << std::endl; // => 6
+
+    incrementUsingReference(ref); // '7', a is incremented
+    std::cout << a << ref << std::endl; // => 7 7
+
+    incrementUsingReference(a); // '8', a is incremented
+    std::cout << a << ref << std::endl; // => 8 8
+
+    increment(a); // '9', but a is not modified
+    std::cout << a << ref << std::endl; // => 8 8
+}
+```
+
+**Example with Classes:**
+
+References also work with objects:
+
+```cpp
+class Entity {};
+
+void incrementUsingPointer(Entity* e) {
+    // Work with the object using the pointer
+}
+
+void incrementUsingReference(Entity& e) {
+    // Work with the object using the reference
+}
+
+int main() {
+    Entity e1;                    // Instance on the stack
+    incrementUsingPointer(&e1);   // Pass pointer
+    incrementUsingReference(e1);  // Pass reference
+
+    Entity* e2 = new Entity();    // Instance on the heap
+    incrementUsingPointer(e2);    // Pass pointer
+    incrementUsingReference(*e2); // Pass dereferenced pointer as a reference
+    delete e2;
+}
+```
+
+
+### Key Note on Passing by Value
+
+If a variable is passed by value (e.g., `increment(int value)`), a **new variable** is created inside the function. Any modifications made to it do not affect the original variable outside the function.
+
+
+### Recap
+
+
+| Code                | Meaning                                                                 
+|-|--|
+| `T* p = nullptr;`   | Declare a pointer `p` of type `T`, initialized to `nullptr`
+| `T& r = v;`         | Declare a reference `r` of type `T` to the variable `v`; `r` is an alias for `v`
+| `*p`                | Dereference pointer `p` to access the value it points to
+| `&v`                | Get the memory address of variable `v`, which can be assigned to a pointer
+
+
+### Examples
+
+```cpp
+int a = 3; // Declare a variable
+int* ptr = nullptr; // Declare a pointer
+ptr = &a; // Assign the address of a to ptr
+std::cout << *ptr << std::endl; // Dereference ptr to get the value, => 3
+
+int& ref = a; // Create a reference (alias) to a
+std::cout << ref << std::endl; // Output the value of a via the reference, => 3
+
+int& ref2 = *ptr; // Create a reference to the value pointed to by ptr
+std::cout << ref2 << std::endl; // Output the value, => 3
+
+ref++; // Increment the value using the reference
+std::cout << a << " " << *ptr << " " << ref << std::endl; // => 4 4 4
+
+a++; // Increment the variable directly
+std::cout << a << " " << *ptr << " " << ref << std::endl;  // => 5 5 5
+
+(*ptr)++; // Increment the value via the pointer
+std::cout << a << " " << *ptr << " " << ref << std::endl;  // => 6 6 6
+```
+
+
+
+
+
+
+
+
+
+## Static Keyword
+
+The `static` keyword has different uses depending on the context. It can be applied to variables, functions, and class members, with behavior varying between global, local, and object-oriented scopes.
+
+
+### General Use
+
+**`static` Variables and Functions (Outside a Class/Struct)**
+
+```cpp
 static int myVariable = 5;
 static void myFunc();
 ```
-*myVariable* will be visible only in that specific translation unit (file). It means I can define another variable with the same name *myVariable* inside another translation unit without incurring in linking problems at compile time. It's like defining the variable "private" for the specific translation unit.
 
-***NB***: if I don't declare a variable static ``int var = 5;``, in another translation unit I can read that variable declaring ``external int var;``, to say that variable is defined and set in an external translation unit
+-   **`myVariable`**: A static global variable is visible only within the specific **translation unit** (file) where it is declared. This means you can define another variable with the same name in a different translation unit without causing linking conflicts.
+-   **`myFunc`**: A static global function is similarly restricted to the translation unit.
 
-So the moral is: try to **always mark functions and variable static** unless you actually need them to be linked across different translation units.
+This behavior is equivalent to making the variable or function "private" to the file.
 
-### inside a local scope
+**`NOTE`**: if you don't declare a global variable as `static` (e.g., `int var = 5;`), you can access it from another translation unit using the `extern` keyword:
 
-Inside a function for example, but could be inside a for loop or whatever other type of scope
-```c
-void func() {
-  static int i = 0;
-  std::cout << ++i << std::endl;
-}
-// outside func() i is not accessible
-func() // first time i is declared and incremented => 1
-func() // second time just incremented => 2
+```cpp
+// In translation unit A:
+int var = 5;
+
+// In translation unit B:
+extern int var; // Refers to the variable defined in unit A
 ```
-First time we call *myFunction* `i` is declared, set and incremented. All other times, just incremented. It's like declaring `i` globally outside of the function, but declaring it inside a function we also guarantee that *i* can be modified only inside the function.
 
-### use in object oriented
+**Best Practice**: Always mark global functions and variables as `static` unless you explicitly need them to be accessible across different translation units.
 
-Declaring a field or a method static inside a class/struct
-```c
+
+### Static Variables Inside Local Scope
+
+A `static` variable declared within a local scope (e.g., inside a function or loop) retains its value between calls to that scope. Unlike regular local variables, it is only initialized once and persists for the lifetime of the program.
+
+**Example:**
+
+```cpp
+void func() {
+	static int i = 0;
+	std::cout << ++i << std::endl;
+}
+```
+
+-   The first time `func()` is called, `i` is initialized to `0`, then incremented to `1`.
+-   On subsequent calls, `i` retains its value and is incremented further.
+
+**Output**:
+
+```cpp
+func(); // Output: 1
+func(); // Output: 2
+func(); // Output: 3
+```
+
+This is similar to declaring `i` globally, but since it is scoped to the function, it can only be modified within `func()`.
+
+
+### Static in Object-Oriented Programming
+
+When used inside a class or struct, `static` members are shared across all instances of that class.
+
+**Example:**
+
+```cpp
 struct Entity {
-  static int x;
-  int y; 
-  void print() { std::cout << x << ", " << y << std::endl;}
-  static void s_print() {std::cout << "x:" x << std::endl;}
+	static int x; // Shared by all Entity instances
+	int y;        // Unique to each instance
+
+	void print() {
+		std::cout << "x: " << x << ", y: " << y << std::endl;
+	}
+
+	static void s_print() {
+		std::cout << "x: " << x << std::endl;
+		// Cannot access non-static members (e.g., y) here
+	}
 };
 ```
-*x* will be unique and shared among all the *Entity* instances. 
-Non-static methods can access static and non-static variables.
-***Static methods cannot access non-static variables***. 
 
-### another good example of static inside a scope
+-   **Static Variables (`x`)**: Shared among all instances. Modifying `x` from one instance affects all instances.
+-   **Static Methods (`s_print`)**: Can only access static members. They do not have access to non-static members (`y`).
 
-let's create a **Singleton**. We declare the private static instance globally, then we need a method to get() that instance.
+**Example Usage:**
 
-```c++
+```cpp
+Entity::x = 10; // Set the shared static member
+
+Entity e1, e2;
+e1.y = 20; // Instance-specific member
+e2.y = 30;
+
+e1.print();  // Output: x: 10, y: 20
+e2.print();  // Output: x: 10, y: 30
+Entity::s_print(); // Output: x: 10
+```
+
+
+### Static in Singleton Pattern
+
+The `static` keyword is commonly used in implementing the **Singleton Pattern** to ensure only one instance of a class exists.
+
+**Traditional Singleton Implementation:**
+
+```cpp
 class Singleton {
 private:
-  static Singleton* s_instance; // global declaration
+	static Singleton* s_instance; // Static global declaration
+
 public:
-  static Singleton& get() {return *s_instance;}
-  void hello() {}
+	static Singleton& get() {
+		return *s_instance;
+	}
+
+	void hello() {
+		std::cout << "Hello from Singleton!" << std::endl;
+	}
 };
 
+// Define the static instance
 Singleton* Singleton::s_instance = nullptr;
 
 int main() {
-  Singleton::get().hello();
+	Singleton::get().hello();
+	return 0;
 }
 ```
 
-we can write a most clean Singleton declaring the instance static inside a scope, e.g. inside the get function
+**Cleaner Singleton with Static Local Variable:**
 
-```c++
+A more concise implementation involves declaring the static instance within the scope of the `get` method:
+
+```cpp
 class Singleton {
 public:
-  static Singleton& get() {
-    static Singleton instance; // declaring inside the scope
-    return instance;
-  }
-  void hello() {}
-}
+	static Singleton& get() {
+		static Singleton instance; // Scoped static instance
+		return instance;
+	}
+
+	void hello() {
+		std::cout << "Hello from Singleton!" << std::endl;
+	}
+};
 
 int main() {
-  Singleton::get().hello();
+	Singleton::get().hello();
+	return 0;
 }
 ```
+
+-   In this approach, the `static` instance is initialized only once, the first time `get()` is called. This avoids manual memory management (e.g., `new` and `delete`).
+
+
+### Summary of Static Usage
+
+Context | Behavior
+-|-
+**Global Scope** | Limits visibility of variables or functions to the translation unit.
+**Local Scope** | Persists the variable's value across multiple function calls.
+**Class Members** |  Shared across all instances (for static variables and methods).
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Enums
 
-Stands for enumeration, a set of values. It's a way to give a name to an integer value so the code becomes more readable.
+Enums (short for **enumerations**) define a set of named constant integer values. They provide a way to make code more readable by replacing magic numbers with meaningful names.
+
+
+### Syntax and Basic Usage
 
 ```cpp
-enum Example /* optionally specify the type of integer */: unsigned char {
-  A, B, C // A will be 0, B 1 and C 2
-  // A = 4, B, C // B and C will be 5 and 6
-  // A = 5, B = 3, C = 7
+enum Example /* Optionally specify the underlying type */ : unsigned char {
+	A, B, C // A = 0, B = 1, C = 2 (default behavior)
+	// A = 4, B, C // A = 4, B = 5, C = 6
+	// A = 5, B = 3, C = 7 // Custom values can be assigned
+};
+```
+
+-   By default, the first enumerator starts at `0`, and subsequent values increment by `1`.
+-   You can optionally specify the underlying integer type for the enum (e.g., `unsigned char`, `int`, `unsigned int`, etc.).
+-   Values can also be explicitly assigned.
+
+**Example:**
+
+```cpp
+enum Color : unsigned int {
+	Red = 1, Green = 2, Blue = 4
 };
 
-class Log(){
+Color myColor = Green;
+std::cout << myColor << std::endl; // Output: 2
+```
+
+
+### Enums in Classes
+
+Enums can also be declared inside classes, often to define states, levels, or other related constants.
+
+**Example:**
+
+```cpp
+class Log {
 public:
-  enum Level {
-    Error, Warning, Info
-  };
+	enum Level {
+		Error,   // 0
+		Warning, // 1
+		Info     // 2
+	};
+
 private:
-  Level m_logLevel = Info;
-public:
-  void setLevel(Level level){ m_logLevel = level;}
-};
+	Level m_logLevel = Info; // Default level
 
-int main(){
-  Example value = B;
-  Log log;
-  log.setLevel(Log::Error);
+public:
+	void setLevel(Level level) { m_logLevel = level; }
+
+	void printLevel() const {
+		switch (m_logLevel) {
+			case Error:
+				std::cout << "Error" << std::endl;
+				break;
+			case Warning:
+				std::cout << "Warning" << std::endl;
+				break;
+			case Info:
+				std::cout << "Info" << std::endl;
+				break;
+		}
+	}
+};
+```
+
+
+### Example Usage
+
+```cpp
+int main() {
+	// Using an enum outside of a class
+	Example value = B; // Assign enum value B (1) to 'value'
+	std::cout << value << std::endl; // Output: 1
+
+	// Using an enum within a class
+	Log log;
+	log.setLevel(Log::Error); // Set log level to Error
+	log.printLevel();         // Output: Error
+
+	return 0;
 }
 ```
+
+
+### Key Points About Enums:
+
+1.  **Enumerators as Constants**: Enum values are constants, so they can be used anywhere a constant expression is allowed.
+2.  **Scope**:
+    -   Regular enums are placed in the global namespace, so enumerator names can clash with other identifiers.
+    -   Use **scoped enums** (introduced in C++11) to avoid this (e.g., `enum class`).
+3.  **Underlying Type**:
+    -   By default, enums use `int` as the underlying type.
+    -   You can explicitly specify a different type (e.g., `unsigned char` or `unsigned int`).
+
+
+### Scoped Enums (C++11)
+
+Scoped enums (declared with `enum class`) provide better type safety and scoping compared to regular enums. Enumerators of scoped enums must be prefixed with the enum type name.
+
+**Example:**
+
+```cpp
+enum class Fruit : int {
+	Apple = 1,
+	Orange = 2,
+	Banana = 3
+};
+
+Fruit f = Fruit::Apple; // Must specify the enum type name (Fruit::)
+std::cout << static_cast<int>(f) << std::endl; // Output: 1
+```
+
+-   Scoped enums prevent implicit conversion to integers, improving type safety.
+-   To use the value as an integer, you must explicitly cast it (e.g., `static_cast<int>`).
+
+
+
+
+
+
+
+
+
+
 
 ## Objects and Classes
 
-Example of a **simple class**
-```cpp
-class Entity {
-private:
-  std::string m_name;
-  int m_age;
-public:
-  Entity(){} 
-  const std::string& getName() const { return m_name;}
-  void setName(const std::string& name) {
-    this->m_name = name;
-  }
-};
-```
-``NB``: *this* is the current object pointer, *->* means dereference the pointer and then use the . to access the member method/field.
 
-### constructor and destructor
-
-the *Entity* object will be instantiated and *m_name* and *m_age* fields will be immediately initialized to *Unknown* and *0* in the constructor.
+### Example of a Simple Class
 
 ```cpp
 class Entity {
 private:
-  std::string m_name;
-  int m_age;
+    std::string m_name;
+    int m_age;
+
 public:
-  /* the constructor */
-  Entity() 
-    : m_name("Unknown"), m_age(0) // initializer list more efficient!
-  {
-    // here we don;t need to un-initialize anything because we didn't allocate anything in the constructor on the heap, m_name and m_age are on the stack memory
-    // standard way to initialize class members (less efficient!)
-    //m_name = "Unknown"; 
-    //m_age = 0;    
-    std::cout << "Entity created" << std::endl;
-  }
-  
-  /* the destructor */
-  ~Entity() {
-    /* deallocate here everything created on the 
-    heap in the constructor */
-    std::cout << "Entity destroyed!" << std::endl;
-  }
+    Entity() {} // Default constructor
+
+    const std::string& getName() const { return m_name; }
+    void setName(const std::string& name) { 
+        this->m_name = name; 
+    }
 };
 ```
-the destructor *~Entity* will be automatically called when the *Entity* object gets deleted. Inside the destructor we deallocate everything that was created in the constructor on the heap memory.
 
-***NB***: if the Entity object was created **on the heap** (using new operator) we need to manually deallocate the instance using "*delete*" (or "*delete[]*" for arrays). 
-If the Entity object was created **on the stack**, the object gets automatically deleted when the program gets out of scope, thus the destructor will be called.
+-   `this` is a pointer to the current object.
+-   The `->` operator dereferences the pointer and accesses the member method or field.
 
-### class inheritance
+
+### Constructor and Destructor
+
+The `Entity` object can be initialized with default values for its fields using a constructor. Here's an example with initialization:
+
+```cpp
+class Entity {
+private:
+    std::string m_name;
+    int m_age;
+
+public:
+    // Constructor with initializer list (more efficient)
+    Entity() 
+        : m_name("Unknown"), m_age(0) 
+    {
+        std::cout << "Entity created" << std::endl;
+    }
+
+    // Destructor
+    ~Entity() {
+        std::cout << "Entity destroyed!" << std::endl;
+    }
+};
+```
+
+-   **Initializer list** is preferred because it avoids redundant default construction followed by reassignment.
+-   The destructor `~Entity()` is automatically called when the object goes out of scope or is explicitly deleted.
+
+
+**`NOTE`**:
+
+-   If the object is created **on the heap** (using `new`), it must be manually deallocated using `delete`.
+-   If the object is created **on the stack**, it will automatically be destroyed when the program exits the scope.
+
+**Example:**
+
+```cpp
+int main() {
+    Entity* e1 = new Entity(); // On the heap
+    delete e1; // Manual cleanup
+
+    Entity e2; // On the stack
+    // Automatically destroyed when exiting scope
+    return 0;
+}
+```
+
+
+### Class Inheritance
+
+Inheritance allows one class to derive from another.
 
 ```cpp
 class Player : public Entity {
 private:
-  int points;
+    int m_points;
+
 public:
+    Player() : m_points(0) {}
 };
 ```
-the sub class Player extends the base class Entity, so Player class contains everything (methods and fields) that Entity class contains. Player just provides more functionalities to the Entity base class. And it can override any Entity class method. 
 
-### virtual functions for methods overriding
+-   The `Player` class inherits all methods and fields from `Entity`.
+-   It can also add new functionality or **override** methods from the base class.
 
-Virtual functions allow us to override methods in sub-classes.
+
+### Virtual Functions for Overriding
+
+Virtual functions allow derived classes to override base class methods.
 
 ```cpp
 class Entity {
 public:
-  virtual std::string getName(){return "Entity";}
+    virtual std::string getName() { return "Entity"; }
 };
 
 class Player : public Entity {
 private:
-  std::string m_Name;
+    std::string m_name;
+
 public:
-  Player(const std::string& name)
-    : m_Name(name){}
-  std::string getName() override {return m_Name;}
+    Player(const std::string& name) : m_name(name) {}
+
+    std::string getName() override { return m_name; }
 };
 
 int main() {
-  Player* p = new Player("Mike");
-  Entity* entity = p;
-  // OR using polimorphism
-  Entity* entity = new Player("Mike"); // polimorphism
-  
-  /* if Entity::getName() 
-  is not virtual, this will output "Entity" */
-  std::cout << entity->getName() << std::endl;
+    Entity* entity = new Player("Mike");
+    std::cout << entity->getName() << std::endl; // Output: Mike
+    delete entity;
 }
 ```
-If any sub class overwrites a method, it's good to make that method ***virtual*** in the base class. And to mark with ***override***  the method in the derived class. 
 
-***NB:*** If *getName()* in base class *Entity* is not declared *virtual* then the printout will be *Entity*.
+-   If the base class method is not declared `virtual`, the output would be `Entity` (no polymorphism).
+-   Always mark overridden methods in derived classes with `override` for clarity and error checking.
 
-### interfaces
-Interfaces (a.k.a. abstract methods or pure virtual functions) allow us to define a function in a base-class that does not have an implementation, and at the same time force the sub-classes to implement that function. 
-You are using an interface class when you want to guarantee that the subclasses extending that interface have specific methods
+
+### Interfaces (Abstract Classes)
+
+Interfaces are implemented using **pure virtual functions**. These are functions that have no implementation in the base class and must be implemented by derived classes.
+
 ```cpp
 class Printable {
 public:
-  virtual std::string getClassName() = 0;
+    virtual std::string getClassName() const = 0; // Pure virtual function
 };
 ```
-***NB:*** ``= 0`` makes it a pure virtual function! so the method needs to be implemented in the subclasses. *Printable* being an interface, cannot be instantiated.
+
+-   The `= 0` syntax makes the function pure virtual.
+-   A class with at least one pure virtual function is an **abstract class** and cannot be instantiated directly.
+
+**Example:**
+
+```cpp
+class Player : public Printable {
+public:
+    std::string getClassName() const override { return "Player"; }
+};
+```
 
 
-### visibility
+### Visibility (Access Specifiers)
+
+Access specifiers control the visibility of class members.
 
 ```cpp
 class Entity {
 private:
-  int x, y;
+    int x, y; // Accessible only within the class
+
 protected:
-  std::string name;
-public: 
-  getCoordinates(){};
+    std::string name; // Accessible in the class and derived classes
+
+public:
+    void getCoordinates() {} // Accessible from anywhere
 };
 ```
 
-in general 
-- all that goes under **public** can be seen from outside and inside the class, 
-- all that goes under **private** can only be seen within the class itself, 
-- all that goes under **protected** can be seen from within the class itself and the subclasses.
+-   **`public`**: Accessible everywhere.
+-   **`protected`**: Accessible within the class and its subclasses.
+-   **`private`**: Accessible only within the class.
+
+**Default Visibility:**
+
+-   **Classes**: Members are `private` by default.
+-   **Structs**: Members are `public` by default.
+
+
+### Classes vs. Structs
+
+The only difference between a `class` and a `struct` in C++ is the default visibility of members:
+
+-   **Class**: Private by default.
+-   **Struct**: Public by default.
+
+**Example:**
 
 ```cpp
-class Entity {
-//private:
-  int x, y; /* private by default */
-};
-```
-in **classes** if I don't specify the visibility, it will be **private by default**, so like to write *private:* before the declaration of the methods/fileds
+class CEntity {
+    int a, b; // Private by default
 
-```c
-struct Entity {
-//public:
-  int x, y; /* public by default */
-};
-```
-
-### struct
-
-in **structs** if I don't specify the visibility, it will be **public by default**, so like to write *public:* before the declaration of the methods/fileds. 
-
-***FUN FACT***: actually this is the unique difference between class and struct. In c++ struct remain just to maintain the compatibility with c that doesn't have class.
-
-```c++
-class c_entity {
-  int m_a, m_b;
 public:
-  c_entity(int a, int b) : m_a(a), m_b(b) {}
+    CEntity(int a, int b) : a(a), b(b) {}
 };
 
-struct s_entity {
-  int a, b;
-  /* s_entity(int a, int b) : m_a(a), m_b(b) {} // this is optional */
-};
-
-int main() {
-  c_entity c = {3, 4}; // or c_entity(3, 4)
-  s_entity s = {3, 4}; // or s_entity(3, 4) if constructor is defined
-}
-```
-
-
-### class header
-
-example of a class Human that extends from LivingBeing
-
-***Everything inside *Human.h****
-
-```cpp
-class Human : public LivingBeing {
-private:
-  std::string m_name;
-  int m_age;
-  Human* m_son;
-public:
-  Human() 
-    :m_name("unknown"), m_age(0){}
-  Human(const std::string& name, const int age)
-    :m_name(name), m_age(age){}
-  Human(const std::string& name, const int age, Human* son)
-    :m_name(name), m_age(age), m_son(son{}
-  ~Human(){
-    if (this->m_son)
-      delete son;
-  }
-    
-  void print(){
-    std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
-  }
-  
-  int age(){ return this->m_age; }
-  Human* son(){ return this->m_son; }
+struct SEntity {
+    int a, b; // Public by default
 };
 ```
 
-If we want to separate the file into .h and .cpp then it becomes:
+**`NOTE`**: struct remain in c++ just to maintain the compatibility with c that doesn't have classes
 
-***Human.h***
+
+### Class Headers and Source Files
+
+To maintain code organization, class declarations are typically separated into `.h` (header) and `.cpp` (implementation) files.
+
+**`Human.h`**
+
 ```cpp
 #pragma once
 #include <string>
 
-namespace myNamespace {
-  class Human : public LivingBeing {
-  private:
+class Human {
+private:
     std::string m_name;
     int m_age;
-    Human* m_son;
-  public:
-    Human();
-    Human(const std::string& name, const int age);
-    Human(const std::string& name, const int age, Human* son);
-    ~Human();
-    void print();
-    int age();
-  }
-}
-```
 
-***Human.cpp***
-
-```cpp
-#include "Human.h"
-
-namespace myNamespace {
-  Human::Human()
-    : m_name("unknown"), m_age(0){}
-  Human::Human(const std::string& name, const int age)
-    :m_name(name), m_age(age){}
-  Human::Human(const std::string& name, const int age, Human* son)
-    :m_name(name), m_age(age), m_son(son{}
-  Human::~Human(){
-    if (m_son)
-      delete son;
-  }
-        
-  void print(){
-    std::cout << "Human " << this->m_name << ", age " << this->m_age << std::endl;
-  }
-  
-  int age(){ return this->m_age; }
-}
-```
-
-## Arrays 
-
-### arrays on the stack memory
-```cpp
-int stackArr[4] // declare: stackArr is now a pointer to the 1st element of the array
-int stackArr[] = {1, 2, 3, 4} // declare and initialize 
-stackArr[3] = 666
-```
-***NB***:  we cannot use increment and decrement (++/--) operator on the array name e.g., ~~stackArr++~~, because the array name is not an lvalue pointer. But we can always write
-
-```cpp
-int* ptr = stackArr;
-std::cout << ++ptr << std::endl; // => 2
-*(ptr+3) = 666 // this equals to stackArr[3] = 666
-```
-
-***FUN FACT***: in release mode if you read/write out of the array space nobody will complain (no bounds checking, you will be reading/writing where you are not supposed to!). So it is better to write some check code to avoid the situation.
-
-### arrays on the heap memory
-
-```c
-int* heapArr = new int[10];
-delete[] heapArr;
-```
-
-Why should you declare an array on the heap? The difference is lifetime: creating something in the stack will be destroyed as soon as out of the scope. In the heap it will persist until deleted. 
-**E.g.** if you have a function returning an array for example, you have to use the new keyword!
-
-In general it is better - whenever possible - to declare the arrays in the stack to avoid all the pointer jumping to get to the actual data. Example:
-
-```cpp
-Entity {
 public:
-  int stackArr[10];
-  /* if instead here I use an array on the heap 
-  int heapArr = new[10]; my Entity will contain 
-  a pointer to the array so to get the data it 
-  will need to jump to another space in memory */
-  Entity {
-    for (int i=0; i<10; i++)
-      stackArr[i] = 0;
-  }
+    Human();
+    Human(const std::string& name, int age);
+    ~Human();
+
+    void print() const;
+    int getAge() const;
 };
 ```
 
-***NB***: the row arrays do not have any *.size* or *.lenght* operators so: 
+**`Human.cpp`**
 
-1. if you declare the array in the stack use this trick:
-```c
-lenght = sizeof(stackArr) / sizeof(int);
-```
-2. if you declare the array in the heap just do:
-```c
-static const int numOfElements = 10;
-int* heapArr = new int[numOfElements];
+```cpp
+#include "Human.h"
+#include <iostream>
+
+Human::Human() 
+    : m_name("unknown"), m_age(0) {}
+
+Human::Human(const std::string& name, int age) 
+    : m_name(name), m_age(age) {}
+
+Human::~Human() {
+    std::cout << "Human destroyed" << std::endl;
+}
+
+void Human::print() const {
+    std::cout << "Human: " << m_name << ", age: " << m_age << std::endl;
+}
+
+int Human::getAge() const {
+    return m_age;
+}
 ```
 
-### array standard library
- 
-```c
+
+
+
+
+
+
+
+
+
+## Arrays
+
+
+### Arrays on the Stack Memory
+
+```cpp
+int stackArr[4]; // Declare: stackArr is now a pointer to the first element of the array
+int stackArr[] = {1, 2, 3, 4}; // Declare and initialize
+stackArr[3] = 666; // Modify the fourth element
+```
+
+-   The array name (e.g., `stackArr`) is a constant pointer to the first element of the array.
+-   You **cannot** use increment (`++`) or decrement (`--`) operators on the array name (e.g., ~~`stackArr++`~~) because it is not an lvalue pointer.
+
+However, you can work with a separate pointer:
+
+```cpp
+int* ptr = stackArr; // Pointer to the array
+std::cout << *(++ptr) << std::endl; // Output: 2
+*(ptr + 2) = 666; // Equivalent to stackArr[3] = 666
+```
+
+**`FUN FACT`**:  In **release mode**, accessing out-of-bounds elements in an array does not throw an error (no bounds checking). This can lead to undefined behavior. Always implement safety checks to avoid this!
+
+
+### Arrays on the Heap Memory
+
+```cpp
+int* heapArr = new int[10]; // Allocate an array of 10 integers on the heap
+heapArr[0] = 1;             // Assign a value
+delete[] heapArr;           // Deallocate the memory
+```
+
+**Why use heap arrays?**  
+The difference lies in the **lifetime** of the array:
+
+-   Stack memory: Automatically deallocated when the scope ends.
+-   Heap memory: Persists until explicitly deallocated using `delete[]`.
+
+**Example**:  
+If a function needs to return an array, it must allocate it on the heap:
+
+```cpp
+int* createArray(int size) {
+    return new int[size];
+}
+```
+
+In general, prefer stack arrays for better performance and safety, as they avoid pointer indirection.
+
+**Example:**
+
+```cpp
+class Entity {
+public:
+    int stackArr[10]; // Array stored directly in the object
+    // If using a heap array:
+    // int* heapArr = new int[10]; // Entity will only store a pointer (the data is in another space in memory)
+
+    Entity() {
+        for (int i = 0; i < 10; i++)
+            stackArr[i] = 0; // Initialize stack array
+    }
+};
+```
+
+
+### Array Limitations
+
+Raw arrays in C++ **do not** have built-in `.size()` or `.length()` methods. Here are two ways to determine the size:
+
+1.  **For Stack Arrays**:
+    
+    ```cpp
+    int stackArr[4];
+    int length = sizeof(stackArr) / sizeof(int); // Calculate the size
+    ```
+    
+2.  **For Heap Arrays**: You must manually track the size:
+    
+    ```cpp
+    static const int numOfElements = 10;
+    int* heapArr = new int[numOfElements];
+    ```
+    
+    
+### Array Standard Library (`std::array`)
+
+The C++ Standard Library provides a safer and more feature-rich alternative: `std::array`.
+
+```cpp
 #include <array>
-std::array<int, 10> stdArr;
-std::cout << stdArr.size() << std::endl;
+
+std::array<int, 10> stdArr; // Declare an array of size 10
+stdArr[0] = 1;              // Assign a value
+std::cout << stdArr.size() << std::endl; // Output: 10
 ```
-it includes bounds checking and it keeps track of the array size. But of course there is a bit of overhead.
 
-### reasuming
+**Advantages**:
 
-code | meaning
+-   Built-in size tracking with `.size()`.
+-   Bounds checking (with exceptions) when using `.at()`.
+
+**Disadvantage**:
+
+-   Slightly more overhead compared to raw arrays.
+
+
+### Summary Table
+
+**Code** | **Meaning**
 -|-
-T ar[n] | declare array ar of n elements of type T
-&ar[0] |the memory address of the first element of ar
-&ar | the memory address of the first element of ar
-ar | the memory address of the first element of ar
-T* p = ar | create pointer p that points to the first element of array ar
-*(ar + 1) | get the second element of array ar
-ar[1] | get the second element of array ar
-T* ha = new T[n] | declare on the heap array ha of n elements of type T 
-delete[] ha | delete/remove array ha from the heap
+`T ar[n]` | Declare an array `ar` of `n` elements of type `T`.
+`&ar[0]` | Address of the first element of the array `ar`.
+`&ar` | Address of the first element of the array `ar`. (Same as `&ar[0]`)
+`ar` | Address of the first element of the array `ar`. (Implicit pointer)
+`T* p = ar` | Create a pointer `p` that points to the first element of array `ar`.
+`*(ar + 1)` | Access the second element of array `ar`.
+`ar[1]` | Access the second element of array `ar`. (Equivalent to `*(ar + 1)`)
+`T* har = new T[n]` | Declare a heap array `har` of `n` elements of type `T`.
+`delete[] har` | Delete the heap array `har`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Strings
 
-### C style strings
 
-also known as **null-terminated strings**. 
-A string is just an array of characters. If we want to declare it completely *manually* we need to add the string termination char (``0`` or ``'\0'``) that tells the pointer that the string is terminated.
+### C-Style Strings
 
-```c++
-char str[] = "Hello";
-char mystring[5] = {'M', 'i', 'k', 'e', \0};
-std::cout << mystring << std::endl;
+C-Style strings, also known as **null-terminated strings**, are simply arrays of characters terminated with a special character: `'\0'`. This null character signals the end of the string.
+
+If you declare the string **manually**, you must include the null terminator explicitly:
+
+```cpp
+char str[] = "Hello"; // Null terminator '\0' is automatically added
+char myString[5] = {'M', 'i', 'k', 'e', '\0'}; // Manual null terminator
+std::cout << myString << std::endl; // Output: Mike
 ```
 
-#### C string handling functions
+### C String Handling Functions
 
-**NB**: `#include <cstring>`
+To manipulate C-Style strings, you can use functions provided by the `<cstring>` library.
 
--  `strcpy(destination, source);` copies the source string to the destination string. The destination must be large enough to hold the source string including the null terminator.
--  `strcat(destination, source);` appends the source string to the destination string. The destination must have enough space to hold the combined string.
--  `strcmp(str1, str2);` compares two strings lexicographically. It returns 0 if they are equal, a negative value if `str1` is less than `str2`, and a positive value if `str1` is greater than `str2`.
--  `strlen(str);` returns the length of the string, not counting the null terminator.
+```cpp
+#include <cstring>
+```
 
-**NB**: `#include <cctype>`
+**Function** | **Description**
+-|-
+`strcpy(destination, source)` | Copies the source string to the destination. The destination must be large enough to hold the source string, including the null terminator.
+`strcat(destination, source)` | Appends the source string to the destination string. The destination must have enough space for the combined string.
+`strcmp(str1, str2)` | Compares two strings lexicographically. Returns `0` if they are equal, a negative value if `str1` is less than `str2`, or a positive value if `str1` is greater.
+`strlen(str)` | Returns the length of the string (excluding the null terminator).
 
-- `isalnum(char)` checks if char is alphanumeric 
-check if a char is alphanumeric
+Additionally, you can use functions from `<cctype>` for character-level checks:
+
+```cpp
+#include <cctype>
+```
+
+**Function** |  **Description**
+-|-
+`isalnum(char)` | Checks if the character is alphanumeric.
 
 
-### declaration via char pointer
+### Declaring Strings via `char*`
 
-Declaration of a string using a *char pointer* in c++ it is immutable in the sense that you cannot change the lenght of the string, so usually it is declared ``const``. ``#include <string.h>`` is used just to overload the ``<<`` operator for the cout, *strlen* and *strcpy*
+When you declare a string as a **character pointer** (`char*`), it is **immutable** in the sense that you cannot change the length of the string. For this reason, such declarations are often marked as `const`. The `<cstring>` library can also be used to manipulate strings declared in this way.
 
-```c++
-#include <string.h>
+**Example:**
+
+```cpp
+#include <cstring>
+
 const char* name = "Mike";
-std::cout << name << ", " << strlen(name) << std::endl;
+std::cout << name << ", " << strlen(name) << std::endl; // Output: Mike, 4
 
 char* str1 = "Ciao";
 char str2[40];
-strcpy(str2, str1); // copy str1 into str2 
+strcpy(str2, str1); // Copy str1 into str2
+std::cout << str2 << std::endl; // Output: Ciao
 ```
 
-### string standard library
-Finally if we want to use the *standard string* implementation. 
+**`NOTE`**: Modifying a string literal (like `"Ciao"`) through a `char*` pointer is undefined behavior.
 
-```c++
+
+### Standard Library Strings
+
+C++ provides a safer and more versatile string implementation in the Standard Library: `std::string`.
+
+**Example:**
+
+```cpp
+#include <string>
+
 std::string myString = "ciao";
-myString += "!";
-std::cout << myString << std::endl;
-  
-/* useful string methods */
-myString.size();
-myString.find("ao");
-bool contains = myString.find("c") != std::string::npos; // std::string::npos means the end of the string
+myString += "!"; // Append a character or string
+std::cout << myString << std::endl; // Output: ciao!
+
+// Useful methods:
+std::cout << myString.size() << std::endl; // Get the length of the string
+std::cout << myString.find("ao") << std::endl; // Find the position of a substring
+bool contains = myString.find("c") != std::string::npos; // Check if a substring exists
 ```
+
+**Method** | **Description**
+-|-
+`size()` or `length()` | Returns the length of the string.
+`find(substring)` | Returns the position of the first occurrence of `substring`, or `std::string::npos` if not found.
+`substr(pos, len)` | Returns a substring starting at position `pos` with length `len`.
+`empty()` | Checks if the string is empty.
+`clear()` | Removes all characters from the string.
+
+**Advantages of `std::string`**:
+
+-   Dynamic size.
+-   Built-in support for various operations like concatenation, searching, and substring extraction.
+-   Safer and less error-prone compared to C-Style strings.
+
+
+
+
+
+
+
+
+
+
 
 
 ## Const
 
-### normal use
 
-```c
+### Normal Use
+
+```cpp
 const int MAX_AGE = 90;
 ```
-normal use of const: the 'variable' MAX_AGE becomes basically a constant, it is not supposed to be modified.
 
-### with pointers
+The `const` keyword makes a variable constant, meaning its value cannot be modified after initialization. In this example, `MAX_AGE` is a constant.
 
-const BEFORE the asterix: what the pointer points at can't be modfied
-    
+
+### With Pointers
+
+**Const BEFORE the asterisk (`*`)**:  
+The data the pointer points to **cannot be modified**, but the pointer itself can change to point to another address.
+
 ```cpp
-const int* a = new int; // i.e.: int const* a
-// *a = 5; // I cannot modify what the pointer points at!
-```  
-  
-const AFTER the asterix: the pointer address can't be modified
+const int* a = new int; // or 
+int const* a = new int;
 
-```c
+*a = 5; // Compile Error!!!
+a = &MAX_AGE; // Allowed: Pointer can point to a different address
+```
+
+**Const AFTER the asterisk (`*`)**:  
+The pointer itself is constant, so its address cannot change, but the data it points to **can be modified**.
+
+```cpp
 int* const b = new int;
-*b = 5; // I still can modify what the pointer points at
-//b = &MAX_AGE; // but I cannot modify the pointer address
+*b = 5; // Allowed: Can modify the value the pointer points to
+b = &MAX_AGE; // Compile Error!
 ```
 
-and of ourse: const BEFORE & AFTER the asterix: the pointer address and what it points at cannot be modified
+**Const BOTH BEFORE and AFTER the asterisk (`*`)**:  
+Both the pointer and the value it points to are immutable.
 
-```c
+```cpp
 const int* const c = new int;
-//*b = 5; // I cannot modify what the pointer points at
-//b = &MAX_AGE; // I cannot modify the pointer address
+*c = 5; // Compile Error: Cannot modify the value the pointer points to
+c = &MAX_AGE; // Compile Error: Cannot modify the pointer's address
 ```
 
-### with classes
 
-Why declaring method const? Non-const objects can call either const or non-const methods. If I declare a const object like entity or a reference, then I will be able to call only on those const methods.
-``RULE``: *const objects can not call non-const functions*
+### With Classes
 
-```c++
+Declaring a method as `const` ensures that the method **does not modify any member variables** of the class. This distinction is crucial when working with `const` objects or references.
+
+**Rule**:  
+_Const objects can only call const methods._ Non-const objects can call both const and non-const methods.
+
+**Example:**
+
+```cpp
 class Entity {
-private: 
-  int m_X, m_Y;
-  int* age;
+private:
+    int m_X, m_Y;
+
 public:
-  /* used by a non-const Entity or Entity reference/pointer */
-  int getX() {
-    m_X = 2; // this is allowed    
-    return m_X;
-  }
-  
-  /* This method will be used by a const Entity reference */
-  /* const here means I cannot modify the field inside the method */
-  int getX() const {
-    //m_X = 2; // this is not allowed
-    return m_X;
-  }  
+    // Non-const method: Can modify member variables
+    int getX() {
+        m_X = 2; // Allowed
+        return m_X;
+    }
+
+    // Const method: Cannot modify member variables
+    int getX() const {
+        // m_X = 2; // Error: Cannot modify m_X in a const method
+        return m_X;
+    }
 };
 ```
-if an Entity is used as parameter in some function, passed by *const reference* (not to copy all the class object) the normal *getX()* will not work. We need to create another method *getX() const* that will work (promising that inside the const method I don't modify the field). 
 
-***FUN FACT***: if I declare the class field as ***MUTABLE*** i can still modify it's value inside the const method! :P
+**Why Use `const` Methods?**
 
-```c++
+If an `Entity` object is passed as a **const reference** to a function, the non-const method `getX()` cannot be called. You need a `const` version of the method (`getX() const`) to handle such cases. This guarantees that the method does not unintentionally modify the object.
+
+
+### Mutable Keyword
+
+Declaring a class member as `mutable` allows it to be modified even inside a `const` method. This is useful for fields used for debugging or caching, where modification doesn't conceptually change the object's state.
+
+```cpp
 class Entity {
-private: 
-  int m_X;
-  mutable int m_debugCount = 0;
+private:
+    int m_X;
+    mutable int m_debugCount = 0;
 
-  int getX() const {
-    m_debugCount++; // allowed because the filed is mutable!
-    m_X = 3; // not allowed because the method is const!
-    return m_X;
-  }  
-}
+public:
+    int getX() const {
+        m_debugCount++; // Allowed because m_debugCount is mutable
+        // m_X = 3; // Error: Cannot modify m_X in a const method
+        return m_X;
+    }
+};
 ```
+
+
+### Summary of `const` Usage
+
+**Context** | **Effect**
+-|-
+**`const` variable** | Variable's value cannot be changed after initialization.
+**`const` pointer** | Prevents modification of what the pointer points to or the pointer itself, depending on placement of `const`.
+**Const method** | Ensures the method cannot modify any non-mutable member variables.
+**`mutable` members** | Allows modification of specific variables in a const method.
+
+
+
+
+
+
+
+
 
 ## The ternary operator
 
-.. just a syntactic sugar for if else
+The ternary operator is just a syntactic sugar for `if else`
 
 ```c
 static int s_level = 1;
 static int s_speed = 2;
 
 void printSpeed() {
-  s_speed = s_level > 3 ? 10 : 5; // speed becomes 10 if lev>3 else 5
-  std::cout << "s_speen: " << s_speed << std::endl;
+	s_speed = s_level > 3 ? 10 : 5; // speed becomes 10 if lev>3 else 5
+	std::cout << "s_speen: " << s_speed << std::endl;
 }
 
-int main() {    
-  printSpeed();
-  s_level = 7;
-  printSpeed();
+int main() {		
+	printSpeed();
+	s_level = 7;
+	printSpeed();
 }
 ```
 
-## Instantiate classes and objects
 
-```c++
+
+
+
+
+
+
+
+
+## Memory management
+
+```cpp
 #include <iostream>
 #include <string>
 
 class Entity 
 {
 private:
-  std::string m_name;
+    std::string m_name;
+    int m_age;
 public:
-  Entity()
-    : m_name("Unknown"), m_age(-1) {}
-  Entity(const std::string&  name)
-    : m_name(name), m_age(-1) {}
-  Entity(const  int  age)
-    : m_age(age), m_name("Unknown") {}
-    
-  std::string& getName() const { return m_name; }
-  int getAge() const {return  m_age;}  
-  void setName(const std::string& name) {m_name = name;}
-  void setAge(const int age) {m_age = age;}
+    // Default constructor
+    Entity()
+        : m_name("Unknown"), m_age(-1) {}
+
+    // Constructor with name
+    Entity(const std::string& name)
+        : m_name(name), m_age(-1) {}
+
+    // Constructor with age
+    Entity(int age)
+        : m_name("Unknown"), m_age(age) {}
+
+    // Getters
+    std::string getName() const { return m_name; }
+    int getAge() const { return m_age; }
+
+    // Setters
+    void setName(const std::string& name) { m_name = name; }
+    void setAge(int age) { m_age = age; }
 };
 ```
 
-### Stack Heap memory allocation
 
-**stack allocation** : as soon as that variable gets out of scope the memory is freed. When that scope ends - whichever scope - the stack pops off and anything was inside gets lost (*destructor gets automatically called*). Data is stored in contiguous way, stack memory is limited but very fast.
+### Stack and Heap Memory Allocation
 
-```c++
-int value = 4;
-int array[] = {1, 2, 3, 4, 5};
-Entity entity("Mike"); // equals to Entity entity = Entity("Mike");
+**Stack Allocation**
+
+Stack allocation happens automatically. When a variable or object goes out of scope, its memory is automatically freed. Stack memory is **limited** but very **fast** because it uses a contiguous block of memory. The destructor for an object is called automatically when it goes out of scope.
+
+```cpp
+int value = 4;               // Primitive variable
+int array[] = {1, 2, 3, 4};  // Array allocated on the stack
+Entity entity("Mike");       // Entity object on the stack
 ```
 
-**heap allocation**: when allocated an object inside the heap, it's gonna sit there untill you decide you no longer need it.
+**Heap Allocation**
 
-```c++
+Heap allocation is done manually using the `new` keyword. Objects on the heap persist until explicitly freed using `delete`. Allocating on the heap is slower than stack allocation because the memory manager must find a suitable block of free memory. Additionally, forgetting to free heap memory can lead to **memory leaks**.
+
+```cpp
 int* hvalue = new int;
 *hvalue = 4;
-int* harray = new int[5];
-array[0] = 1;
-array[1] = 2;
-array[2] = 3;
-Entity* hentity = new Entity("Mike");
-// free the allocated memory on the heap!
+
+int* harray = new int[5]; // Array allocated on the heap
+harray[0] = 1;
+harray[1] = 2;
+harray[2] = 3;
+
+Entity* hentity = new Entity("Mike"); // Entity object on the heap
+
+// Free the allocated memory
 delete hvalue;
 delete[] harray;
 delete hentity;
 ```
 
-Allocating on the heap takes longer: when we write "**new** *dataType*" we require the compiler to find and allocate a dataType long free and contiguous space in heap memory and return a pointer to that memory address (i.e. malloc function). Allocation on the heap is indeed a very heavy task, compared to the allocation on the stack that just needs 1 cpu instruction. Moreover, when allocating on the heap, we need then to remember to manually free the allocated memory. So the rule of thumb is ***whenever possible instantiate on the stack otherwise on the heap***. 
-It can be impossible to use stack memory when for example:
-1. the object is inside a scope and needs to remain alive also outside of that scope, or when 
-2. the object is too big to stay on the stack (stack is usually 1-2MB) or 
-3. there are too many objects that need to be allocated.
+**`NOTE`**: whenever we use the word **new**, we need then to `delete`!
 
-``NB``: So, whenever we use the word **new**, we need then to delete!
 
-### the new keyword
+### Differences Between Stack and Heap
 
-The main purpose of ***new*** is to allocate memory on the **heap** specifically.
-When we write "new dataType" we require the compiler to find and allocate a dataType long free and contiguous space in heap memory and return a pointer to that memory address -- basically it finds a block of memory that is big enough to accomodate our needs and then gives us a pointer to that block of memory --
-The last thing that new does is also call the *constructor* on the new allocated entity.
+| Feature                     | Stack                                 | Heap                                    |
+|-----------------------------|---------------------------------------|-----------------------------------------|
+| **Memory Allocation**       | Automatic (managed by the compiler)  | Manual (requires `new` and `delete`)    |
+| **Lifetime**                | Limited to the scope of the variable | Exists until manually freed             |
+| **Speed**                   | Faster                               | Slower                                  |
+| **Storage**                 | Contiguous memory blocks             | Randomly available memory blocks        |
+| **Size**                    | Limited (typically 1-2 MB)           | Large (dependent on system memory)      |
+| **Access**                  | Direct access                        | Indirect (via pointers)                 |
+| **Cleanup**                 | Automatic (when scope ends)          | Manual (requires explicit cleanup)      |
+| **Use Cases**               | Local variables, small objects       | Long-lived or large objects             |
+| **Cost of Allocation**      | Minimal                              | More expensive (complex allocation)     |
+| **Error Handling**          | Stack overflow (rare)                | Memory leaks if not properly managed    |
 
+**When to Use Heap Allocation:**
+
+1.  **Objects need to persist beyond their scope** (e.g., returned from a function).
+2.  **Objects are too large for the stack** (e.g., large arrays).
+3.  **Too many objects** might exhaust stack memory.
+
+**Rule of Thumb**: Use stack allocation whenever possible for simplicity and speed. Use heap allocation only when necessary.
+
+
+### The `new` Keyword
+
+The `new` keyword allocates memory on the **heap** and automatically calls the constructor for the object.
+
+```cpp
+int* a = new int;           // Allocates memory for a single int
+int* aArr = new int[50];    // Allocates memory for an array of 50 ints
+
+Entity* e = new Entity();   // Allocates memory and calls the constructor
+
+// Equivalent C-style allocation (without constructor call)
+Entity* another_e = (Entity*)malloc(sizeof(Entity));
+
+// Allocate an array of Entity objects
+Entity* eArr = new Entity[50];
+
+// Free the memory when done
+delete a;
+delete e;
+delete another_e; // C-style allocation does not call the destructor
+delete[] aArr;
+delete[] eArr;
+```
+
+**Important Notes**:
+
+1.  `delete` should be used to free memory allocated with `new`.
+2.  Use `delete[]` to free memory allocated for arrays with `new`.
+3.  Forgetting to free heap memory leads to **memory leaks**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Implicit Conversion
+
+Implicit conversion in C++ refers to the automatic type conversion performed by the compiler from one type to another. Here are some examples:
 
 ```c++
-int main(){
-  int* a = new int;
-  int* aArr = new int[50]; // an array of 50 contiguous int on the heap
-  
-  Entity* e = new Entity();
-  
-  // this is the equivalent c version
-  Entity* another_e = (Entity*)malloc(sizeof(Entity));
-  // it will just allocate the memory and not call the constructor!
-  
-  Entity* eArr = new Entity[50];
+// A cool function to print an Entity object
+void PrintEntity(const Entity& entity) {
+    // Print logic goes here
+}
 
-  // remember to free the memory when you are done with it!
-  delete a, e, another_e;
-  delete[] aArr, eArr;
+int main() {
+	// Implicit conversion!
+	Entity a = std::string("Mike");
+    // Equivalent to writing: Entity a("Mike"); 
+    
+    // Implicit conversion!
+    Entity b = 43;
+    // Equivalent to writing: Entity b(43); 
+
+    // Implicit conversion!
+    PrintEntity(22); 
+    // `22` is implicitly converted into an Entity with age 22.
+
+    // Implicit conversion! "Cherno" is first cast from 
+    // a const char array to a `std::string` and then implicitly 
+    // converted into an Entity with name "Cherno".
+    PrintEntity(std::string("Cherno"));
+
+    // It can also be explicitly cast to Entity:
+    PrintEntity(Entity("Cherno"));
 }
 ```
 
-## Implicit conversion
 
-is the automatic conversion that c++ does from one type to another, see the following examples
+### Note on the `explicit` Keyword
 
-```c++
-// some cool printing function
-void PrintEntity(const Entity& entity) { // cool printing }
-
-int main()
-{
-  Entity a("Mike"); 
-  // we can also write Entity a = std::string("Mike")
-  
-  Entity b(43); // we can also write Entity b = 43
-  
-  // implicit conversion
-  PrintEntity(22); 
-  // 22 was implicitly converted into an Entity with age 22
-  
-  // implicit conversion: "Cherno" is firstly casted from 
-  // const char array to a std::string then implicitly converted 
-  // into an Entity with name Cherno
-  PrintEntity(std::string("Cherno"));
-  // it can be casted also to Entity
-  PrintEntity(Entity("Cherno"));
-}
-```
-
-NB: explicit keyword in front of the contructor disable any form of implicit conversion, e.g.:
+Using the `explicit` keyword in front of a constructor disables implicit conversions. For example:
 
 ```c++
 class Entity {
-  Explicit Entity(std::string& name) : m_name(name) {} 
-};
-
-int main {
-  // this will cause a compilation error !!!
-  PrintEntity(std::string("Mike")); 
-  // we need to explicitly say
-  PrintEntity( Entity(std::string("Mike)) );
-}
-``` 
-
-
-
-## Operator overloading
-
-``+``  ``-``  ``*``  ``/``  ``%``  ``^``  ``&``  ``|``  ``~``  ``!``  ``=``  ``<``  ``>``  ``+=``  ``-=``  ``*=`` ``/=``  ``%=``  ``^=``  ``&=``  ``|=``  ``<<``  ``>>``  ``>>=``  ``<<=``  ``==``  ``!=``  ``<=``  ``>=``  ``<=>``  ``&&``  ``||``  ``++``  ``--``  ``,``  ``->*``  ``->``  ``( )``  ``[ ]``
-
-Operators are just functions! All these c++ operators can be overloaded, i.e. definer/change the behaviour of the operator in the program.
-To overload an operator, e.g. the operator "@" we just write the word *operator* followed by the operator we want to overload @, then we define the function normally with its parameters.
-
-
-example of overloading opertor "**<<**" to print a standard `std::vector<T>` object
-
-```c++
-template<typename T>
-std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vector) {
-  int size = vector.size();
-
-  stream << "[";
-  for (int i = 0; i < size; i++)
-    i == size-1 ? stream << vector[i] : stream << vector[i] << ", ";
-  stream << "]";
-
-  return stream;
-}
-```
-
-
-example of overloading operator "**+**" to define how to add two Vector2 objects 
-
-```c++
-struct Vector2 {
-  float x, y;
-  
-  Vector2(float x, float y) : x(x), y(y) {}
-
-  // here is how we overload the + operator
-  Vector2 operator+(const Vector2& other) const {
-    return Vector2(x + other.x, y + other.y);
-  }
+public:
+    explicit Entity(const std::string& name) 
+        : m_name(name) {}
 };
 ```
 
-example of overloading the operator "**<<**", to define how a custom Vector2 is to be printed in std::cout
+In this case:
+
+```c++
+int main() {
+    // This will cause a compilation error because implicit conversion is disabled!
+    PrintEntity(std::string("Mike")); 
+
+    // You need to explicitly construct the Entity object:
+    PrintEntity(Entity(std::string("Mike")));
+}
+```
+
+The `explicit` keyword ensures constructors are only called when explicitly invoked, which helps prevent unintended conversions that may lead to subtle bugs in your code.
+
+
+
+
+
+
+
+
+
+## Operator Overloading
+
+The following operators can be overloaded in C++:
+
+`+  -  *  /  %  ^  &  |  ~  !  =  <  >  +=  -=  *=  /=  %=  ^=  &=  |=  <<  >>  >>=  <<=  ==  !=  <=  >=  <=>  &&  ||  ++  --  ,  ->*  ->  ( )  [ ]`
+
+Operators in C++ are essentially functions! You can overload these operators, which means redefining or changing their behavior for specific types in your program. To overload an operator, we use the keyword `operator` followed by the operator symbol. Then, we define the function like any other normal function with its parameters.
+
+
+### Example 1: print std::vector
+
+**Overloading the `<<` Operator to Print a `std::vector<T>`**
 
 ```cpp
-std::ostream& operator<<(std::ostream& stream, const Vector2& vector) {
-  stream << vector.x << ", " << vector.y;
-  return stream;
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+  int size = vec.size();
+  
+  os << "[";
+  for (int i = 0; i < size; i++) {
+    i == size - 1 ? os << vec[i] : os << vec[i] << ", ";
+  }
+  os << "]";
+  
+  return os;
 }
 ```
 
-example of overloading of operator "**new**", to define what to do each time the word new is used: keep track of heap allocation count, show the quantity of heap memory allocated
+
+### Example 2: print custom vec2
+
+**Overloading the `<<` Operator to Print a Custom `vec2<T>`**
+
+**`vec2.h`** file:
+
+```cpp
+#pragma once
+#include <iostream>
+
+struct vec2 {
+    float x, y;
+    vec2(float x = 0, float y = 0) : x(x), y(y) {}
+};
+
+// Declare the overloaded operator<< function
+std::ostream& operator<<(std::ostream& os, const vec2& vec);
+```
+
+**`vec2.cpp`** file:
+
+```cpp
+#include "vec2.h"
+
+// Define the operator<< function
+std::ostream& operator<<(std::ostream& os, const vec2& vec) {
+    os << "vec2(" << vec.x << ", " << vec.y << ")";
+    return os;
+}
+```
+
+**Usage:**
+
+```cpp
+#include "vec2.h"
+
+int main() {
+    vec2 v(3.0f, 4.0f);
+    std::cout << v << std::endl;
+}
+```
+
+
+### Example 3: add custom vec2
+
+**Overloading the `+` Operator to Add Two `vec2` Objects**
+
+```cpp
+struct vec2 {
+    float x, y;
+
+    vec2(float x, float y) : x(x), y(y) {}
+
+    // Overloading the + operator to add two vec2 objects
+    vec2 operator+(const vec2& other) const {
+        return vec2(x + other.x, y + other.y);
+    }
+};
+
+int main(int, char**){
+	vec2 a(1, 2);
+	vec2 b(3, 4);
+	vec2 c = a + b;
+	std::cout << c.x << ", " << c.y << std::endl;
+}
+```
+
+
+### Example 4: track memory allocations
+
+**Overloading the `new` Operator to Track Heap Allocation**
 
 ```cpp
 static uint32_t s_AllocCount = 0;
-void* operator new(size_t size){
-  s_AllocCount++;
-  std::cout << "Allocating " << size << " bytes\n";
-  return malloc(size);
+
+void* operator new(size_t size) {
+    s_AllocCount++;
+    std::cout << "Allocating " << size << " bytes\n";
+    return malloc(size);
 }
+
+void operator delete(void* memory) {
+    s_AllocCount--;
+    std::cout << "Deallocating memory (" << s_AllocCount<< ")\n";
+    free(memory);
+}
+
+Entity* e = new Entity("Mike", 25);
+delete e;
 std::cout << s_AllocCount << " allocations\n";
 ```
+
+
+### Key Notes:
+
+-   When overloading operators, the function signature typically follows this pattern: `operator<operator-symbol>(parameters)`.
+-   For most operators, we can overload both the normal and compound assignment versions (e.g., `+` and `+=`).
+-   `operator new` is a special case and can be overloaded to define custom behavior when allocating memory on the heap.
+
+
+
+
+
+
+
+
+
+
 
 
 ## The this keyword
@@ -1099,279 +1733,713 @@ it is just the pointer to the current object instance that the method belongs to
 ```c++
 class Entity {
 private:
-  int x, y;
-public:  
-  Entity(int x, int y) {
-    // this is a pointer so using -> we first dereference 
-    // then we use the Entity object
-    this->x = x; 
-    this->y = y;
-  }
-  // some fancy printing function
-  void print() {};
+	int x, y;
+public:	
+	Entity(int x, int y) {
+		// this is a pointer so using -> we first dereference 
+		// then we use the Entity object
+		this->x = x; 
+		this->y = y;
+	}
+	// some fancy printing function
+	void print() {};
 };
 ```
 
 
-## Smartpointers
 
-are **scoped pointers** (created on the stack) that will create and point to objects created on the heap. Once out of the scope the pointer and the pointed objects get automatically deleted. 
 
-### unique pointers
-simple type of smarpointer whose created object cannot have more than one pointer reference. 
-**make_unique** will create a new Entity that can have just one pointer reference.
-*You cannot copy unique pointers*: if you have two unique pointers pointing to the same loc of memory and one of them dies, the loc will be freed and suddenly the second pointer will point then to memory that has been freed.
+
+
+
+
+
+
+
+## Smart Pointers
+
+Smart pointers are **scoped pointers** (created on the stack) that point to objects created on the heap. Once the smart pointer goes out of scope, both the pointer and the object it points to are automatically deleted.
+
+
+### Unique Pointers
+
+A unique pointer is a simple type of smart pointer where the object it points to cannot have more than one reference. `make_unique` is used to create a new `Entity` object that can only have a single pointer reference. 
+
+**`NOTE`**: _You cannot copy unique pointers_: If you have two unique pointers pointing to the same memory location and one of them is destroyed, the memory will be freed, and the second pointer will point to memory that has been freed, which causes undefined behavior.
+
 ```c++
-// create a unique pointer to a new Entity
+// Create a unique pointer to a new Entity
 std::unique_ptr<Entity> u1_ptr = std::make_unique<Entity>(7, 4);
 u1_ptr->print(); 
 
-// create another unique pointer and assign u1
-std::unique_ptr<Entity>  u2_ptr = move(u1_ptr);
-u2_ptr->print(); // let's check u2_ptr
+// Create another unique pointer and move u1's ownership to u2
+std::unique_ptr<Entity> u2_ptr = std::move(u1_ptr);
+u2_ptr->print(); // Let's check u2_ptr
 
-// this will cause segmentation fault!
+// This will cause a segmentation fault!
 /* u1_ptr->print(); */ 
-// there can be just one unique pointer to the object !!!
-```  
+// There can only be one unique pointer to the object at a time!
+```
 
-### shared pointers
-smartpointer that can be copied and actually *maintain a reference copy count*. Will free Entity only when last pointer reference gets deleted.
+
+### Shared Pointers
+
+A shared pointer can be copied, and it maintains a reference count. The object is only freed when the last shared pointer referencing it is deleted.
 
 ```c++
-// create a shared pointer to a new Entity
+// Create a shared pointer to a new Entity
 std::shared_ptr<Entity> s1_ptr = std::make_shared<Entity>(7, 4);
-std::cout << "count: " << s1_ptr.use_count() << std::endl; // let's check s1 count => 1
+std::cout << "count: " << s1_ptr.use_count() << std::endl; // Let's check the reference count => 1
 
-{ // an innner scope
-  // create another shared pointer and assign s1
-  std::shared_ptr<Entity> s2_ptr = s1_ptr;
+{ // An inner scope
+    // Create another shared pointer and assign it to s1
+    std::shared_ptr<Entity> s2_ptr = s1_ptr;
 
-  // let's check s1 count
-  std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 2
+    // Check the reference count
+    std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 2
 
-  // at the inner scope exit ref count gets decremented 
+    // When the inner scope exits, the reference count is decremented
 }
 
-// let's check again 
+// Check again
 std::cout << "count: " << s1_ptr.use_count() << std::endl; // => 1
-```  
-### weak pointers
+```
 
-weak pointer *doesn't increment the reference count* of a shared pointer, so in the following example, when we get out of the inner scope, the memory gets freed. However we can still ask the weak pointer, are you expired? are you still valid?
+
+### Weak Pointers
+
+A weak pointer **does not increment the reference count** of a shared pointer. In the following example, when the inner scope ends, the memory is freed. However, we can still ask the weak pointer if it is expired or still valid.
 
 ```c++
-std::weak_ptr<Entity> w_ptr; // create a weak pointer
+// Create a weak pointer
+std::weak_ptr<Entity> w_ptr;
 
-{ // an innner scope
-  // create a shared pointer to a new Entity
-  std::shared_ptr<Entity> s_ptr = std::make_shared<Entity>(7, 4);
+{ // An inner scope
+    // Create a shared pointer to a new Entity
+    std::shared_ptr<Entity> s_ptr = std::make_shared<Entity>(7, 4);
 
-  // assign weak pointer the shared pointer
-  w_ptr = s_ptr; // ref count remains 1
+    // Assign the shared pointer to the weak pointer
+    w_ptr = s_ptr; // The reference count remains 1
 
-  // let's check if weak pointer is intact
-  std::string state = w_ptr.lock() ? "intact" : "gone";
-  std::cout << "state: " << state << std::endl; // => intact
+    // Check if the weak pointer is intact
+    std::string state = w_ptr.lock() ? "intact" : "gone";
+    std::cout << "state: " << state << std::endl; // => intact
 
-  // at the inner scope exit ref count gets 0, 
-  // Entity object gets freed
+    // When the inner scope exits, the reference count becomes 0, 
+    // and the Entity object gets freed
 }
 
-// let's check again 
+// Check again
 std::string state = w_ptr.lock() ? "intact" : "gone";
 std::cout << "state: " << state << std::endl; // => gone
-```  
+```
 
 
-## The copy constructor
 
-Unnecessary copying is to be avoided, but sometimes copying is essential. When we are playing with copying class objects we need to verify that the classes we wrote have a copy constructor. Let's write a custom String class to make an example
 
-```c++
-class String {
-private:
-  char* m_buffer;
-  unsigned int m_size;
-public:
-  String(const char* string) {
-    m_size = strlen(string);
-    m_buffer = new char[m_size + 1];
-    memcpy(m_buffer, string, m_size);
-    m_buffer[m_size] = 0; // null termination char
-  }
 
-  /* this is the copy constructor!! that guarantees that 
-  m_buffer of a String object copy will be created on a 
-  new block of memory */
-  String(const String& other)
-    : m_size(other.m_size) {
-    m_buffer = new char[m_size + 1];
-    memcpy(m_buffer, other.m_buffer, m_size + 1);
-  }
 
-  /* this is the way to prevent the user to make copies 
-  of the String objects */
-  // String(const String& other) = delete;
 
-  ~String() {delete[] m_buffer;}
-}
+## The Rule of Five in C++
 
-int main() {
-  String string = "Cherno";
-  String another = string; // copying a String object
-  /*  */
-}
-```  
+ref. https://en.cppreference.com/w/cpp/language/rule_of_three
 
-***NB:*** if  String class doeasn't have a copy construstor that makes a deep copy, the m_buffer of 'string' and 'another' will be the very same at the very same block of memory.
+The **Rule of Five** states that if a class manages resources (e.g., dynamic memory), you should explicitly define the following five special member functions to ensure proper resource management:
 
-## The arrow operator
+1.  **Destructor**
+2.  **Copy Constructor**
+3.  **Copy Assignment Operator**
+4.  **Move Constructor**
+5.  **Move Assignment Operator**
 
-If we have an object declared on the stack then to access fields we use ``.`` 
-If we have an object on the heap, created with new, so basically we have a pointer to that object, we access its fields using ``->``
-Indeed -> is a shortcut of *dereference a pointer and use a method* of the dereferenced object.
-Therefore, when we use the word ``this`` inside the definition of a class, that is the pointer to the actual object we use ``this->`` 
+This ensures efficient and safe handling of resource ownership, especially during copying and moving operations.
 
-```c++
 
-int main() {
-  Entity e; // create an entity on the stack
-  Entity* ptr = &e; // make ptr point to it
-  
-  /* create a reference and assign it the 
-  the object dereferenced by ptr pointer */ 
-  Entity& entity = *ptr;
-  entity.print();
+### 1. Destructor
 
-  /* the last two lines can be shortcutted like this */
-  (*ptr).print() // dereference first and then use print()
-  /* or even better */
-  ptr->print();
-  ptr->age = 5;
+The destructor is called when an object goes out of scope or is deleted. Its primary purpose is to release resources owned by the object, such as memory or file handles.
+
+```cpp
+~ClassName() {
+    delete[] m_buffer; // Release dynamically allocated memory
 }
 ```
 
-So what *->* operator does is dereference that pointer into a reference type and then call its method or field.
-You can overload the -> operator in this way. Let's create a scoped pointer  as an example
+**`NOTE`**: If your class does not manage any resources, the default destructor is sufficient.
 
-```c++
 
+### 2. Copy Constructor
+
+Unnecessary copying is to be avoided, but sometimes copying is essential. When working with copying class objects, we must ensure the class provides a proper **copy constructor** to handle copying safely. 
+The copy constructor creates a new object as a copy of an existing one. For resource-managing classes, this typically requires **deep copying** to avoid two objects sharing the same resource.
+
+```cpp
+ClassName(const ClassName& other)
+    : m_size(other.m_size) {
+    m_buffer = new char[m_size + 1]; // Allocate new memory
+    memcpy(m_buffer, other.m_buffer, m_size + 1); // Copy contents
+}
+```
+
+**`NOTE`**: If not defined, the compiler provides a shallow-copy copy constructor by default, which can lead to resource management issues like shared memory or double-deletion.
+
+
+### 3. Copy Assignment Operator
+
+The **copy assignment operator** is used when you want to copy the contents of one object into another already-existing object. This typically involves allocating new resources and copying data from the source object.
+The copy assignment operator is invoked when an existing object is assigned from another object. Like the copy constructor, it must perform a **deep copy** while properly handling existing resources.
+
+```cpp
+ClassName& operator=(const ClassName& other) {
+    if (this == &other) return *this; // Handle self-assignment
+
+    delete[] m_buffer; // Release existing resources
+
+    m_size = other.m_size;
+    m_buffer = new char[m_size + 1];
+    memcpy(m_buffer, other.m_buffer, m_size + 1);
+
+    return *this;
+}
+```
+
+**`NOTE`**: If not defined, the compiler provides a shallow-copy version.
+
+
+### 4. Move Constructor
+
+The move constructor transfers resources from a temporary (rvalue) object to a new object, avoiding unnecessary deep copying and improving performance.
+It is especially useful for temporary objects or when optimizing performance.
+
+```cpp
+ClassName(ClassName&& other) noexcept
+    : m_buffer(other.m_buffer), m_size(other.m_size) {
+    other.m_buffer = nullptr; // Leave source in a valid state
+    other.m_size = 0;
+}
+```
+
+**`NOTE`**: This is particularly useful when returning large objects from functions or inserting them into containers.
+
+
+### 5. Move Assignment Operator
+
+The move assignment operator transfers resources from a temporary (rvalue) object to an existing object. It must handle cleaning up the current object’s resources before taking ownership of the new ones.
+
+```cpp
+ClassName& operator=(ClassName&& other) noexcept {
+    if (this == &other) return *this; // Handle self-assignment
+
+    delete[] m_buffer; // Release existing resources
+
+    m_buffer = other.m_buffer;
+    m_size = other.m_size;
+
+    other.m_buffer = nullptr; // Leave source in a valid state
+    other.m_size = 0;
+
+    return *this;
+}
+```
+
+**`NOTE`**: If not defined, the compiler falls back to inefficient copying or default behavior.
+
+
+### Why the Rule of Five Matters
+
+The Rule of Five ensures that:
+
+-   Resources are managed properly without memory leaks.
+-   Operations like copying and moving are efficient and safe.
+-   Your class integrates seamlessly with modern C++ features like standard containers (`std::vector`, `std::unique_ptr`, etc.) that heavily rely on move semantics.
+
+By following the Rule of Five, your classes will be efficient, safe, and compatible with modern C++ practices.
+If your class does not manage any resources, the compiler-generated special functions are typically sufficient.
+
+
+### Example: A Complete Rule of Five Implementation
+
+Here is a complete implementation of a custom `String` class that adheres to the Rule of Five:
+
+```cpp
+#include <iostream>
+#include <cstring>
+
+class String {
+private:
+    char* m_buffer;
+    size_t m_size;
+
+public:
+    // Constructor
+    String(const char* string)
+        : m_size(strlen(string)), m_buffer(new char[m_size + 1]) {
+        memcpy(m_buffer, string, m_size + 1);
+    }
+
+    // Destructor
+    ~String() {
+        delete[] m_buffer;
+    }
+
+    // Copy Constructor
+    String(const String& other)
+        : m_size(other.m_size), m_buffer(new char[other.m_size + 1]) {
+        memcpy(m_buffer, other.m_buffer, other.m_size + 1);
+        std::cout << "Copy Constructor\n";
+    }
+
+    // Copy Assignment Operator
+    String& operator=(const String& other) {
+        if (this == &other) return *this; // Handle self-assignment
+
+        delete[] m_buffer; // Clean up current resources
+
+        m_size = other.m_size;
+        m_buffer = new char[m_size + 1];
+        memcpy(m_buffer, other.m_buffer, m_size + 1);
+
+        std::cout << "Copy Assignment Operator\n";
+        return *this;
+    }
+
+    // Move Constructor
+    String(String&& other) noexcept
+        : m_buffer(other.m_buffer), m_size(other.m_size) {
+        other.m_buffer = nullptr;
+        other.m_size = 0;
+        std::cout << "Move Constructor\n";
+    }
+
+    // Move Assignment Operator
+    String& operator=(String&& other) noexcept {
+        if (this == &other) return *this; // Handle self-assignment
+
+        delete[] m_buffer; // Clean up current resources
+
+        m_buffer = other.m_buffer;
+        m_size = other.m_size;
+
+        other.m_buffer = nullptr;
+        other.m_size = 0;
+
+        std::cout << "Move Assignment Operator\n";
+        return *this;
+    }
+
+    void Print() const {
+        std::cout << m_buffer << std::endl;
+    }
+};
+
+int main() {
+    String s1 = "Hello";
+    String s2 = s1;             // Copy Constructor
+    String s3 = std::move(s1);  // Move Constructor
+
+    s2 = s3;                    // Copy Assignment Operator
+    s3 = std::move(s2);         // Move Assignment Operator
+
+    s3.Print();
+    return 0;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+## The Arrow Operator 
+
+The `->` operator is used to access fields or methods of an object through a pointer. It is essentially a shortcut for dereferencing a pointer and then accessing a member of the dereferenced object.
+
+
+### Stack vs. Heap Access
+
+-   For an object declared on the **stack**, you access its fields or methods using the **dot operator (`.`)**.
+-   For an object created on the **heap** (via `new`), you use a **pointer** to the object and access its fields or methods with the **arrow operator (`->`)**.
+
+The arrow operator is equivalent to first dereferencing the pointer and then using the dot operator on the resulting object.
+
+
+### Example
+
+```cpp
+int main() {
+    Entity e;        // Create an Entity on the stack
+    Entity* ptr = &e; // Pointer to the stack object
+
+    // Access fields/methods via dereferencing
+    (*ptr).print();  // Dereference first, then call print()
+
+    // Shortcut using the arrow operator
+    ptr->print();    // Equivalent to (*ptr).print()
+    ptr->age = 5;    // Modify field through the pointer
+}
+```
+
+The `->` operator simplifies accessing members of an object through a pointer by combining dereferencing and member access in a single step.
+
+
+### Using with `this`
+
+Within a class, the `this` pointer refers to the current object. Since `this` is a pointer, you use `this->` to access the object's members or methods. For example:
+
+```cpp
 class Entity {
 public:
-  void print() const {..}
+    void print() {
+        this->doSomething(); // Access member method using `this->`
+    }
+private:
+    void doSomething() { /* ... */ }
+};
+```
+
+
+### Overloading the Arrow Operator 
+
+You can overload the `->` operator for custom classes to define how member access through a pointer behaves. For example, let's create a **Scoped Pointer** class that manages the lifetime of a dynamically allocated object:
+
+**Scoped Pointer Example**
+
+```cpp
+class Entity {
+public:
+    void print() const { std::cout << "Entity::print()" << std::endl; }
 };
 
 class ScopedPtr {
 private:
-  Entity* m_obj;
+    Entity* m_obj; // Pointer to the managed object
 public:
-  ScopedPtr(Entity* entity) : m_obj(entity) {}
-  ~ScopedPtr() {delete m_obj;}
+    // Constructor: takes ownership of the passed pointer
+    ScopedPtr(Entity* entity) : m_obj(entity) {}
 
-  /* that's how we overload the -> operator */
-  const Entity* operator->() const {
-    return m_obj;
-  }
+    // Destructor: deletes the managed object
+    ~ScopedPtr() { delete m_obj; }
+
+    // Overload the arrow operator
+    Entity* operator->() const {
+        return m_obj; // Return the managed object
+    }
 };
 
 int main() {
-  // entity automatically deleted when it goes out of scope
-  ScopedPtr entity = new Entity();
-  
-  /* the overload of the -> operator may allow 
-  this even if entity is not a heap allocated entity */
-  entity->print(); 
+    // Scoped pointer automatically deletes the object when it goes out of scope
+    ScopedPtr entity = new Entity();
+
+    // Use overloaded arrow operator to access methods of the managed object
+    entity->print(); 
 }
 ```
 
-## Dynamic arrays 
 
-It is just an array for which it is not necessary to specify the size.
-So we declare a dynamic array using:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Dynamic Arrays
+
+A **dynamic array** is a resizable array that does not require specifying its size upfront. In C++, the `std::vector` from the Standard Template Library (STL) is commonly used for dynamic arrays.
 
 ```c++
 #include <vector>
-#include <algorithm> // used by for_each
+#include <algorithm> // For std::for_each
+#include <iostream>  // For std::cout
 
-std::vector<int> v {1, 2, 3, 4, 5}; // ver1
-std::vector<int> v = {1, 2, 3, 4, 5}; // ver2
-std::vector<int> v(3); // size 3, initial value 0
-std::vector<int> v(3, 5); // size 3, initial value 5
-std::vector<Point> pointArray;
+// Declaring/Initialize a vector
+std::vector<int> v {1, 2, 3, 4, 5};       // Version 1: Direct initialization
+std::vector<int> v = {1, 2, 3, 4, 5};    // Version 2: Alternative syntax
+std::vector<int> v(3);                   // Size 3, all elements initialized to 0
+std::vector<int> v(3, 5);                // Size 3, all elements initialized to 5
+std::vector<Point> pointArray;           // Empty vector of custom type `Point`
 
-// using lambda
-for_each( v.begin(), v.end(), [](int i) { cout << i << endl; } );
-```
+// Iterating with a lambda function
+std::for_each(v.begin(), v.end(), [](int i) { std::cout << i << std::endl; });
 
-and we add elements to a dynamic array using ``pushback()``:
-
-```c++
+// Adding elements 
 pointArray.push_back(Point(x, y));
 ```
 
+
 ### Optimizations
 
-There are a couple of optimizations we can do using a dynamic array:
+Here are some ways to optimize the use of `std::vector`:
 
-1. if we know in advance how many elements we are gonna put into the array we can "reserve" the memory so the array will be resized just one time and not every time a new element is pushed_back in.
+1.  **Reserve Memory in Advance**  
+If you know the number of elements you will add to the vector, you can use the `reserve` method to allocate memory ahead of time. This avoids the overhead of resizing the vector multiple times as elements are added.
+    
+    ```c++
+    pointArray.reserve(8); // Reserve space for 8 elements
+    ```
+    
+2.  **Use `emplace_back` Instead of `push_back`**  
+    While `push_back` copies or moves an already constructed object into the vector, `emplace_back` constructs the object directly in-place, reducing unnecessary copying or moving.
+    
+    ```c++
+    pointArray.emplace_back(x, y); // Efficiently construct a new `Point` in the vector
+    ```
+
+
+### Example: Using a Dynamic Array
 
 ```c++
-pointArray.reserve(8); 
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+struct Point {
+    int x, y;
+    Point(int x, int y) : x(x), y(y) {}
+    void print() const { std::cout << "(" << x << ", " << y << ")" << std::endl; }
+};
+
+int main() {
+    // Declare a vector of `Point` objects
+    std::vector<Point> pointArray;
+
+    // Reserve memory for optimization
+    pointArray.reserve(5);
+
+    // Add elements using emplace_back
+    pointArray.emplace_back(1, 2);
+    pointArray.emplace_back(3, 4);
+    pointArray.emplace_back(5, 6);
+
+    // Iterate and print elements
+    std::for_each(pointArray.begin(), pointArray.end(), [](const Point& p) {
+        p.print();
+    });
+}
 ```
 
-2. we can use ``emplace_back`` passing just the parameters to build a new element, in place of ``push_back``  already istanciated elements. In this way the elements will not be copied around uselessly
 
-```c++
-pointArray.emplace_back(x, y);
-```
 
-## Static and Dynamic libraries
 
-### static linking
-the library gets basically put into your executable (it's inside your .exe file). Technically faster. Use static whenever possible.
 
-Create a *Dependencies* directory and inside another directory with the name of the dependency e.g. GLFW. Inside it we put the *include* folder and the *lib* folder. In VB we go to project properties > c/c++ > general > additional include directories, we select all configurations Win32 and we add $(SolutionDir)Dependencies\GLFW\include.
-Now in my code I can ``#include <GLFW/glfw3.h>``
 
-but we haven' t linked our actual library. We need the definition for the glfw3 functions.
 
-We go to project properties > linker > general > additional librariy directories, and we add $(SolutionDir)Dependencies\GLFW\lib-vc2015.
-Then we go to project properties > linker > input, and we add glfw3.lib
 
-### dynamic libraries
-the library gets linked at run-time. In windows you can use some function like load_library or at the application lunch it loads a .dll file (dynamic link library)
+
+
+
+
+
+
+## Static and Dynamic Libraries
+
+In C++, libraries can be linked to your program in two main ways: **static linking** and **dynamic linking**.
+
+
+### Static Linking
+
+With **static linking**, the library code is compiled and embedded directly into your executable file. This results in a larger executable but improves runtime performance because no additional linking occurs during execution. Static linking is ideal when the library doesn't need to be updated independently of the executable.
+
+
+**Static Linking in *Visual Studio* (Windows)**
+
+1.  **Organize the Library Files**:  
+    Create a `Dependencies` directory in your project, and within it, create a subdirectory named after the dependency (e.g., `GLFW`). Inside the dependency folder, include:
+    
+    -   An `include` folder containing the header files (e.g., `glfw3.h`).
+    -   A `lib` folder containing the static library files (e.g., `glfw3.lib`).
+2.  **Set Up Include Directories**:  
+    Go to **Project Properties > C/C++ > General > Additional Include Directories**:
+    
+    -   Set the configuration to _All Configurations_ and _Win32_.
+    -   Add the include folder path:
+        `$(SolutionDir)Dependencies\GLFW\include`
+        
+3.  **Set Up Library Directories**:  
+    Go to **Project Properties > Linker > General > Additional Library Directories**:
+    
+    -   Add the library folder path:
+        `$(SolutionDir)Dependencies\GLFW\lib`
+        
+4.  **Specify the Library Files**:  
+    Go to **Project Properties > Linker > Input > Additional Dependencies**:
+    
+    -   Add the static library file: `glfw3.lib`
+
+**Static Linking in *VS Code with CMake* (Linux)**
+
+1.  **Install the Library**:
+    
+    -   Install the library headers and static library files using your package manager (e.g., `sudo apt install libglfw3-dev` for GLFW).
+    -   Alternatively, download and build the library from source.
+2.  **Set Up the Project Directory**:
+    
+    -   Organize your project directory:
+        
+        ```
+        MyProject/
+        ├── CMakeLists.txt
+        ├── src/
+        │   └── main.cpp
+        └── include/
+        ```
+        
+3.  **Write the `CMakeLists.txt`**:
+    
+    -   Create a `CMakeLists.txt` file at the root of your project:
+        
+        ```cmake
+        cmake_minimum_required(VERSION 3.10)
+        project(MyProject)
+        
+        # Add include directories
+        include_directories(${CMAKE_SOURCE_DIR}/include)
+        
+        # Link the static library (e.g., GLFW)
+        find_package(glfw3 REQUIRED)
+        
+        # Add source files
+        add_executable(MyProject src/main.cpp)
+        
+        # Link the library
+        target_link_libraries(MyProject glfw)
+        ```
+        
+4.  **Build the Project**:
+    
+    -   Create a build directory and run CMake to generate the build files:
+        
+        ```bash
+        mkdir build && cd build
+        cmake ..
+        make
+        ```
+        
+    -   The executable will be generated in the `build` directory.
+5.  **Run the Program**: `./MyProject`
+
+
+### Dynamic Linking
+
+With **dynamic linking**, the library is not embedded into the executable. Instead, the program depends on a separate file (usually a `.dll` on Windows, `.so` on Linux, or `.dylib` on macOS) that is loaded at runtime. This approach keeps the executable smaller and allows the library to be updated independently.
+
+In **Windows**, dynamic linking involves `.dll` (Dynamic Link Library) files. The program will either:
+
+1.  Automatically resolve and load the `.dll` files at application launch.
+2.  Manually load the `.dll` during runtime using functions like `LoadLibrary` and `GetProcAddress`.
+
+In **Linux**, dynamic linking involves `.so` (Shared Object) files. The linker looks for the `.so` files in standard library paths (e.g., `/usr/lib`, `/usr/local/lib`) or paths specified in the environment variable `LD_LIBRARY_PATH`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Templates
 
-It's kind of generics, but it can do much more, it's not limited by the generic type system. It's a template specifying the compiler how to create methods, classes, or whatever, at compile time, based on the specific usage. 
+Templates in C++ are a powerful mechanism for creating generic and reusable code. They allow you to define methods, classes, or other constructs that can operate with different data types or parameters. Unlike traditional generic programming in some other languages, templates in C++ are not limited by a generic type system and enable compile-time code generation tailored to specific use cases.
+
+Templates work by specifying a blueprint that the compiler uses to generate concrete implementations when the template is instantiated. This means that the code for the template is compiled **only when it is used**, and the specified types or parameters are substituted at compile time.
+
+
+### Example: Template Class
+
+Here’s an example of a templated class that defines an array:
 
 ```cpp
 template<typename T, int N>
 class Array {
 private:
-  T m_array[N];
+    T m_array[N]; // Fixed-size array of type T
 public:
-  int getSize() const { return N; }
+    // Method to get the size of the array
+    int getSize() const { 
+        return N; 
+    }
 };
 
 int main() {
-  Array<int, 50> array;
-  array.getSize();
+    Array<int, 50> array; // Instantiate Array with int type and size 50
+    std::cout << array.getSize() << std::endl; // Output: 50
+    return 0;
 }
 ```
-The class *Array* will be compiled if and only when used; type T and size N will be substituted by the type and size we specify when we actually use it (at compile time :P).
+
+- **Lazy Compilation**:  The `Array` class will only be compiled when it is used. The `T` type and the `N` size parameter are replaced by the specified values (e.g., `int` and `50`) **at compile time**.
+    
+- **Flexible Data Types**:  Templates allow you to create type-agnostic classes and functions. For instance, you can create an `Array<double, 100>` or `Array<std::string, 10>` without rewriting the class.
+    
+- **Compile-Time Parameters**:  You can pass values like `N` (the size of the array in this example) as **non-type template parameters**, which are resolved during compilation.
+
+
+### Template Functions
+
+Templates are not limited to classes; you can also create **templated functions**:
+
+```cpp
+template<typename T>
+T add(T a, T b) {
+    return a + b;
+}
+
+int main() {
+    std::cout << add<int>(3, 5) << std::endl;      // Output: 8
+    std::cout << add<double>(2.5, 4.5) << std::endl; // Output: 7.0
+    return 0;
+}
+```
+
+Here, the `add` function works with any type `T` that supports the `+` operator.
+
+
+### Advantages of Templates
+
+1.  **Type Safety**:  Templates ensure that your code works with the specified types without runtime errors (all checks happen at compile time).
+    
+2.  **Code Reusability**:  You can write generic and reusable functions or classes without duplicating code for every type.
+    
+3.  **Compile-Time Optimization**:  Since templates are resolved at compile time, they can result in highly optimized code compared to runtime polymorphism.
+    
+
+
+
+
+
 
 ## Macros
 
-Macros are pre-processor, pure text replacing, before everything gets compiled.
+Macros are **preprocessor directives** that perform **pure text replacement** before the code gets compiled. This allows macros to simplify repetitive tasks or control the inclusion of debugging or conditional code.
+
 A simple example:
 
 ```cpp
 #define WAIT std::cin.get()
 
 int main(){
-  WAIT;
+	WAIT;
 }
 ```
 
@@ -1384,167 +2452,469 @@ A more useful example, using a parameter and a preprocess definition:
 #endif
 
 int main(){
-  LOG("Hello");
+	LOG("Hello");
 }
 ```
 
-It is common practice to use macros to add custom debugging or validation checks:
+**`NOTE`**: You can define the preprocess definition variables, e.g., `PR_DEBUG` at the top of your source file (before any relevant code) using `#define`.
+However, it is common practice, especially for larger projects, to define the preprocess definitions using  compiler flag.s This ensures the macros are globally available across all files without requiring repetitive `#define` directives.
+
+For example, if you're using:
+
+-   **GCC/Clang**: Add `-DPR_DEBUG` to the compiler flags: 
+`g++ -DPR_DEBUG main.cpp -o main`
+or in a Makefile:	
+`CXXFLAGS += -DPR_DEBUG` 
+    
+-   **CMake**: Add it in your `CMakeLists.txt` file:
+    `add_compile_definitions(PR_DEBUG)` 
+    
+-   **MSVC**: Add `/DPR_DEBUG` to the compiler flags: 
+`cl /DPR_DEBUG main.cpp` 
+
+
+Macros are often used to create custom debugging tools or validation checks. Here’s an example of a custom assertion macro:
 
 ```c++
 #include <iostream>
 
 // Custom assert macro
 #define MY_ASSERT(condition) \
-  do { \
-    if (!(condition)) { \
-      std::cerr << "Assertion failed: " << #condition << " in " << __FILE__ << " at line " << __LINE__ << std::endl; \
-      std::terminate(); \
-    } \
-  } while (false)
+    do { \
+        if (!(condition)) { \
+            std::cerr << "Assertion failed: " << #condition << " in " << __FILE__ << " at line " << __LINE__ << std::endl; \
+            std::terminate(); \
+        } \
+    } while (false)
 
 int main() {
-  int x = 5;
-  MY_ASSERT(x == 5); // Use the custom assert macro
+    int x = 5;
+    MY_ASSERT(x == 5); // Use the custom assert macro
 
-  std::cout << "Program continues after the assertion check." << std::endl;
+    std::cout << "Program continues after the assertion check." << std::endl;
 }
 ```
 
-***NB***: here the macro is wrapped in a `do { ... } while (false)` block to allow the use of multiple statements within the condition, ensuring proper scoping. 
+**`NOTE`**: here the macro is wrapped in a `do { ... } while (false)` block to ensure proper scoping/bracketing. 
 
-Example:
+`do { ... } while (false)` executes once the `do` so doesn't change much the code, however it ensures that all the statements in the `do` block are within a curly bracket block (avoiding `dangling else`)
+
+In the following Example:
 ```c++
-#define MY_ASSERT(condition) \ 
-  if (!(condition)) { \ 
-    std::cerr << "Assertion failed: " << #condition << std::endl; \ 
-    std::terminate(); \ 
-  }
-
-// Use the custom assert macro with multiple statements  
 if (x == 5) 
-  MY_ASSERT(x > 0); 
+	MY_ASSERT(x > 0); 
 else  
-  do_something_else();
+	do_something_else();
 ```
 
-the expanded code would look like this:
+If the `MY_ASSERT` macro is defined like this:
+
+```cpp
+#define MY_ASSERT(condition) \ 
+	if (!(condition)) { \ 
+		std::cerr << "Assertion failed: " << #condition << std::endl; \ 
+		std::terminate(); \ 
+	}
+```
+
+the code expands to
 
 ```cpp
 if (x == 5) 
-  if (!(x > 0)) { 
-    std::cerr << "Assertion failed: " << std::endl; 
-    std::terminate(); 
-  } 
-  else 
-    do_something_else();
+	if (!(x > 0)) { 
+		std::cerr << "Assertion failed: " << std::endl; 
+		std::terminate(); 
+	} 
+	else 
+		do_something_else();
 ```
 
-`do { ... } while (false)` construct is commonly used in macros to ensure proper behavior in complex statements
+that is wrong! The `else` is always associated with the nearest unmatched `if` i.e., the dangling else becomes the else of the inner if.
+
+If we define the macro using the `do ... while(false)`  instead
+
+```cpp
+#define MY_ASSERT(condition) \ 
+	do { \
+		if (!(condition)) { \ 
+			std::cerr << "Assertion failed: " << #condition << std::endl; \ 
+			std::terminate(); \ 
+		} \
+	} while(false)
+```
+
+the expanded code looks and works fine
+
+```cpp
+if (x == 5) 
+	do {
+		if (!(x > 0)) { 
+			std::cerr << "Assertion failed: " << std::endl; 
+			std::terminate(); 
+		} 
+	} while(false)
+else 
+	do_something_else();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Namespace
 
-The primary purpose of namespaces is to **avoid naming conflicts**, i.e. with namespaces we can have symbols (classes, functions, variables) with the same signature in different contexts
+The primary purpose of namespaces is to **avoid naming conflicts**. Namespaces allow us to define symbols (such as classes, functions, and variables) with the same name in different contexts, avoiding collisions in larger projects or when using third-party libraries.
+
+**Example**
 
 ```cpp
-namspace apple {
-  void print(const char* str){//do something}
+#include <iostream>
+
+namespace apple {
+    void print(const char* str) {
+        std::cout << "[apple] " << str << std::endl;
+    }
 }
 
-namspace orange {
-  void print(const char* str){//do something else}
+namespace orange {
+    void print(const char* str) {
+        std::cout << "[orange] " << str << std::endl;
+    }
 }
 
-int main(){
-  orange::print("ciao a tutti");
-  // or
-  using namespace apple;
-  print("ciao a tutti");
+int main() {
+    // Call the orange namespace's print function
+    orange::print("Ciao a tutti");
 }
 ```
 
+### Key Concepts
+
+1.  **Fully Qualified Names** You can explicitly specify the namespace when calling a function or accessing a variable to avoid ambiguity:
+        
+	```cpp
+	orange::print("Hello from orange!");
+	apple::print("Hello from apple!");
+	```
+        
+2.  **`using namespace` Directive** The `using namespace` directive imports all symbols from a namespace into the current scope, allowing you to call functions or access variables without qualifying their namespace:
+        
+	```cpp
+	using namespace apple;
+	print("Hello!"); // Equivalent to apple::print
+	```
+        
+    **Caution:** Avoid using `using namespace` in global scope, especially with large or commonly-used namespaces (like `std`), as it can lead to naming conflicts.
+3.  **Aliasing with `namespace`** To simplify long or deeply nested namespace names, you can create an alias:
+        
+	```cpp
+	namespace a = apple;
+	a::print("Using alias for apple");
+	```
+        
+4.  **Anonymous Namespaces** An **anonymous namespace** is used to limit the scope of symbols to a single file. This is particularly useful for internal linkage:
+        
+	```cpp
+	namespace {
+	    void internalFunction() {
+	        std::cout << "This function is only accessible in this file." << std::endl;
+	    }
+	}
+
+	int main() {
+	    internalFunction(); // OK
+	    return 0;
+	}
+	```
+        
+### Namespace Nesting
+Namespaces can be nested within other namespaces:
+    
+```cpp
+namespace fruit {
+    namespace apple {
+        void print() {
+            std::cout << "This is fruit::apple!" << std::endl;
+        }
+    }
+}
+
+int main() {
+    fruit::apple::print(); // Accessing nested namespace
+    return 0;
+}
+```
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Function pointers
 
-You can actually assign functions to variables. Starting from that, you can also pass a function into another function as paramenter. There's a whole bunch of things that we can actually do with functions and function pointers that do create intresting and complex logic. 
+In C++, you can assign functions to variables, pass functions as arguments to other functions, and use function pointers to build complex and flexible logic. **Function pointers** are variables that store the memory address of a function, allowing dynamic function invocation.
+
+Here’s how you can assign a function to a pointer and invoke it:
 
 ```cpp
 // a very simple function
 void helloWorld(){
-  std::coutn << "hello" << std::endl;
+	std::coutn << "hello" << std::endl;
 }
 
 int main(){
-  // assign myfunc the memory address of helloWorld function
-  auto myfunc = &helloWorld; // because of implicit conversion we can also omit the ampersand &
+	// we can assign a function to a pointer 
+	// assign myfunc the memory address of helloWorld function
+	auto myfunc = &helloWorld; 
 
-  // the type auto will be void(*myfunc)() so I can also write
-  void(*myfunc)() = helloWorld; 
+	// because of implicit conversion we can also omit the ampersand &
+	auto myfunc = helloWorld;
+	
+	// function pointers are declared using
+	// type(*)() 
 
-  // even better, I can use typedef like this
-  typedef void(*hworldfunc)() 
-  // and then 
-  hworldfunc myfunc = helloWorld;
+	// so to explicitly declare myfunc we write
+	void(*myfunc)() = helloWorld; 
 
-  myfunc();
-  myfunc();
+	// to make it more readable we can use typedef
+	typedef void (*HelloWorldFunc)();
+	// and then use it
+	HelloWorldFunc myfuncWithTypedef = helloWorld;
+
+	// Finally call the function through the pointer
+	myfunc(); 
+	myfuncWithTypedef();
 }
 ```
 
-I can also use functions that have parameters so it would become
+Function pointers can also point to functions that take parameters. Here's how:
 
 ```cpp
 void helloWorld(int value){
-  std::coutn << "hello: " << value << std::endl;
+	std::coutn << "hello: " << value << std::endl;
 }
 
 int main(){
-  typedef void(*hwfunc)(int) 
-  hwfunc myfunc = helloWorld;
+	typedef void(*hwfunc)(int) 
+	hwfunc myfunc = helloWorld;
 
-  myfunc(8);
-  myfunc(4);
-  myfunc(9);
+	myfunc(8);
+	myfunc(4);
+	myfunc(9);
 }
 ```
 
-a more useful example can be this:
+**Example**
+
+A common use case for function pointers is **callbacks**, where you pass a function pointer to another function to customize its behavior. Here's an example:
 
 ```cpp
 // this is the callback function
 void printValue(int value){
-  std::cout << value << std::endl;
+	std::cout << value << std::endl;
 }
 
 void foreach(const std::vector<int>& values, void(*func)(int)){
-  for (int v : values)
-    func(v);
+	for (int v : values)
+		func(v);
 }
 
 int main(){
-  std::vector<int> vector = {1, 2, 3};
-  foreach(vector, printValue);
+	std::vector<int> vector = {1, 2, 3};
+	foreach(vector, printValue);
 }
 ```
 so here I use foreach function to which I pass a vector of elements and a function pointer. The function the pointer points to defines what I want to do with each element of the vector.
-Though we can rewrite this in a more simple way, avoiding to write an extra function, using **lambda**. Lambda is just a normal function except that it is not declared as a normal function.
 
-```cpp
-void foreach(const std::vector<int>& values, void(*func)(int)){
-  for (int v : values)
-    func(v);
-}
 
-int main(){
-  std::vector<int> vector = {1, 2, 3};
-  foreach(vector, [](int value){std::cout << value << std::endl;});
-}
-```
+
+
+
+
+
+
+
+
 
 ## Lambdas
 
-ref. https://en.cppreference.com/w/cpp/language/lambda
+..though we can rewrite the previous in a more simple way, avoiding to write the extra function `printValue()`, using **lambda**. 
 
-Lambdas are a way to define "anonymous functions". A way to create a function without the need to "phisically" create a function. This sort of function, we want to treat it more like a variable unless then a formal function that exsists like a symbol in our compiled code.
-So when to use it? In C++, whenever we set a function pointer to a function, we can set it to a lambda instead.
+Lambdas are anonymous functions that can be defined inline. They are particularly useful for short, single-use logic. 
+
+In C++, the general expression form of a **lambda function** is as follows:
+
+```cpp
+[capture_list] (parameter_list) -> return_type {
+    function_body
+};
+```
+
+**Example**
+
+Here’s the same example we have seen above, rewritten with a lambda:
+
+```cpp
+void foreach(const std::vector<int>& values, void(*func)(int)){
+	for (int v : values)
+		func(v);
+}
+
+int main(){
+	std::vector<int> vector = {1, 2, 3};
+	foreach(vector, [](int value) -> void {std::cout << value << std::endl;});
+}
+```
+
+
+### Components of a Lambda
+
+1.  **Capture List (`[ ]`)**: Specifies which variables from the enclosing scope are captured by the lambda. 
+It can be:
+       -   Empty (`[]`) if no variables are captured.
+       -   `[var]` to capture `var` by value.
+       -   `[&var]` to capture `var` by reference.
+       -   `[=]` to capture all variables by value.
+       -   `[&]` to capture all variables by reference.
+       -   `[=, &var]` to capture all variables by value, except `var`, which is captured by reference.
+       -   `[&, var]` to capture all variables by reference, except `var`, which is captured by value.
+2.  **Parameter List (`( )`)**:
+    
+    -   Specifies the parameters that the lambda takes, similar to a regular function.
+    -   If no parameters are needed, this can be empty: `()`.
+    -   Example: `(int a, double b)`.
+3.  **Return Type (`-> return_type`)** (optional):
+    
+    -   Explicitly specifies the return type of the lambda.
+    -   If omitted, the compiler deduces the return type from the `function_body`.
+    -   Example: `-> int`.
+4.  **Function Body (`{ }`)**:
+    
+    -   Contains the actual code of the lambda.
+    -   Similar to the body of a regular function.
+
+
+### Examples
+
+**Simple Lambda**
+
+```cpp
+auto greet = []() {
+    std::cout << "Hello, world!" << std::endl;
+};
+greet();
+```
+
+**Lambda with Parameters**
+
+```cpp
+auto add = [](int a, int b) {
+    return a + b;
+};
+std::cout << add(3, 5) << std::endl; // Output: 8
+```
+
+**Lambda with Explicit Return Type**
+
+```cpp
+auto divide = [](int a, int b) -> double {
+    if (b != 0) {
+        return static_cast<double>(a) / b;
+    } else {
+        return 0.0;
+    }
+};
+std::cout << divide(5, 2) << std::endl; // Output: 2.5
+```
+
+**Capturing Variables by Value**
+
+```cpp
+int x = 10;
+auto printX = [x]() {
+    std::cout << "x = " << x << std::endl;
+};
+printX(); // Output: x = 10
+```
+
+**Capturing Variables by Reference**
+
+```cpp
+int x = 10;
+auto modifyX = [&x]() {
+    x += 5;
+};
+modifyX();
+std::cout << "x = " << x << std::endl; // Output: x = 15
+```
+
+**Mixed Captures**
+
+```cpp
+int a = 5, b = 10;
+auto sum = [a, &b]() {
+    b += a;
+    return b;
+};
+std::cout << sum() << std::endl; // Output: 15
+std::cout << b << std::endl;     // Output: 15
+```
+
+**Lambda as an Argument to a Function**
+
+```cpp
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+int main() {
+    std::vector<int> numbers = {1, 2, 3, 4, 5};
+    std::for_each(numbers.begin(), numbers.end(), [](int n) {
+        std::cout << n * 2 << " ";
+    });
+    // Output: 2 4 6 8 10
+    return 0;
+}
+```
+
+**Lambda with Stateful Captures**
+
+```cpp
+auto counter = [count = 0]() mutable {
+    return ++count;
+};
+std::cout << counter() << std::endl; // Output: 1
+std::cout << counter() << std::endl; // Output: 2
+```
+
+Lambdas are often used in modern C++ for:
+
+-   **Callbacks** (e.g., in `std::for_each` or GUI frameworks).
+-   **Functional-style programming** (e.g., map/filter/reduce).
+-   **Short-lived functions** (avoiding writing separate named functions).
+
+
+### Other Examples
 
 ```cpp
 std::vector<int> v {1, 2, 3, 4};
@@ -1567,9 +2937,6 @@ auto result = std::find_if(begin(v), end(v), is_even);
 // I can use:
 // [=] captures everything by value
 // [&] captures everything by reference
-// zero to n variables/classes by reference or by value
-// e.g. [a] to pass variable a by value
-// [&a] to passa variable a by reference
 
 int const max = 100;
 std::vector<int> vec {178, 101, 123, 145, 45, 33};
@@ -1580,6 +2947,11 @@ auto it = std::find_if(begin(vec), end(vec), lambda);
 ? std::cout << "first element <= max is: " << *it <<std::endl
 : std::cout << "all element are > max." << std::endl;
 ```
+
+---
+---
+---
+
 
 ## Multidimensional arrays
 
