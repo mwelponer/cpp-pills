@@ -236,8 +236,8 @@ std::cout << *ptr << std::endl; // H
 std::cout << ptr[1] << std::endl;  // 'e', equivalent to *(ptr + 1)
 ```
 
-**`NOTE`**: The array subscript operator `[]` in `char str[]` is secretly a pointer, so it's somehow like to write something like ~~`char* str`~~ but sintattically it is not correct
-
+**`NOTE`**: The array subscript operator `[]` in `char str[]` is secretly a pointer, so it's somehow like to write something like ~~`char* str`~~ 
+(that is syntactically wrong!)
 
 ### Complex Pointer Syntax
 
